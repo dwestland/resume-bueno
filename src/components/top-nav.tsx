@@ -6,7 +6,7 @@ import { auth } from '@/auth'
 async function TopNav() {
   const session = await auth()
   return (
-    <header className="container mx-auto bg-blue-200 p-4">
+    <header className="container bg-blue-200 p-4">
       <nav className="mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <Link href="/" className="hover:underline">
