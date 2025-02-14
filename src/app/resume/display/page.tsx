@@ -1,6 +1,8 @@
 import React from 'react'
+import Link from 'next/link'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
+
 export default async function DisplayResumePage() {
   // Get the session using Next‑Auth v5's auth() (server side)
   const session = await auth()
@@ -34,6 +36,12 @@ export default async function DisplayResumePage() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Resume Information</h1>
+      <Link
+        href="/resume/edit"
+        className="inline-block bg-blue-500 hover:bg-blue-600 text-white hover:text-white px-4 py-2 rounded mb-4"
+      >
+        Edit
+      </Link>
       {user ? (
         <div className="space-y-6">
           <section>

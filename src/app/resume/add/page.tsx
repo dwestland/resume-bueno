@@ -5,13 +5,14 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { updateResume } from '../actions'
+import { useRouter } from 'next/navigation'
 
 // TODO: DRY
 const resumeSchema = z.object({
   resume: z
     .string()
     .min(1, 'Resume is required')
-    .min(500, 'Resume must be at least 200 characters'),
+    .min(200, 'Resume must be at least 200 characters'),
   education: z.string().optional(),
   certificates: z.string().optional(),
   experience: z.string().optional(),
@@ -26,6 +27,7 @@ const resumeSchema = z.object({
 type ResumeFormValues = z.infer<typeof resumeSchema>
 
 export default function AddResumePage() {
+  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{
     type: 'success' | 'error'
@@ -36,7 +38,6 @@ export default function AddResumePage() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<ResumeFormValues>({
     resolver: zodResolver(resumeSchema),
   })
@@ -52,11 +53,7 @@ export default function AddResumePage() {
       })
 
       await updateResume(formData)
-      setSubmitStatus({
-        type: 'success',
-        message: 'Resume updated successfully!',
-      })
-      reset()
+      router.push('/resume/display')
     } catch (error) {
       console.error('Error updating resume:', error)
       setSubmitStatus({

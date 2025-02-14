@@ -8,7 +8,12 @@ export function middleware(request: NextRequest) {
     request.cookies.get('__Secure-authjs.session-token')?.value
 
   // Define the routes to protect.
-  const protectedRoutes = ['/user-info', '/test']
+  const protectedRoutes = [
+    '/user-info',
+    '/resume/add',
+    '/resume/display',
+    '/resume/edit',
+  ]
 
   // Check if the current request matches any of the protected routes.
   const isProtected = protectedRoutes.some(
