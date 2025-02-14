@@ -24,6 +24,11 @@ async function TopNav() {
           <Link href="/chat" className="hover:underline">
             Chat
           </Link>
+          {session?.user && (
+            <Link href="/resume/display" className="hover:underline">
+              My Resume
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center space-x-4">
