@@ -12,22 +12,20 @@ async function TopNav() {
           <Link href="/" className="hover:underline">
             Home
           </Link>
-          <Link href="/user-info" className="hover:underline">
-            User Info
-          </Link>
-          <Link href="/todos" className="hover:underline">
-            Todos
-          </Link>
           <Link href="/messages" className="hover:underline">
             Messages
           </Link>
-          <Link href="/chat" className="hover:underline">
-            Chat
-          </Link>
+
           {session?.user && (
-            <Link href="/resume/display" className="hover:underline">
-              My Resume
-            </Link>
+            <>
+              <Link href="/resume/display" className="hover:underline">
+                My Resume
+              </Link>
+
+              <Link href="/custom-resume" className="hover:underline">
+                Make Custom Resume
+              </Link>
+            </>
           )}
         </div>
 
@@ -39,10 +37,6 @@ async function TopNav() {
               Sign In
             </Link>
           )}
-          {/* <Link href="/auth/signin" className="hover:underline">
-            Sign In
-          </Link>
-          <SignOutButton /> */}
         </div>
       </nav>
     </header>
