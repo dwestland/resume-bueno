@@ -45,6 +45,9 @@ model User {
   skills            String?
   training          String?
   volunteering      String?
+  // Business fields
+  credits           Int             @default(20)
+  customResumes     UserCustomResume[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -120,4 +123,36 @@ model Message {
   createdAt DateTime @default(now())
 
   @@map("message")
+}
+
+model CustomResume {
+  id                  Int               @id @default(autoincrement())
+  job_description     String?
+  custom_resume       String?
+  cover_letter        String?
+  job_evaluation      String?
+  employer_evaluation String?
+  
+  // Relation fields
+  users              UserCustomResume[]
+  
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  @@map("custom_resume")
+}
+
+model UserCustomResume {
+  userId         String
+  customResumeId Int
+  
+  // Relation fields
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customResume   CustomResume @relation(fields: [customResumeId], references: [id], onDelete: Cascade)
+  
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@id([userId, customResumeId])
+  @@map("user_custom_resume")
 }
