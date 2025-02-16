@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createCustomizedResume } from './actions'
 import { useRouter } from 'next/navigation'
 
-// Validation schema
+// Define custom resume schema using Zod
 const customResumeSchema = z.object({
   job_description: z
     .string()
@@ -15,9 +15,30 @@ const customResumeSchema = z.object({
     .max(10000, 'Job description must not exceed 10,000 characters'),
 })
 
+// Log schema initialization with a red background
+console.log(
+  '%c [CustomResumeSchema Initialized] ',
+  'background: red; color: white',
+  customResumeSchema.shape
+)
+
 type CustomResumeFormValues = z.infer<typeof customResumeSchema>
 
 export default function CustomResumePage() {
+  // Log when the component is rendering with blue background
+  console.log(
+    '%c [CustomResumePage] Component is rendering',
+    'background: blue; color: white'
+  )
+
+  // Log when the component is mounted on the client with green background
+  useEffect(() => {
+    console.log(
+      '%c [CustomResumePage] Component mounted on client',
+      'background: green; color: white'
+    )
+  }, [])
+
   const router = useRouter()
   const [isGenerating, setIsGenerating] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{
@@ -34,6 +55,12 @@ export default function CustomResumePage() {
   })
 
   const onSubmit = async (data: CustomResumeFormValues) => {
+    // Log the form submission call with purple background
+    console.log(
+      '%c [CustomResumePage] onSubmit called with data:',
+      'background: purple; color: white',
+      data
+    )
     setIsGenerating(true)
     setSubmitStatus(null)
 
