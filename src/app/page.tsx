@@ -7,18 +7,19 @@ export default async function Home() {
   const session = await auth()
 
   if (session?.user && session.user.email) {
-    // Fetch the user's resume field
+    // Fetch the user's resume field and credits
     const userRecord = await prisma.user.findUnique({
       where: { email: session.user.email },
-      select: { resume: true },
+      select: {
+        resume: true,
+        credits: true,
+      },
     })
 
     const isResume = userRecord?.resume
 
     return (
       <div className="p-4">
-        <p>Hello {session.user?.name || session.user.email}</p>
-        <p>Credits:</p>
         <h1 className="text-2xl font-bold mb-2">Resume Bueno</h1>
         <h2 className="text-xl font-bold mb-4">
           Resume&nbsp; &nbsp;+&nbsp; &nbsp;Job Description&nbsp; &nbsp;=&nbsp;
