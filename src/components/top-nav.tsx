@@ -25,6 +25,9 @@ async function TopNav() {
               <Link href="/custom-resume" className="hover:underline">
                 Make Custom Resume
               </Link>
+              <Link href="/samples" className="hover:underline">
+                Samples
+              </Link>
             </>
           )}
         </div>
@@ -34,7 +37,7 @@ async function TopNav() {
             <SignOutButton />
           ) : (
             <Link href="/auth/signin" className="hover:underline">
-              Sign In
+              Sign Up / Sign In
             </Link>
           )}
         </div>
