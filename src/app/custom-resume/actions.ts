@@ -8,8 +8,10 @@ import OpenAI from 'openai'
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
   maxRetries: 3,
-  timeout: 30000, // 30 seconds timeout
+  timeout: 30000,
 })
+
+const openaiModel = 'gpt-4o-mini'
 
 // Custom error class for better error handling
 class CustomResumeError extends Error {
@@ -26,21 +28,9 @@ async function generateCustomizedResume(
   // Start time measurement
   const startTime = Date.now()
 
-  // Log the input parameters with distinct styles
-  console.log(
-    '%c [generateCustomizedResume] Original resume received:',
-    'background: blue; color: white',
-    originalResume
-  )
-  console.log(
-    '%c [generateCustomizedResume] Job description received:',
-    'background: green; color: white',
-    jobDescription
-  )
-
   try {
-    const prompt = `Take the following resume and modify it as best you can to make it qualify for the job description. 
-    
+    const prompt = `Take the following resume and modify it as best you can to make it qualify for the job description.
+
     RESUME:
     ${originalResume}
 
@@ -49,15 +39,8 @@ async function generateCustomizedResume(
 
     Please provide only the modified resume content without any additional commentary.`
 
-    // Log the constructed prompt
-    console.log(
-      '%c [generateCustomizedResume] Prompt constructed:',
-      'background: purple; color: white',
-      prompt
-    )
-
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: openaiModel,
       //   model: 'gpt-4o-mi÷ni-realtime-preview',
       messages: [
         {
@@ -73,43 +56,20 @@ async function generateCustomizedResume(
       store: true,
     })
 
-    // Log the OpenAI API response
-    console.log(
-      '%c [generateCustomizedResume] OpenAI completion response:',
-      'background: orange; color: white',
-      completion
-    )
-
     const customizedResume = completion.choices[0]?.message?.content
     if (!customizedResume) {
-      console.log(
-        '%c [generateCustomizedResume] No customized resume generated!',
-        'background: red; color: white'
-      )
       throw new CustomResumeError('Failed to generate customized resume')
     }
-
-    // Log the successfully generated resume
-    console.log(
-      '%c [generateCustomizedResume] Customized resume generated:',
-      'background: teal; color: white',
-      customizedResume
-    )
 
     // Log the time taken to process
     const endTime = Date.now()
     console.log(
-      `%c [generateCustomizedResume] Process took: ${endTime - startTime} ms`,
-      'background: yellow; color: black'
+      `### [generateCustomizedResume] Process took: ${endTime - startTime} ms`
     )
 
     return customizedResume
   } catch (error) {
-    console.error(
-      '%c [generateCustomizedResume] OpenAI API error:',
-      'background: red; color: white',
-      error
-    )
+    console.error('Error generating custom resume:', error)
     if (error instanceof OpenAI.APIError) {
       // Handle specific API errors
       const errorMessage =
@@ -123,27 +83,13 @@ async function generateCustomizedResume(
 }
 
 export async function createCustomizedResume(formData: FormData) {
-  // Log the start of the custom resume creation process
-  console.log(
-    '%c [createCustomizedResume] Starting custom resume creation',
-    'background: navy; color: white'
-  )
-
   const session = await auth()
   if (!session?.user?.email) {
-    console.log(
-      '%c [createCustomizedResume] No authenticated user found',
-      'background: red; color: white'
-    )
     throw new CustomResumeError('Not authenticated')
   }
 
   const jobDescription = formData.get('job_description') as string
   if (!jobDescription) {
-    console.log(
-      '%c [createCustomizedResume] Job description missing from formData',
-      'background: red; color: white'
-    )
     throw new CustomResumeError('Job description is required')
   }
 
@@ -155,20 +101,10 @@ export async function createCustomizedResume(formData: FormData) {
     })
 
     if (!user?.resume) {
-      console.log(
-        '%c [createCustomizedResume] No original resume found for user',
-        'background: red; color: white'
-      )
       throw new CustomResumeError(
         'No resume found. Please create a resume first.'
       )
     }
-
-    console.log(
-      '%c [createCustomizedResume] Original resume found:',
-      'background: blue; color: white',
-      user.resume
-    )
 
     // Generate a customized resume using OpenAI
     const customizedResume = await generateCustomizedResume(
@@ -193,20 +129,9 @@ export async function createCustomizedResume(formData: FormData) {
       },
     })
 
-    console.log(
-      '%c [createCustomizedResume] Custom resume created in database:',
-      'background: teal; color: white',
-      customResume
-    )
-
     return { success: true, data: customResume }
   } catch (error) {
     console.error('Failed to create custom resume:', error)
-    console.error(
-      '%c [createCustomizedResume] Failed to create custom resume:',
-      'background: red; color: white',
-      error
-    )
     throw new CustomResumeError(
       error instanceof CustomResumeError
         ? error.message

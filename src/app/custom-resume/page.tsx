@@ -15,29 +15,11 @@ const customResumeSchema = z.object({
     .max(10000, 'Job description must not exceed 10,000 characters'),
 })
 
-// Log schema initialization with a red background
-console.log(
-  '%c [CustomResumeSchema Initialized] ',
-  'background: red; color: white',
-  customResumeSchema.shape
-)
-
 type CustomResumeFormValues = z.infer<typeof customResumeSchema>
 
 export default function CustomResumePage() {
-  // Log when the component is rendering with blue background
-  console.log(
-    '%c [CustomResumePage] Component is rendering',
-    'background: blue; color: white'
-  )
-
   // Log when the component is mounted on the client with green background
-  useEffect(() => {
-    console.log(
-      '%c [CustomResumePage] Component mounted on client',
-      'background: green; color: white'
-    )
-  }, [])
+  useEffect(() => {}, [])
 
   const router = useRouter()
   const [isGenerating, setIsGenerating] = useState(false)
@@ -55,12 +37,6 @@ export default function CustomResumePage() {
   })
 
   const onSubmit = async (data: CustomResumeFormValues) => {
-    // Log the form submission call with purple background
-    console.log(
-      '%c [CustomResumePage] onSubmit called with data:',
-      'background: purple; color: white',
-      data
-    )
     setIsGenerating(true)
     setSubmitStatus(null)
 
