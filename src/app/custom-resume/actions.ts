@@ -226,19 +226,22 @@ export async function createCustomizedResume(input: CustomResumeInput) {
       )
     }
 
-    // Generate all content in sequence
+    // Generate job evaluation
     const jobEvaluation = await generateJobEvaluation(
       user.resume,
       jobDescription
     )
 
+    // Generate custom resume
     const customResume = await generateCustomizedResume(
       user.resume,
       jobDescription
     )
 
+    // Generate cover letter
     const coverLetter = await generateCoverLetter(customResume, jobDescription)
 
+    // Generate title
     const title = await generateTitle(jobDescription)
 
     // Save all generated content to the database

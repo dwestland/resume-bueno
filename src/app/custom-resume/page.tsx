@@ -44,13 +44,33 @@ export default function CustomResumePage() {
   const onSubmit = async (data: CustomResumeFormValues) => {
     setIsGenerating(true)
     setSubmitStatus(null)
-    setCurrentStep('evaluation')
+
+    const steps: GenerationStep[] = [
+      'evaluation',
+      'resume',
+      'cover_letter',
+      'title',
+      'saving',
+    ]
+    let currentStepIndex = 0
 
     try {
       const formData = new FormData()
       formData.append('job_description', data.job_description.trim())
 
+      // Start with evaluation step
+      setCurrentStep(steps[currentStepIndex])
+
+      // Set up an interval to cycle through steps
+      const stepInterval = setInterval(() => {
+        currentStepIndex = (currentStepIndex + 1) % steps.length
+        setCurrentStep(steps[currentStepIndex])
+      }, 8000) // Change step every 8 seconds
+
       const result = await createCustomizedResume(formData)
+
+      // Clear the interval when the process is complete
+      clearInterval(stepInterval)
 
       if (result.success) {
         setSubmitStatus({
