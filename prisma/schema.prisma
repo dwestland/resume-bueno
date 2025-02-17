@@ -127,6 +127,7 @@ model Message {
 
 model CustomResume {
   id                  Int               @id @default(autoincrement())
+  title               String?
   job_description     String?
   custom_resume       String?
   cover_letter        String?

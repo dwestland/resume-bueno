@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -17,12 +17,17 @@ const customResumeSchema = z.object({
 
 type CustomResumeFormValues = z.infer<typeof customResumeSchema>
 
-export default function CustomResumePage() {
-  // Log when the component is mounted on the client with green background
-  useEffect(() => {}, [])
+type GenerationStep =
+  | 'evaluation'
+  | 'resume'
+  | 'cover_letter'
+  | 'title'
+  | 'saving'
 
+export default function CustomResumePage() {
   const router = useRouter()
   const [isGenerating, setIsGenerating] = useState(false)
+  const [currentStep, setCurrentStep] = useState<GenerationStep | null>(null)
   const [submitStatus, setSubmitStatus] = useState<{
     type: 'success' | 'error'
     message: string
@@ -39,21 +44,27 @@ export default function CustomResumePage() {
   const onSubmit = async (data: CustomResumeFormValues) => {
     setIsGenerating(true)
     setSubmitStatus(null)
+    setCurrentStep('evaluation')
 
     try {
       const formData = new FormData()
-      formData.append('job_description', data.job_description)
+      formData.append('job_description', data.job_description.trim())
 
-      await createCustomizedResume(formData)
-      setSubmitStatus({
-        type: 'success',
-        message: 'Custom resume generated successfully!',
-      })
+      const result = await createCustomizedResume(formData)
 
-      // Redirect to the display page after a brief delay
-      setTimeout(() => {
-        router.push('/resume/display')
-      }, 1500)
+      if (result.success) {
+        setSubmitStatus({
+          type: 'success',
+          message: 'Custom resume package generated successfully!',
+        })
+
+        // Redirect to the display page after a brief delay
+        setTimeout(() => {
+          router.push('/resume/display')
+        }, 1500)
+      } else {
+        throw new Error('Failed to generate custom resume')
+      }
     } catch (error) {
       console.error('Error generating custom resume:', error)
       setSubmitStatus({
@@ -65,18 +76,41 @@ export default function CustomResumePage() {
       })
     } finally {
       setIsGenerating(false)
+      setCurrentStep(null)
+    }
+  }
+
+  const getStepMessage = (step: GenerationStep) => {
+    switch (step) {
+      case 'evaluation':
+        return 'Evaluating job fit and employer quality...'
+      case 'resume':
+        return 'Customizing your resume...'
+      case 'cover_letter':
+        return 'Crafting your cover letter...'
+      case 'title':
+        return 'Generating title...'
+      case 'saving':
+        return 'Saving your custom resume package...'
+      default:
+        return 'Processing...'
     }
   }
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Create Custom Resume</h1>
+      <h1 className="text-3xl font-bold mb-6">Create Custom Resume Package</h1>
 
       <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-        <p className="text-blue-800">
-          This tool will customize your resume to match the job description you
-          provide. Please paste the complete job description below.
+        <p className="text-blue-800 mb-2">
+          This tool will create a complete application package including:
         </p>
+        <ul className="list-disc ml-6 text-blue-800">
+          <li>Job fit evaluation</li>
+          <li>Customized resume</li>
+          <li>Tailored cover letter</li>
+          <li>Professional title</li>
+        </ul>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -134,10 +168,10 @@ export default function CustomResumePage() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Generating Custom Resume...
+                {currentStep ? getStepMessage(currentStep) : 'Generating...'}
               </span>
             ) : (
-              'Generate Custom Resume'
+              'Generate Custom Resume Package'
             )}
           </button>
         </div>
@@ -151,6 +185,57 @@ export default function CustomResumePage() {
             }`}
           >
             {submitStatus.message}
+          </div>
+        )}
+
+        {isGenerating && currentStep && (
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-medium mb-2">Generation Progress:</h3>
+            <ul className="space-y-2">
+              {(
+                [
+                  'evaluation',
+                  'resume',
+                  'cover_letter',
+                  'title',
+                  'saving',
+                ] as const
+              ).map((step) => (
+                <li
+                  key={step}
+                  className={`flex items-center ${
+                    currentStep === step
+                      ? 'text-blue-600 font-medium'
+                      : 'text-gray-500'
+                  }`}
+                >
+                  {currentStep === step ? (
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-4 w-4"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        fill="none"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                  ) : (
+                    <span className="w-7" />
+                  )}
+                  {getStepMessage(step)}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </form>

@@ -21,27 +21,62 @@ class CustomResumeError extends Error {
   }
 }
 
-async function generateCustomizedResume(
-  originalResume: string,
-  jobDescription: string
-) {
-  // Start time measurement
-  const startTime = Date.now()
-
+async function generateJobEvaluation(resume: string, jobDescription: string) {
   try {
-    const prompt = `Take the following resume and modify it as best you can to make it qualify for the job description.
+    const prompt = `Please evaluate the following resume against the job description and provide two separate ratings:
 
     RESUME:
-    ${originalResume}
+    ${resume}
 
     JOB DESCRIPTION:
     ${jobDescription}
 
-    Please provide only the modified resume content without any additional commentary.`
+    Please provide two evaluations:
+    1. Resume Match Score (0-10): Rate how well the resume matches the job requirements with a brief explanation.
+    2. Employer Quality Score (0-10): Evaluate the quality of the employer/position based on the job description with a brief explanation.`
 
     const completion = await openai.chat.completions.create({
       model: openaiModel,
-      //   model: 'gpt-4o-mi÷ni-realtime-preview',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert job market analyst and resume evaluator.',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+    })
+
+    if (!completion.choices[0]?.message?.content) {
+      throw new Error('Failed to generate evaluation')
+    }
+
+    return completion.choices[0].message.content
+  } catch (error) {
+    console.error('Error generating job evaluation:', error)
+    throw new CustomResumeError('Failed to generate job evaluation')
+  }
+}
+
+async function generateCustomizedResume(
+  resume: string,
+  jobDescription: string
+) {
+  try {
+    const prompt = `Create a tailored version of this resume to match the job description perfectly.
+
+    RESUME:
+    ${resume}
+
+    JOB DESCRIPTION:
+    ${jobDescription}
+
+    Please provide only the modified resume content, optimized to match the job requirements.`
+
+    const completion = await openai.chat.completions.create({
+      model: openaiModel,
       messages: [
         {
           role: 'system',
@@ -53,44 +88,129 @@ async function generateCustomizedResume(
           content: prompt,
         },
       ],
-      store: true,
     })
 
-    const customizedResume = completion.choices[0]?.message?.content
-    if (!customizedResume) {
-      throw new CustomResumeError('Failed to generate customized resume')
+    if (!completion.choices[0]?.message?.content) {
+      throw new Error('Failed to generate custom resume')
     }
 
-    // Log the time taken to process
-    const endTime = Date.now()
-    console.log(
-      `### [generateCustomizedResume] Process took: ${endTime - startTime} ms`
-    )
-
-    return customizedResume
+    return completion.choices[0].message.content
   } catch (error) {
     console.error('Error generating custom resume:', error)
-    if (error instanceof OpenAI.APIError) {
-      // Handle specific API errors
-      const errorMessage =
-        error.status === 429
-          ? 'Rate limit exceeded. Please try again later.'
-          : `OpenAI API error: ${error.message}`
-      throw new CustomResumeError(errorMessage)
-    }
-    throw new CustomResumeError('Failed to generate customized resume')
+    throw new CustomResumeError('Failed to generate custom resume')
   }
 }
 
-export async function createCustomizedResume(formData: FormData) {
+async function generateCoverLetter(
+  customResume: string,
+  jobDescription: string
+) {
+  try {
+    const prompt = `Write a compelling cover letter based on this customized resume and job description.
+
+    CUSTOMIZED RESUME:
+    ${customResume}
+
+    JOB DESCRIPTION:
+    ${jobDescription}
+
+    Please write a professional cover letter that highlights the key qualifications and demonstrates enthusiasm for the role.`
+
+    const completion = await openai.chat.completions.create({
+      model: openaiModel,
+      messages: [
+        {
+          role: 'system',
+          content:
+            'You are a professional cover letter writer who creates compelling, personalized cover letters.',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+    })
+
+    if (!completion.choices[0]?.message?.content) {
+      throw new Error('Failed to generate cover letter')
+    }
+
+    return completion.choices[0].message.content
+  } catch (error) {
+    console.error('Error generating cover letter:', error)
+    throw new CustomResumeError('Failed to generate cover letter')
+  }
+}
+
+async function generateTitle(jobDescription: string) {
+  try {
+    const prompt = `Extract the employer's name and job title from this job description and combine them into a concise title.
+
+    JOB DESCRIPTION:
+    ${jobDescription}
+
+    Please provide only the combined title in the format: "[Employer Name] - [Job Title]"`
+
+    const completion = await openai.chat.completions.create({
+      model: openaiModel,
+      messages: [
+        {
+          role: 'system',
+          content:
+            'You are an assistant that creates concise, accurate job titles.',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+    })
+
+    if (!completion.choices[0]?.message?.content) {
+      throw new Error('Failed to generate title')
+    }
+
+    return completion.choices[0].message.content
+  } catch (error) {
+    console.error('Error generating title:', error)
+    throw new CustomResumeError('Failed to generate title')
+  }
+}
+
+export type StepUpdate = {
+  step: 'evaluation' | 'resume' | 'cover_letter' | 'title' | 'saving'
+}
+
+export type CustomResumeInput = FormData | { job_description: string }
+
+export async function createCustomizedResume(input: CustomResumeInput) {
+  let jobDescription: string
+
+  // Handle both FormData and plain object input
+  if (input instanceof FormData) {
+    const formJobDescription = input.get('job_description')
+    if (
+      !formJobDescription ||
+      typeof formJobDescription !== 'string' ||
+      !formJobDescription.trim()
+    ) {
+      throw new CustomResumeError(
+        'Job description is required and must not be empty'
+      )
+    }
+    jobDescription = formJobDescription.trim()
+  } else {
+    if (!input.job_description || !input.job_description.trim()) {
+      throw new CustomResumeError(
+        'Job description is required and must not be empty'
+      )
+    }
+    jobDescription = input.job_description.trim()
+  }
+
   const session = await auth()
   if (!session?.user?.email) {
     throw new CustomResumeError('Not authenticated')
-  }
-
-  const jobDescription = formData.get('job_description') as string
-  if (!jobDescription) {
-    throw new CustomResumeError('Job description is required')
   }
 
   try {
@@ -106,17 +226,29 @@ export async function createCustomizedResume(formData: FormData) {
       )
     }
 
-    // Generate a customized resume using OpenAI
-    const customizedResume = await generateCustomizedResume(
+    // Generate all content in sequence
+    const jobEvaluation = await generateJobEvaluation(
       user.resume,
       jobDescription
     )
 
-    // Save the customized resume to the database
-    const customResume = await prisma.customResume.create({
+    const customResume = await generateCustomizedResume(
+      user.resume,
+      jobDescription
+    )
+
+    const coverLetter = await generateCoverLetter(customResume, jobDescription)
+
+    const title = await generateTitle(jobDescription)
+
+    // Save all generated content to the database
+    const customResumeEntry = await prisma.customResume.create({
       data: {
+        title,
         job_description: jobDescription,
-        custom_resume: customizedResume,
+        job_evaluation: jobEvaluation,
+        custom_resume: customResume,
+        cover_letter: coverLetter,
         users: {
           create: {
             user: {
@@ -129,13 +261,24 @@ export async function createCustomizedResume(formData: FormData) {
       },
     })
 
-    return { success: true, data: customResume }
+    return { success: true, data: customResumeEntry }
   } catch (error) {
     console.error('Failed to create custom resume:', error)
+
+    if (error instanceof OpenAI.APIError) {
+      const errorMessage =
+        error.status === 429
+          ? 'Rate limit exceeded. Please try again later.'
+          : `OpenAI API error: ${error.message}`
+      throw new CustomResumeError(errorMessage)
+    }
+
+    if (error instanceof CustomResumeError) {
+      throw error
+    }
+
     throw new CustomResumeError(
-      error instanceof CustomResumeError
-        ? error.message
-        : 'Failed to create custom resume'
+      'Failed to create custom resume. Please try again.'
     )
   }
 }
