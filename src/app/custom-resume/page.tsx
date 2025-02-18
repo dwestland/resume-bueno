@@ -17,17 +17,9 @@ const customResumeSchema = z.object({
 
 type CustomResumeFormValues = z.infer<typeof customResumeSchema>
 
-type GenerationStep =
-  | 'evaluation'
-  | 'resume'
-  | 'cover_letter'
-  | 'title'
-  | 'saving'
-
 export default function CustomResumePage() {
   const router = useRouter()
   const [isGenerating, setIsGenerating] = useState(false)
-  const [currentStep, setCurrentStep] = useState<GenerationStep | null>(null)
   const [submitStatus, setSubmitStatus] = useState<{
     type: 'success' | 'error'
     message: string
@@ -45,32 +37,11 @@ export default function CustomResumePage() {
     setIsGenerating(true)
     setSubmitStatus(null)
 
-    const steps: GenerationStep[] = [
-      'evaluation',
-      'resume',
-      'cover_letter',
-      'title',
-      'saving',
-    ]
-    let currentStepIndex = 0
-
     try {
       const formData = new FormData()
       formData.append('job_description', data.job_description.trim())
 
-      // Start with evaluation step
-      setCurrentStep(steps[currentStepIndex])
-
-      // Set up an interval to cycle through steps
-      const stepInterval = setInterval(() => {
-        currentStepIndex = (currentStepIndex + 1) % steps.length
-        setCurrentStep(steps[currentStepIndex])
-      }, 8000) // Change step every 8 seconds
-
       const result = await createCustomizedResume(formData)
-
-      // Clear the interval when the process is complete
-      clearInterval(stepInterval)
 
       if (result.success) {
         setSubmitStatus({
@@ -78,7 +49,6 @@ export default function CustomResumePage() {
           message: 'Custom resume package generated successfully!',
         })
 
-        // Redirect to the display page after a brief delay
         setTimeout(() => {
           router.push('/resume/display')
         }, 1500)
@@ -96,24 +66,6 @@ export default function CustomResumePage() {
       })
     } finally {
       setIsGenerating(false)
-      setCurrentStep(null)
-    }
-  }
-
-  const getStepMessage = (step: GenerationStep) => {
-    switch (step) {
-      case 'evaluation':
-        return 'Evaluating job fit and employer quality...'
-      case 'resume':
-        return 'Customizing your resume...'
-      case 'cover_letter':
-        return 'Crafting your cover letter...'
-      case 'title':
-        return 'Generating title...'
-      case 'saving':
-        return 'Saving your custom resume package...'
-      default:
-        return 'Processing...'
     }
   }
 
@@ -188,7 +140,7 @@ export default function CustomResumePage() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                {currentStep ? getStepMessage(currentStep) : 'Generating...'}
+                Generating...
               </span>
             ) : (
               'Generate Custom Resume Package'
@@ -205,57 +157,6 @@ export default function CustomResumePage() {
             }`}
           >
             {submitStatus.message}
-          </div>
-        )}
-
-        {isGenerating && currentStep && (
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium mb-2">Generation Progress:</h3>
-            <ul className="space-y-2">
-              {(
-                [
-                  'evaluation',
-                  'resume',
-                  'cover_letter',
-                  'title',
-                  'saving',
-                ] as const
-              ).map((step) => (
-                <li
-                  key={step}
-                  className={`flex items-center ${
-                    currentStep === step
-                      ? 'text-blue-600 font-medium'
-                      : 'text-gray-500'
-                  }`}
-                >
-                  {currentStep === step ? (
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-4 w-4"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                        fill="none"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
-                  ) : (
-                    <span className="w-7" />
-                  )}
-                  {getStepMessage(step)}
-                </li>
-              ))}
-            </ul>
           </div>
         )}
       </form>

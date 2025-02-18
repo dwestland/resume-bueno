@@ -22,6 +22,9 @@ class CustomResumeError extends Error {
 }
 
 async function generateJobEvaluation(resume: string, jobDescription: string) {
+  const startTime = Date.now()
+  console.log('Starting job evaluation generation...')
+
   try {
     const prompt = `Please evaluate the following resume against the job description and provide two separate ratings:
 
@@ -53,9 +56,16 @@ async function generateJobEvaluation(resume: string, jobDescription: string) {
       throw new Error('Failed to generate evaluation')
     }
 
+    const duration = Date.now() - startTime
+    console.log(`Job evaluation completed in ${duration}ms`)
     return completion.choices[0].message.content
   } catch (error) {
-    console.error('Error generating job evaluation:', error)
+    const duration = Date.now() - startTime
+    console.error(
+      'Error generating job evaluation:',
+      error,
+      `(after ${duration}ms)`
+    )
     throw new CustomResumeError('Failed to generate job evaluation')
   }
 }
@@ -64,6 +74,9 @@ async function generateCustomizedResume(
   resume: string,
   jobDescription: string
 ) {
+  const startTime = Date.now()
+  console.log('Starting resume customization...')
+
   try {
     const prompt = `Create a tailored version of this resume to match the job description perfectly.
 
@@ -94,9 +107,16 @@ async function generateCustomizedResume(
       throw new Error('Failed to generate custom resume')
     }
 
+    const duration = Date.now() - startTime
+    console.log(`Resume customization completed in ${duration}ms`)
     return completion.choices[0].message.content
   } catch (error) {
-    console.error('Error generating custom resume:', error)
+    const duration = Date.now() - startTime
+    console.error(
+      'Error generating custom resume:',
+      error,
+      `(after ${duration}ms)`
+    )
     throw new CustomResumeError('Failed to generate custom resume')
   }
 }
@@ -105,6 +125,9 @@ async function generateCoverLetter(
   customResume: string,
   jobDescription: string
 ) {
+  const startTime = Date.now()
+  console.log('Starting cover letter generation...')
+
   try {
     const prompt = `Write a compelling cover letter based on this customized resume and job description.
 
@@ -135,14 +158,24 @@ async function generateCoverLetter(
       throw new Error('Failed to generate cover letter')
     }
 
+    const duration = Date.now() - startTime
+    console.log(`Cover letter generation completed in ${duration}ms`)
     return completion.choices[0].message.content
   } catch (error) {
-    console.error('Error generating cover letter:', error)
+    const duration = Date.now() - startTime
+    console.error(
+      'Error generating cover letter:',
+      error,
+      `(after ${duration}ms)`
+    )
     throw new CustomResumeError('Failed to generate cover letter')
   }
 }
 
 async function generateTitle(jobDescription: string) {
+  const startTime = Date.now()
+  console.log('Starting title generation...')
+
   try {
     const prompt = `Extract the employer's name and job title from this job description and combine them into a concise title.
 
@@ -170,9 +203,12 @@ async function generateTitle(jobDescription: string) {
       throw new Error('Failed to generate title')
     }
 
+    const duration = Date.now() - startTime
+    console.log(`Title generation completed in ${duration}ms`)
     return completion.choices[0].message.content
   } catch (error) {
-    console.error('Error generating title:', error)
+    const duration = Date.now() - startTime
+    console.error('Error generating title:', error, `(after ${duration}ms)`)
     throw new CustomResumeError('Failed to generate title')
   }
 }
