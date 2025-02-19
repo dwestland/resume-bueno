@@ -219,7 +219,37 @@ export type StepUpdate = {
 
 export type CustomResumeInput = FormData | { job_description: string }
 
-export async function createCustomizedResume(input: CustomResumeInput) {
+export type StepResult = {
+  step: 'evaluation' | 'resume' | 'cover_letter' | 'title'
+  result: string
+}
+
+export async function generateStep(
+  step: 'evaluation' | 'resume' | 'cover_letter' | 'title',
+  jobDescription: string,
+  resume: string,
+  previousResults: Record<string, string> = {}
+) {
+  switch (step) {
+    case 'evaluation':
+      return await generateJobEvaluation(resume, jobDescription)
+    case 'resume':
+      return await generateCustomizedResume(resume, jobDescription)
+    case 'cover_letter':
+      if (!previousResults.resume)
+        throw new Error('Resume required for cover letter')
+      return await generateCoverLetter(previousResults.resume, jobDescription)
+    case 'title':
+      return await generateTitle(jobDescription)
+    default:
+      throw new Error('Invalid step')
+  }
+}
+
+export async function createCustomizedResume(
+  input: CustomResumeInput,
+  step: 'evaluation' | 'resume' | 'cover_letter' | 'title'
+) {
   let jobDescription: string
 
   // Handle both FormData and plain object input
@@ -262,45 +292,58 @@ export async function createCustomizedResume(input: CustomResumeInput) {
       )
     }
 
-    // Generate job evaluation
-    const jobEvaluation = await generateJobEvaluation(
+    // Get the previous results from FormData if they exist
+    const previousResults: Record<string, string> = {}
+    if (input instanceof FormData) {
+      const prevEval = input.get('evaluation')
+      const prevResume = input.get('resume')
+      const prevCover = input.get('cover_letter')
+      if (prevEval && typeof prevEval === 'string')
+        previousResults.evaluation = prevEval
+      if (prevResume && typeof prevResume === 'string')
+        previousResults.resume = prevResume
+      if (prevCover && typeof prevCover === 'string')
+        previousResults.cover_letter = prevCover
+    }
+
+    // Generate the requested step
+    const result = await generateStep(
+      step,
+      jobDescription,
       user.resume,
-      jobDescription
+      previousResults
     )
 
-    // Generate custom resume
-    const customResume = await generateCustomizedResume(
-      user.resume,
-      jobDescription
-    )
+    // If this is the final step (title), save everything to the database
+    if (step === 'title' && input instanceof FormData) {
+      const evaluation = input.get('evaluation') as string
+      const customResume = input.get('resume') as string
+      const coverLetter = input.get('cover_letter') as string
 
-    // Generate cover letter
-    const coverLetter = await generateCoverLetter(customResume, jobDescription)
-
-    // Generate title
-    const title = await generateTitle(jobDescription)
-
-    // Save all generated content to the database
-    const customResumeEntry = await prisma.customResume.create({
-      data: {
-        title,
-        job_description: jobDescription,
-        job_evaluation: jobEvaluation,
-        custom_resume: customResume,
-        cover_letter: coverLetter,
-        users: {
-          create: {
-            user: {
-              connect: {
-                email: session.user.email,
+      await prisma.customResume.create({
+        data: {
+          title: result,
+          job_description: jobDescription,
+          job_evaluation: evaluation,
+          custom_resume: customResume,
+          cover_letter: coverLetter,
+          users: {
+            create: {
+              user: {
+                connect: {
+                  email: session.user.email,
+                },
               },
             },
           },
         },
-      },
-    })
+      })
+    }
 
-    return { success: true, data: customResumeEntry }
+    return {
+      success: true,
+      data: result,
+    }
   } catch (error) {
     console.error('Failed to create custom resume:', error)
 
