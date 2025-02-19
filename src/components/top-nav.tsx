@@ -21,7 +21,9 @@ async function TopNav() {
               <Link href="/resume/display" className="hover:underline">
                 My Resume
               </Link>
-
+              <Link href="/history" className="hover:underline">
+                History
+              </Link>
               <Link href="/custom-resume" className="hover:underline">
                 Make Custom Resume
               </Link>
