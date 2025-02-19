@@ -2,12 +2,14 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 
-export default async function HistoryPage({
-  searchParams,
-}: {
-  searchParams: { id?: string }
-}) {
+type Props = {
+  searchParams: Promise<{ id?: string }>
+}
+
+export default async function HistoryPage({ searchParams }: Props) {
   const session = await auth()
+  const params = await searchParams
+
   if (!session?.user?.email) {
     return (
       <div className="max-w-7xl mx-auto p-6">
@@ -36,11 +38,14 @@ export default async function HistoryPage({
     },
   })
 
-  // Fetch selected resume details if an ID is provided
-  const selectedResume = searchParams.id
-    ? await prisma.customResume.findFirst({
+  // Safely parse and validate the ID parameter
+  let selectedResume = null
+  if (params?.id) {
+    const parsedId = parseInt(params.id)
+    if (!isNaN(parsedId)) {
+      selectedResume = await prisma.customResume.findFirst({
         where: {
-          id: parseInt(searchParams.id),
+          id: parsedId,
           users: {
             some: {
               userId: session.user.id,
@@ -57,7 +62,8 @@ export default async function HistoryPage({
           cover_letter: true,
         },
       })
-    : null
+    }
+  }
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -84,7 +90,7 @@ export default async function HistoryPage({
                     key={resume.id}
                     href={`/history?id=${resume.id}`}
                     className={`block p-4 rounded-lg transition-colors ${
-                      searchParams.id === resume.id.toString()
+                      params?.id === resume.id.toString()
                         ? 'bg-blue-50 border border-blue-200'
                         : 'bg-white text-[#0a0a0a] hover:bg-gray-50'
                     }`}
