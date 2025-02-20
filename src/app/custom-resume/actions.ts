@@ -130,23 +130,26 @@ async function generateCustomizedResume(
 }
 
 async function generateCoverLetter(
-  customResume: string,
-  jobDescription: string
+  resume: string,
+  jobDescription: string,
+  date: string
 ) {
-  console.log('customResume', customResume)
   const startTime = Date.now()
   console.log('Starting cover letter generation...')
 
   try {
-    const prompt = `Write a compelling cover letter based on this customized resume and job description.
+    const prompt = `Write a compelling cover letter based on this resume and job description.
 
-    CUSTOMIZED RESUME:
-    ${customResume}
+    DATE:
+    ${date}
+
+    RESUME:
+    ${resume}
 
     JOB DESCRIPTION:
     ${jobDescription}
 
-    Please write a professional cover letter that highlights the key qualifications and demonstrates enthusiasm for the role.`
+    Create a cover letter for this position in less than 220 words in a professional and terse style and demonstrates enthusiasm for the role. Use the provided DATE in the letter. Write a clear, concise, straightforward, short sentences of less than 80 characters in length. Avoid adverbs, and adverbial phrases. Write for a PPL of 10 and GLTR of 20. Use the provided DATE in the letter.`
 
     const completion = await openai.chat.completions.create({
       model: openaiModel,
@@ -236,18 +239,21 @@ export type StepResult = {
 export async function generateStep(
   step: 'evaluation' | 'resume' | 'cover_letter' | 'title',
   jobDescription: string,
-  resume: string,
-  previousResults: Record<string, string> = {}
+  resume: string
 ) {
+  const today = new Date().toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
   switch (step) {
     case 'evaluation':
       return await generateJobEvaluation(resume, jobDescription)
     case 'resume':
       return await generateCustomizedResume(resume, jobDescription)
     case 'cover_letter':
-      if (!previousResults.resume)
-        throw new Error('Resume required for cover letter')
-      return await generateCoverLetter(previousResults.resume, jobDescription)
+      return await generateCoverLetter(resume, jobDescription, today)
     case 'title':
       return await generateTitle(jobDescription)
     default:
@@ -337,12 +343,7 @@ export async function createCustomizedResume(
     }
 
     // Generate the requested step
-    const result = await generateStep(
-      step,
-      jobDescription,
-      user.resume,
-      previousResults
-    )
+    const result = await generateStep(step, jobDescription, user.resume)
 
     // If this is the final step (title), save everything to the database
     if (step === 'title' && input instanceof FormData) {
