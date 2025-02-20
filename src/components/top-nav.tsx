@@ -1,10 +1,12 @@
+'use client'
+
 import Link from 'next/link'
 import React from 'react'
 import { SignOutButton } from './sign-out-button'
-import { auth } from '@/auth'
+import { useSession } from 'next-auth/react'
 
-async function TopNav() {
-  const session = await auth()
+function TopNav() {
+  const { data: session } = useSession()
   return (
     <header className="container bg-blue-200 p-4">
       <nav className="mx-auto flex items-center justify-between">
