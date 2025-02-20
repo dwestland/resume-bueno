@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createCustomizedResume } from './actions'
+import { useSession } from 'next-auth/react'
 
 // Define custom resume schema using Zod
 const customResumeSchema = z.object({
@@ -26,6 +27,7 @@ type GenerationResult = {
 }
 
 export default function CustomResumePage() {
+  const { data: session } = useSession()
   const [isGenerating, setIsGenerating] = useState(false)
   const [currentStep, setCurrentStep] = useState<GenerationStep | null>(null)
   const [completedSteps, setCompletedSteps] = useState<GenerationStep[]>([])
@@ -86,6 +88,15 @@ export default function CustomResumePage() {
             [step]: result.data,
           }))
           setCompletedSteps((prev) => [...prev, step])
+
+          // If credits were updated, dispatch an event to update the banner
+          if (result.credits !== undefined) {
+            window.postMessage({
+              type: 'CREDIT_UPDATE',
+              credits: result.credits,
+              userEmail: session?.user?.email,
+            })
+          }
         } else {
           throw new Error(`Failed to generate ${step}`)
         }

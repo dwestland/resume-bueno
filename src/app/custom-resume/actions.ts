@@ -246,10 +246,17 @@ export async function generateStep(
   }
 }
 
+export type CustomResumeResponse = {
+  success: boolean
+  data: string
+  credits?: number
+  error?: string
+}
+
 export async function createCustomizedResume(
   input: CustomResumeInput,
   step: 'evaluation' | 'resume' | 'cover_letter' | 'title'
-) {
+): Promise<CustomResumeResponse> {
   let jobDescription: string
 
   // Handle both FormData and plain object input
@@ -280,6 +287,20 @@ export async function createCustomizedResume(
   }
 
   try {
+    // Check if user has enough credits when starting a new resume (evaluation step)
+    if (step === 'evaluation') {
+      const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        select: { credits: true },
+      })
+
+      if (!user || user.credits < 1) {
+        throw new CustomResumeError(
+          'Insufficient credits. Please purchase more credits to continue.'
+        )
+      }
+    }
+
     // Retrieve the user's original resume
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
@@ -320,24 +341,46 @@ export async function createCustomizedResume(
       const customResume = input.get('resume') as string
       const coverLetter = input.get('cover_letter') as string
 
-      await prisma.customResume.create({
-        data: {
-          title: result,
-          job_description: jobDescription,
-          job_evaluation: evaluation,
-          custom_resume: customResume,
-          cover_letter: coverLetter,
-          users: {
-            create: {
-              user: {
-                connect: {
-                  email: session.user.email,
+      // Use a transaction to ensure both operations succeed or fail together
+      const [, updatedUser] = await prisma.$transaction([
+        // Create the custom resume
+        prisma.customResume.create({
+          data: {
+            title: result,
+            job_description: jobDescription,
+            job_evaluation: evaluation,
+            custom_resume: customResume,
+            cover_letter: coverLetter,
+            users: {
+              create: {
+                user: {
+                  connect: {
+                    email: session.user.email,
+                  },
                 },
               },
             },
           },
-        },
-      })
+        }),
+        // Deduct one credit from the user's account
+        prisma.user.update({
+          where: { email: session.user.email },
+          data: {
+            credits: {
+              decrement: 1,
+            },
+          },
+          select: {
+            credits: true,
+          },
+        }),
+      ])
+
+      return {
+        success: true,
+        data: result,
+        credits: updatedUser.credits,
+      }
     }
 
     return {
