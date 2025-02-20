@@ -256,9 +256,18 @@ export default function CustomResumePage() {
 
           {shouldShowStep('resume') && (
             <div className="p-4 bg-white text-[#0a0a0a] rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-2">Customized Resume</h2>
+              <h2 className="text-xl font-semibold mb-2">
+                Resume Improvement Suggestions
+              </h2>
               {results.resume ? (
-                <div className="whitespace-pre-line">{results.resume}</div>
+                <div className="space-y-6">
+                  <p className="text-gray-600 italic mb-4">
+                    Below are specific suggestions to improve your resume for
+                    this position. Each suggestion includes an explanation and
+                    text you can copy directly into your resume.
+                  </p>
+                  <div className="whitespace-pre-line">{results.resume}</div>
+                </div>
               ) : (
                 <div className="flex items-center text-blue-600">
                   <svg
@@ -280,7 +289,7 @@ export default function CustomResumePage() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     />
                   </svg>
-                  Customizing resume...
+                  Analyzing resume and generating suggestions...
                 </div>
               )}
             </div>

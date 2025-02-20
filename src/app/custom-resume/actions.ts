@@ -75,18 +75,26 @@ async function generateCustomizedResume(
   jobDescription: string
 ) {
   const startTime = Date.now()
-  console.log('Starting resume customization...')
+  console.log('Starting resume suggestions generation...')
 
   try {
-    const prompt = `Create a tailored version of this resume to match the job description perfectly.
+    const prompt = `Analyze this resume against the job description. First, extract and list ALL qualifications, technologies, skills, and keywords mentioned in BOTH documents. Pay close attention to all words in the resume no matter how insignificant before comparing it with the job description. Then provide specific suggestions for improvements.
 
     RESUME:
     ${resume}
-
+    
     JOB DESCRIPTION:
     ${jobDescription}
-
-    Please provide only the modified resume content, optimized to match the job requirements.`
+    
+    Then your response should ONLY include:
+    Provide 3-5 high-impact suggestions formatted as:
+    1. WHY: [explanation of how this change improves their chances]
+       SUGGESTION: [exact text to copy/paste]
+    
+    Focus especially on:
+    - Skills mentioned in the job description but understated in the resume
+    - Experience that should be highlighted or rephrased
+    - Using matching terminology from the job description`
 
     const completion = await openai.chat.completions.create({
       model: openaiModel,
@@ -94,7 +102,7 @@ async function generateCustomizedResume(
         {
           role: 'system',
           content:
-            'You are a professional resume writer who specializes in customizing resumes to match job descriptions.',
+            'You are an expert resume writer who helps candidates optimize their resumes for specific job applications.',
         },
         {
           role: 'user',
@@ -104,20 +112,20 @@ async function generateCustomizedResume(
     })
 
     if (!completion.choices[0]?.message?.content) {
-      throw new Error('Failed to generate custom resume')
+      throw new Error('Failed to generate suggestions')
     }
 
     const duration = Date.now() - startTime
-    console.log(`Resume customization completed in ${duration}ms`)
+    console.log(`Resume suggestions completed in ${duration}ms`)
     return completion.choices[0].message.content
   } catch (error) {
     const duration = Date.now() - startTime
     console.error(
-      'Error generating custom resume:',
+      'Error generating resume suggestions:',
       error,
       `(after ${duration}ms)`
     )
-    throw new CustomResumeError('Failed to generate custom resume')
+    throw new CustomResumeError('Failed to generate resume suggestions')
   }
 }
 
@@ -125,6 +133,7 @@ async function generateCoverLetter(
   customResume: string,
   jobDescription: string
 ) {
+  console.log('customResume', customResume)
   const startTime = Date.now()
   console.log('Starting cover letter generation...')
 
