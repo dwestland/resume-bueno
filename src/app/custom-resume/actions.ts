@@ -72,19 +72,61 @@ async function generateJobEvaluation(resume: string, jobDescription: string) {
 
 async function generateCustomizedResume(
   resume: string,
-  jobDescription: string
+  jobDescription: string,
+  additionalFields: {
+    awards: string | null
+    certificates: string | null
+    education: string | null
+    experience: string | null
+    hobbies_interests: string | null
+    projects: string | null
+    skills: string | null
+    training: string | null
+    volunteering: string | null
+  }
 ) {
   const startTime = Date.now()
   console.log('Starting resume suggestions generation...')
 
   try {
-    const prompt = `Analyze this resume against the job description. First, extract and list ALL qualifications, technologies, skills, and keywords mentioned in BOTH documents. Pay close attention to all words in the resume no matter how insignificant before comparing it with the job description. Then provide specific suggestions for improvements.
+    const prompt = `Analyze this resume against the job description. First, extract and list ALL qualifications, technologies, skills, and keywords mentioned in BOTH documents. Pay close attention to all words in the resume no matter how insignificant before comparing it with the job description.
 
     RESUME:
     ${resume}
     
     JOB DESCRIPTION:
     ${jobDescription}
+
+    ADDITIONAL QUALIFICATIONS:
+
+    Education:
+    ${additionalFields.education || 'Not provided'}
+
+    Experience:
+    ${additionalFields.experience || 'Not provided'}
+
+    Skills:
+    ${additionalFields.skills || 'Not provided'}
+
+    Certificates:
+    ${additionalFields.certificates || 'Not provided'}
+
+    Projects:
+    ${additionalFields.projects || 'Not provided'}
+
+    Awards:
+    ${additionalFields.awards || 'Not provided'}
+
+    Training:
+    ${additionalFields.training || 'Not provided'}
+
+    Volunteering:
+    ${additionalFields.volunteering || 'Not provided'}
+
+    Hobbies & Interests:
+    ${additionalFields.hobbies_interests || 'Not provided'}
+
+    Take this RESUME and ADDITIONAL QUALIFICATIONS and match it against the JOB DESCRIPTION. Examine the ADDITIONAL QUALIFICATIONS very carefully to see if anything can be added to the resume to improve it.
     
     Then your response should ONLY include:
     Provide 3-5 high-impact suggestions formatted as:
@@ -247,11 +289,46 @@ export async function generateStep(
     year: 'numeric',
   })
 
+  // Retrieve additional fields from the user's profile
+  const session = await auth()
+  if (!session?.user?.email) {
+    throw new Error('Not authenticated')
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: {
+      awards: true,
+      certificates: true,
+      education: true,
+      experience: true,
+      hobbies_interests: true,
+      projects: true,
+      skills: true,
+      training: true,
+      volunteering: true,
+    },
+  })
+
   switch (step) {
     case 'evaluation':
       return await generateJobEvaluation(resume, jobDescription)
     case 'resume':
-      return await generateCustomizedResume(resume, jobDescription)
+      return await generateCustomizedResume(
+        resume,
+        jobDescription,
+        user || {
+          awards: null,
+          certificates: null,
+          education: null,
+          experience: null,
+          hobbies_interests: null,
+          projects: null,
+          skills: null,
+          training: null,
+          volunteering: null,
+        }
+      )
     case 'cover_letter':
       return await generateCoverLetter(resume, jobDescription, today)
     case 'title':
