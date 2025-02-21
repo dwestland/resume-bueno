@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createCustomizedResume } from './actions'
 import { useSession } from 'next-auth/react'
+import { InsufficientCreditsDialog } from '@/components/InsufficientCreditsDialog'
 
 // Define custom resume schema using Zod
 const customResumeSchema = z.object({
@@ -36,6 +37,8 @@ export default function CustomResumePage() {
     type: 'success' | 'error'
     message: string
   } | null>(null)
+  const [showInsufficientCreditsDialog, setShowInsufficientCreditsDialog] =
+    useState(false)
 
   const {
     register,
@@ -63,10 +66,8 @@ export default function CustomResumePage() {
 
       // Process each step sequentially
       for (const step of steps) {
-        // Show the current step is starting
         setCurrentStep(step)
 
-        // Create FormData with previous results
         const formData = new FormData()
         formData.append('job_description', data.job_description.trim())
 
@@ -75,30 +76,32 @@ export default function CustomResumePage() {
           formData.append(key, value)
         })
 
-        // Generate this step
         const result = await createCustomizedResume(formData, step)
 
-        if (result.success) {
-          // Store the result
-          allResults[step] = result.data
-
-          // Update the UI
-          setResults((prev) => ({
-            ...prev,
-            [step]: result.data,
-          }))
-          setCompletedSteps((prev) => [...prev, step])
-
-          // If credits were updated, dispatch an event to update the banner
-          if (result.credits !== undefined) {
-            window.postMessage({
-              type: 'CREDIT_UPDATE',
-              credits: result.credits,
-              userEmail: session?.user?.email,
-            })
+        if (!result.success) {
+          if (result.errorType === 'INSUFFICIENT_CREDITS') {
+            setShowInsufficientCreditsDialog(true)
           }
-        } else {
-          throw new Error(`Failed to generate ${step}`)
+          setSubmitStatus({
+            type: 'error',
+            message: result.error || 'Failed to generate custom resume',
+          })
+          return
+        }
+
+        allResults[step] = result.data
+        setResults((prev) => ({
+          ...prev,
+          [step]: result.data,
+        }))
+        setCompletedSteps((prev) => [...prev, step])
+
+        if (result.credits !== undefined) {
+          window.postMessage({
+            type: 'CREDIT_UPDATE',
+            credits: result.credits,
+            userEmail: session?.user?.email,
+          })
         }
       }
 
@@ -131,6 +134,11 @@ export default function CustomResumePage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
+      <InsufficientCreditsDialog
+        open={showInsufficientCreditsDialog}
+        onOpenChange={setShowInsufficientCreditsDialog}
+      />
+
       <h1 className="text-3xl font-bold mb-6">Create Custom Resume Package</h1>
 
       <div className="mb-6 p-4 bg-blue-50 rounded-lg">

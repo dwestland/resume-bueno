@@ -310,31 +310,42 @@ export async function generateStep(
     },
   })
 
-  switch (step) {
-    case 'evaluation':
-      return await generateJobEvaluation(resume, jobDescription)
-    case 'resume':
-      return await generateCustomizedResume(
-        resume,
-        jobDescription,
-        user || {
-          awards: null,
-          certificates: null,
-          education: null,
-          experience: null,
-          hobbies_interests: null,
-          projects: null,
-          skills: null,
-          training: null,
-          volunteering: null,
-        }
+  try {
+    switch (step) {
+      case 'evaluation':
+        return await generateJobEvaluation(resume, jobDescription)
+      case 'resume':
+        return await generateCustomizedResume(
+          resume,
+          jobDescription,
+          user || {
+            awards: null,
+            certificates: null,
+            education: null,
+            experience: null,
+            hobbies_interests: null,
+            projects: null,
+            skills: null,
+            training: null,
+            volunteering: null,
+          }
+        )
+      case 'cover_letter':
+        return await generateCoverLetter(resume, jobDescription, today)
+      case 'title':
+        return await generateTitle(jobDescription)
+      default:
+        throw new Error('Invalid step')
+    }
+  } catch (error) {
+    if (error instanceof OpenAI.APIError) {
+      throw new Error(
+        error.status === 429
+          ? 'Rate limit exceeded. Please try again later.'
+          : `OpenAI API error: ${error.message}`
       )
-    case 'cover_letter':
-      return await generateCoverLetter(resume, jobDescription, today)
-    case 'title':
-      return await generateTitle(jobDescription)
-    default:
-      throw new Error('Invalid step')
+    }
+    throw error
   }
 }
 
@@ -343,6 +354,7 @@ export type CustomResumeResponse = {
   data: string
   credits?: number
   error?: string
+  errorType?: 'INSUFFICIENT_CREDITS' | 'OTHER'
 }
 
 export async function createCustomizedResume(
@@ -359,23 +371,31 @@ export async function createCustomizedResume(
       typeof formJobDescription !== 'string' ||
       !formJobDescription.trim()
     ) {
-      throw new CustomResumeError(
-        'Job description is required and must not be empty'
-      )
+      return {
+        success: false,
+        data: '',
+        error: 'Job description is required and must not be empty',
+      }
     }
     jobDescription = formJobDescription.trim()
   } else {
     if (!input.job_description || !input.job_description.trim()) {
-      throw new CustomResumeError(
-        'Job description is required and must not be empty'
-      )
+      return {
+        success: false,
+        data: '',
+        error: 'Job description is required and must not be empty',
+      }
     }
     jobDescription = input.job_description.trim()
   }
 
   const session = await auth()
   if (!session?.user?.email) {
-    throw new CustomResumeError('Not authenticated')
+    return {
+      success: false,
+      data: '',
+      error: 'Not authenticated',
+    }
   }
 
   try {
@@ -387,9 +407,13 @@ export async function createCustomizedResume(
       })
 
       if (!user || user.credits < 1) {
-        throw new CustomResumeError(
-          'Insufficient credits. Please purchase more credits to continue.'
-        )
+        return {
+          success: false,
+          data: '',
+          error:
+            'Insufficient credits. Please purchase more credits to continue.',
+          errorType: 'INSUFFICIENT_CREDITS',
+        }
       }
     }
 
@@ -400,9 +424,11 @@ export async function createCustomizedResume(
     })
 
     if (!user?.resume) {
-      throw new CustomResumeError(
-        'No resume found. Please create a resume first.'
-      )
+      return {
+        success: false,
+        data: '',
+        error: 'No resume found. Please create a resume first.',
+      }
     }
 
     // Get the previous results from FormData if they exist
@@ -420,7 +446,17 @@ export async function createCustomizedResume(
     }
 
     // Generate the requested step
-    const result = await generateStep(step, jobDescription, user.resume)
+    let result: string
+    try {
+      result = await generateStep(step, jobDescription, user.resume)
+    } catch (error) {
+      return {
+        success: false,
+        data: '',
+        error:
+          error instanceof Error ? error.message : 'Failed to generate content',
+      }
+    }
 
     // If this is the final step (title), save everything to the database
     if (step === 'title' && input instanceof FormData) {
@@ -428,45 +464,53 @@ export async function createCustomizedResume(
       const customResume = input.get('resume') as string
       const coverLetter = input.get('cover_letter') as string
 
-      // Use a transaction to ensure both operations succeed or fail together
-      const [, updatedUser] = await prisma.$transaction([
-        // Create the custom resume
-        prisma.customResume.create({
-          data: {
-            title: result,
-            job_description: jobDescription,
-            job_evaluation: evaluation,
-            custom_resume: customResume,
-            cover_letter: coverLetter,
-            users: {
-              create: {
-                user: {
-                  connect: {
-                    email: session.user.email,
+      try {
+        // Use a transaction to ensure both operations succeed or fail together
+        const [, updatedUser] = await prisma.$transaction([
+          prisma.customResume.create({
+            data: {
+              title: result,
+              job_description: jobDescription,
+              job_evaluation: evaluation,
+              custom_resume: customResume,
+              cover_letter: coverLetter,
+              users: {
+                create: {
+                  user: {
+                    connect: {
+                      email: session.user.email,
+                    },
                   },
                 },
               },
             },
-          },
-        }),
-        // Deduct one credit from the user's account
-        prisma.user.update({
-          where: { email: session.user.email },
-          data: {
-            credits: {
-              decrement: 1,
+          }),
+          prisma.user.update({
+            where: { email: session.user.email },
+            data: {
+              credits: {
+                decrement: 1,
+              },
             },
-          },
-          select: {
-            credits: true,
-          },
-        }),
-      ])
+            select: {
+              credits: true,
+            },
+          }),
+        ])
 
-      return {
-        success: true,
-        data: result,
-        credits: updatedUser.credits,
+        return {
+          success: true,
+          data: result,
+          credits: updatedUser.credits,
+        }
+      } catch (error) {
+        return {
+          success: false,
+          data: '',
+          error: `Failed to save custom resume: ${
+            error instanceof Error ? error.message : 'Unknown error'
+          }`,
+        }
       }
     }
 
@@ -476,21 +520,13 @@ export async function createCustomizedResume(
     }
   } catch (error) {
     console.error('Failed to create custom resume:', error)
-
-    if (error instanceof OpenAI.APIError) {
-      const errorMessage =
-        error.status === 429
-          ? 'Rate limit exceeded. Please try again later.'
-          : `OpenAI API error: ${error.message}`
-      throw new CustomResumeError(errorMessage)
+    return {
+      success: false,
+      data: '',
+      error:
+        error instanceof Error
+          ? error.message
+          : 'Failed to create custom resume',
     }
-
-    if (error instanceof CustomResumeError) {
-      throw error
-    }
-
-    throw new CustomResumeError(
-      'Failed to create custom resume. Please try again.'
-    )
   }
 }
