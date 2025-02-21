@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import React from 'react'
-import { SignOutButton } from './sign-out-button'
 import { useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 
 function TopNav() {
   const { data: session } = useSession()
@@ -38,7 +38,12 @@ function TopNav() {
 
         <div className="flex items-center space-x-4">
           {session?.user ? (
-            <SignOutButton />
+            <button
+              onClick={() => signOut({ callbackUrl: '/' })}
+              className=" text-blue-600 hover:text-blue-800 transition-colors;"
+            >
+              Sign Out
+            </button>
           ) : (
             <Link href="/auth/signin" className="hover:underline">
               Sign Up / Sign In
