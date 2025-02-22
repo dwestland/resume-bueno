@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { createCustomizedResume } from './actions'
 import { useSession } from 'next-auth/react'
 import { InsufficientCreditsDialog } from '@/components/InsufficientCreditsDialog'
-
+import { Button } from '@/components/ui/button'
 // Define custom resume schema using Zod
 const customResumeSchema = z.object({
   job_description: z
@@ -139,7 +139,7 @@ export default function CustomResumePage() {
         onOpenChange={setShowInsufficientCreditsDialog}
       />
 
-      <h1 className="text-3xl font-bold mb-6">Create Custom Resume Package</h1>
+      <h1>Create Custom Resume Package</h1>
 
       <div className="mb-6 p-4 bg-blue-50 rounded-lg">
         <p className="text-blue-800 mb-2">
@@ -181,11 +181,7 @@ export default function CustomResumePage() {
         </div>
 
         <div className="pt-4">
-          <button
-            type="submit"
-            disabled={isGenerating}
-            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
+          <Button type="submit" disabled={isGenerating}>
             {isGenerating ? (
               <span className="flex items-center justify-center">
                 <svg
@@ -213,7 +209,7 @@ export default function CustomResumePage() {
             ) : (
               'Generate Custom Resume Package'
             )}
-          </button>
+          </Button>
         </div>
 
         {submitStatus && (

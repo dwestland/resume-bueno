@@ -15,10 +15,7 @@ export default function ClientHome() {
     return (
       <div className="p-4">
         <h1>Resume Bueno</h1>
-        <h2>
-          Resume&nbsp; &nbsp;+&nbsp; &nbsp;Job Description&nbsp; &nbsp;=&nbsp;
-          &nbsp;Resume Bueno
-        </h2>
+        <h2>Resume&nbsp;+&nbsp;Job Description&nbsp;=&nbsp;Resume Bueno</h2>
         <Button asChild>
           <Link href="/custom-resume">Make Custom Resume</Link>
         </Button>
@@ -28,16 +25,8 @@ export default function ClientHome() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-2">Resume Bueno</h1>
-      <h2 className="text-xl font-bold mb-4">
-        Resume&nbsp; &nbsp;+&nbsp; &nbsp;Job Description&nbsp; &nbsp;=&nbsp;
-        &nbsp;Resume Bueno
-      </h2>
       <h1>Resume Bueno</h1>
-      <h2>
-        Resume&nbsp; &nbsp;+&nbsp; &nbsp;Job Description&nbsp; &nbsp;=&nbsp;
-        &nbsp;Resume Bueno
-      </h2>
+      <h2>Resume&nbsp;+&nbsp;Job Description&nbsp;=&nbsp;Resume Bueno</h2>
       <Button>
         <Link
           href="/resume/add"

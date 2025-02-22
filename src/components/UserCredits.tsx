@@ -33,7 +33,7 @@ export function UserCredits({ initialCredits, userEmail }: Props) {
 
   return (
     <p>
-      Credits: <span>{credits}</span>
+      Credits: <span className="text-2xl">{credits}</span>
     </p>
   )
 }

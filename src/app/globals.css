@@ -3,11 +3,9 @@
 @tailwind utilities;
 
 body {
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
-  /* font-family: Arial, Helvetica, sans-serif; */
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 @layer base {
@@ -67,39 +65,36 @@ body {
   }
 }
 
+h1 {
+  @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
+  font-family: var(--font-oswald);
+}
+
+h2 {
+  @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
+  font-family: var(--font-oswald);
+}
+
+h3 {
+  @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+  font-family: var(--font-oswald);
+}
+
+/* ///////////////////////////////////////////////////////////////// */
+
 /* TODO: remove after initial development */
 div {
   outline: 1px solid orange;
+}
+
+header {
+  outline: 1px solid red;
 }
 
 main {
   outline: 1px solid blue;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-/* TODO: remove after initial development */
-
-main,
-nav {
-  @apply max-w-6xl mx-auto my-12;
-}
-
-p {
-  @apply mt-2;
-}
-
-h1 {
-  @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
-}
-
-h2 {
-  @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
+footer {
+  outline: 1px solid green;
 }

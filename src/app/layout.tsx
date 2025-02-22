@@ -1,17 +1,14 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Oswald } from 'next/font/google'
 import './globals.css'
-import TopNav from '@/components/top-nav'
 import { UserBanner } from '@/components/UserBanner'
 import { SessionProvider } from '@/components/SessionProvider'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+// Import Google Fonts
+const oswald = Oswald({
+  variable: '--font-oswald',
   subsets: ['latin'],
 })
 
@@ -29,14 +26,15 @@ export default function RootLayout({
   return (
     <html lang="en" spellCheck="true">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${oswald.variable} antialiased flex flex-col min-h-screen`}
       >
         <SessionProvider>
-          <TopNav />
-          <main className="container">
+          <Header />
+          <main className="container flex-grow">
             <UserBanner />
             {children}
           </main>
+          <Footer />
         </SessionProvider>
       </body>
     </html>
