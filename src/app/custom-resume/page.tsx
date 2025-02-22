@@ -8,6 +8,8 @@ import { createCustomizedResume } from './actions'
 import { useSession } from 'next-auth/react'
 import { InsufficientCreditsDialog } from '@/components/InsufficientCreditsDialog'
 import { Button } from '@/components/ui/button'
+import ReactMarkdown from 'react-markdown'
+
 // Define custom resume schema using Zod
 const customResumeSchema = z.object({
   job_description: z
@@ -133,7 +135,7 @@ export default function CustomResumePage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl p-6 mx-auto">
       <InsufficientCreditsDialog
         open={showInsufficientCreditsDialog}
         onOpenChange={setShowInsufficientCreditsDialog}
@@ -141,11 +143,11 @@ export default function CustomResumePage() {
 
       <h1>Create Custom Resume Package</h1>
 
-      <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-        <p className="text-blue-800 mb-2">
+      <div className="p-4 mb-6 rounded-lg bg-blue-50">
+        <p className="mb-2 text-blue-800">
           This tool will create a complete application package including:
         </p>
-        <ul className="list-disc ml-6 text-blue-800">
+        <ul className="ml-6 text-blue-800 list-disc">
           <li>Job fit evaluation</li>
           <li>Customized resume</li>
           <li>Tailored cover letter</li>
@@ -160,7 +162,7 @@ export default function CustomResumePage() {
             className="block text-sm font-medium"
           >
             Job Description
-            <span className="text-red-500 ml-1">*</span>
+            <span className="ml-1 text-red-500">*</span>
           </label>
           <textarea
             id="job_description"
@@ -174,7 +176,7 @@ export default function CustomResumePage() {
             }`}
           />
           {errors.job_description && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className="mt-1 text-sm text-red-500">
               {errors.job_description.message}
             </p>
           )}
@@ -185,7 +187,7 @@ export default function CustomResumePage() {
             {isGenerating ? (
               <span className="flex items-center justify-center">
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -228,13 +230,15 @@ export default function CustomResumePage() {
         <div className="mt-8 space-y-6">
           {shouldShowStep('evaluation') && (
             <div className="p-4 bg-white text-[#0a0a0a] rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-2">Evaluation</h2>
+              <h2 className="mb-2 text-xl font-semibold">Evaluation</h2>
               {results.evaluation ? (
-                <div className="whitespace-pre-line">{results.evaluation}</div>
+                <div className="prose prose-blue max-w-none">
+                  <ReactMarkdown>{results.evaluation}</ReactMarkdown>
+                </div>
               ) : (
                 <div className="flex items-center text-blue-600">
                   <svg
-                    className="animate-spin h-5 w-5 mr-2"
+                    className="w-5 h-5 mr-2 animate-spin"
                     viewBox="0 0 24 24"
                   >
                     <circle
@@ -260,22 +264,24 @@ export default function CustomResumePage() {
 
           {shouldShowStep('resume') && (
             <div className="p-4 bg-white text-[#0a0a0a] rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-2">
+              <h2 className="mb-2 text-xl font-semibold">
                 Resume Improvement Suggestions
               </h2>
               {results.resume ? (
                 <div className="space-y-6">
-                  <p className="text-gray-600 italic mb-4">
+                  <p className="mb-4 italic text-gray-600">
                     Below are specific suggestions to improve your resume for
                     this position. Each suggestion includes an explanation and
                     text you can copy directly into your resume.
                   </p>
-                  <div className="whitespace-pre-line">{results.resume}</div>
+                  <div className="prose prose-blue max-w-none">
+                    <ReactMarkdown>{results.resume}</ReactMarkdown>
+                  </div>
                 </div>
               ) : (
                 <div className="flex items-center text-blue-600">
                   <svg
-                    className="animate-spin h-5 w-5 mr-2"
+                    className="w-5 h-5 mr-2 animate-spin"
                     viewBox="0 0 24 24"
                   >
                     <circle
@@ -301,15 +307,15 @@ export default function CustomResumePage() {
 
           {shouldShowStep('cover_letter') && (
             <div className="p-4 bg-white text-[#0a0a0a] rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-2">Cover Letter</h2>
+              <h2 className="mb-2 text-xl font-semibold">Cover Letter</h2>
               {results.cover_letter ? (
-                <div className="whitespace-pre-line">
-                  {results.cover_letter}
+                <div className="prose prose-blue max-w-none">
+                  <ReactMarkdown>{results.cover_letter}</ReactMarkdown>
                 </div>
               ) : (
                 <div className="flex items-center text-blue-600">
                   <svg
-                    className="animate-spin h-5 w-5 mr-2"
+                    className="w-5 h-5 mr-2 animate-spin"
                     viewBox="0 0 24 24"
                   >
                     <circle
@@ -335,13 +341,15 @@ export default function CustomResumePage() {
 
           {shouldShowStep('title') && (
             <div className="p-4 bg-white text-[#0a0a0a] rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-2">Title</h2>
+              <h2 className="mb-2 text-xl font-semibold">Title</h2>
               {results.title ? (
-                <div className="whitespace-pre-line">{results.title}</div>
+                <div className="prose prose-blue max-w-none">
+                  <ReactMarkdown>{results.title}</ReactMarkdown>
+                </div>
               ) : (
                 <div className="flex items-center text-blue-600">
                   <svg
-                    className="animate-spin h-5 w-5 mr-2"
+                    className="w-5 h-5 mr-2 animate-spin"
                     viewBox="0 0 24 24"
                   >
                     <circle
