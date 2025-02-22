@@ -78,12 +78,15 @@ export default function Header() {
 
       {isMobileMenuOpen && (
         <div className="md:hidden mt-4 space-y-2">
-          <Link href="/" className="block font-semibold hover:underline">
+          <Link
+            href="/"
+            className="block font-semibold text-xl leading-loose hover:underline"
+          >
             Home
           </Link>
           <Link
             href="/messages"
-            className="block font-semibold hover:underline"
+            className="block font-semibold text-xl leading-loose hover:underline"
           >
             Messages
           </Link>
@@ -92,25 +95,25 @@ export default function Header() {
             <>
               <Link
                 href="/resume/display"
-                className="block font-semibold hover:underline"
+                className="block font-semibold text-xl leading-loose hover:underline"
               >
                 My Resume
               </Link>
               <Link
                 href="/history"
-                className="block font-semibold hover:underline"
+                className="block font-semibold text-xl leading-loose hover:underline"
               >
                 History
               </Link>
               <Link
                 href="/custom-resume"
-                className="block font-semibold hover:underline"
+                className="block font-semibold text-xl leading-loose hover:underline"
               >
                 Make Custom Resume
               </Link>
               <Link
                 href="/samples"
-                className="block font-semibold hover:underline"
+                className="block font-semibold text-xl leading-loose hover:underline"
               >
                 Samples
               </Link>
@@ -120,14 +123,14 @@ export default function Header() {
           {session?.user ? (
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
-              className="block text-gray-100 font-semibold hover:underline"
+              className="block text-gray-100 font-semibold text-xl leading-loose hover:underline"
             >
               Sign Out
             </button>
           ) : (
             <Link
               href="/auth/signin"
-              className="block font-semibold hover:underline"
+              className="block font-semibold text-xl leading-loose hover:underline"
             >
               Sign Up / Sign In
             </Link>
