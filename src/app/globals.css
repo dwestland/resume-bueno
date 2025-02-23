@@ -71,13 +71,17 @@ h1 {
 }
 
 h2 {
-  @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
+  @apply scroll-m-20 text-3xl font-semibold tracking-tight;
   font-family: var(--font-oswald);
 }
 
 h3 {
   @apply scroll-m-20 text-2xl font-semibold tracking-tight;
   font-family: var(--font-oswald);
+}
+
+p {
+  @apply text-xl;
 }
 
 /* ///////////////////////////////////////////////////////////////// */

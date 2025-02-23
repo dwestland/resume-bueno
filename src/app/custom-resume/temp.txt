@@ -1,0 +1,30 @@
+Mid-Level Angular Developer
+DataViz Analytics Solutions
+
+About Us
+DataViz Analytics Solutions is a fast-growing data visualization and analytics company specializing in business intelligence tools for the healthcare and biotech industries. Founded in 2018, we've grown from a startup to serving over 75 healthcare organizations across North America. Our flagship product, HealthMetrics Dashboard™, helps healthcare providers visualize and analyze patient data to improve care outcomes. With our recent Series B funding of $40M, we're expanding our product team to enhance our visualization capabilities.
+
+Position Overview
+We're looking for a Mid-Level Angular Developer with Python experience to join our Frontend Platform team in Austin, Texas. You'll work on our core dashboard products, creating intuitive data visualization interfaces while collaborating with our backend team on data processing pipelines. This role offers a unique opportunity to work with both frontend and data processing technologies.
+
+Key Responsibilities
+Develop and maintain responsive web applications using Angular
+Create reusable UI components and data visualization elements
+Write Python scripts for data transformation and preprocessing
+Implement RESTful API integrations
+Collaborate with UX designers to implement user interface improvements
+Write unit and integration tests for frontend applications
+Participate in code reviews and technical planning sessions
+Help maintain our component library and documentation
+Support junior developers through mentoring and pair programming
+
+Required Qualifications
+3+ years of professional web development experience
+2+ years of Angular experience (Angular 12+)
+1+ years of Python experience
+Strong expertise in TypeScript and RxJS
+Experience with data visualization libraries (D3.js, Chart.js, or similar)
+Proficiency in HTML5, CSS3, and responsive design
+Experience with REST APIs and HTTP protocols
+Understanding of Git version control
+Bachelor's degree in Computer Science or related field (or equivalent experience)

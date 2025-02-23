@@ -16,8 +16,10 @@ export async function UserBanner() {
 
   return (
     <div className="px-4 py-0">
-      <div className="mx-auto flex justify-between items-center">
-        <p>Hello {session.user?.name || session.user.email}</p>
+      <div className="flex items-center justify-between mx-auto">
+        <p className="text-base">
+          Hello {session.user?.name || session.user.email}
+        </p>
         <UserCredits
           initialCredits={userRecord?.credits ?? 0}
           userEmail={session.user.email}
