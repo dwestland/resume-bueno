@@ -32,7 +32,7 @@ export default function Header() {
           <Link href="/" className="font-semibold hover:underline">
             Home
           </Link>
-          <Link href="/" className="font-semibold hover:underline">
+          <Link href="/#pricing" className="font-semibold hover:underline">
             Pricing
           </Link>
 

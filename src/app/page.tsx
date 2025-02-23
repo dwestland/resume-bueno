@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 export default function ClientHome() {
   const { data: session, status } = useSession()
@@ -15,34 +16,48 @@ export default function ClientHome() {
 
   return (
     <div className="p-4">
-      {/* Hero Section */}
+      {/* Main Container */}
       <div className="min-h-[calc(100vh-2rem)] flex flex-col">
-        <div className="mb-auto">
-          <p
-            className="text-2xl font-semibold tracking-tight text-violet-800"
-            style={{
-              fontFamily: 'var(--font-oswald)',
-              marginBottom: '-7px',
-            }}
-          >
-            BETA
-          </p>
-          <h1>Resume Bueno</h1>
-          <h2>Resume&nbsp;+&nbsp;Job Description&nbsp;=&nbsp;Resume Bueno</h2>
+        {/* Hero Section - Takes up available space */}
+        <div id="hero-section" className="flex flex-col flex-1 md:flex-row">
+          <div id="hero-text" className="w-full p-4 md:w-1/2">
+            <p
+              className="text-2xl font-semibold tracking-tight text-violet-800"
+              style={{
+                fontFamily: 'var(--font-oswald)',
+                marginBottom: '-7px',
+              }}
+            >
+              BETA
+            </p>
+            <h1 className="text-6xl">Resume Bueno</h1>
+            <h2>Resume&nbsp;+&nbsp;Job Description&nbsp;=&nbsp;Resume Bueno</h2>
+          </div>
+
+          <div id="hero-image" className="relative w-full md:w-1/2">
+            <Image
+              src="/images/online-cv.svg"
+              alt="Online CV"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-6 mb-auto">
+        {/* Button and Text Section - Centered vertically */}
+        <div className="flex flex-col items-center justify-center flex-1">
           {isLoggedIn ? (
-            <Button asChild>
+            <Button size="lg" className="text-xl">
               <Link href="/custom-resume">Make Custom Resume</Link>
             </Button>
           ) : (
-            <Button>
-              <Link href="/checkout">Get Started</Link>
+            <Button size="lg" className="text-xl">
+              <Link href="/checkout">Get Started for FREE</Link>
             </Button>
           )}
 
-          <div className="max-w-2xl text-center">
+          <div className="max-w-2xl mt-6 text-center">
             <h2 className="mb-4">Land More Interviews, Effortlessly</h2>
             <p>
               Upload your resume, add a job description, and let Resume Bueno do
@@ -54,7 +69,7 @@ export default function ClientHome() {
       </div>
 
       {/* Pricing Section */}
-      <div className="mt-24 mb-16">
+      <div id="pricing" className="mt-24 mb-16">
         <h2 className="mb-4 text-4xl font-bold text-center">
           Choose Your Pricing Plan
         </h2>
