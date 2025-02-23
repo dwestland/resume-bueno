@@ -9,10 +9,12 @@ export function middleware(request: NextRequest) {
 
   // Define the routes to protect.
   const protectedRoutes = [
-    '/user-info',
+    '/custom-resume',
+    '/history',
     '/resume/add',
     '/resume/display',
     '/resume/edit',
+    '/settings',
   ]
 
   // Check if the current request matches any of the protected routes.

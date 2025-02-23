@@ -59,7 +59,7 @@ export default function ClientHome() {
 
           <div className="max-w-2xl mt-6 text-center">
             <h2 className="mb-4">Land More Interviews, Effortlessly</h2>
-            <p>
+            <p className="text-left">
               Upload your resume, add a job description, and let Resume Bueno do
               the rest. Get a match score, targeted resume improvements, and a
               polished cover letter, instantly.
