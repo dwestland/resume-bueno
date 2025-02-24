@@ -30,13 +30,19 @@ export default function ClientHome() {
             >
               BETA
             </p>
-            <h1 className="text-6xl">Resume Bueno</h1>
-            <h2>Resume&nbsp;+&nbsp;Job Description&nbsp;=&nbsp;Resume Bueno</h2>
+            <h1 className="text-8xl leading-[5.5rem]">
+              Resume
+              <br />
+              Bueno
+            </h1>
+            <h2 className="mt-2 text-4xl">
+              Resume&nbsp;+&nbsp;Job Description&nbsp;=&nbsp;Resume Bueno
+            </h2>
           </div>
 
           <div id="hero-image" className="relative w-full md:w-1/2">
             <Image
-              src="/images/online-cv.svg"
+              src="/images/at-work.svg"
               alt="Online CV"
               fill
               className="object-contain"
@@ -81,8 +87,8 @@ export default function ClientHome() {
         <div className="grid max-w-4xl grid-cols-1 gap-8 mx-auto md:grid-cols-2">
           {/* Free Plan */}
           <div className="relative p-8 bg-white border border-gray-100 shadow-lg h-[600px] rounded-3xl">
-            <h3 className="mb-2 text-4xl font-bold text-center">Basic</h3>
-            <div className="flex items-center justify-center gap-1 mb-6">
+            <h3 className="mt-4 mb-2 text-4xl font-bold text-center">Basic</h3>
+            <div className="flex items-center justify-center gap-1 mb-6 mt-14">
               <span className="text-5xl font-bold">FREE</span>
             </div>
 
@@ -152,8 +158,10 @@ export default function ClientHome() {
               Popular
             </div>
 
-            <h3 className="mb-2 text-4xl font-bold text-center">Standard</h3>
-            <div className="flex items-center justify-center gap-1 mb-1">
+            <h3 className="mt-10 mb-2 text-4xl font-bold text-center">
+              Standard
+            </h3>
+            <div className="flex items-center justify-center gap-1 mb-1 mt-14">
               <span className="text-5xl font-bold">$9.95</span>
               <span className="">/month</span>
             </div>
@@ -237,6 +245,11 @@ export default function ClientHome() {
             </Button>
           </div>
         </div>
+        <p>
+          Use 1 credit: Get expert job and resume analysis + resume
+          recommendations + cover letter OR a perfectly matched resume. Your
+          choice.
+        </p>
       </div>
     </div>
   )
