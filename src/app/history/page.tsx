@@ -1,6 +1,7 @@
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
 
 type Props = {
   searchParams: Promise<{ id?: string }>
@@ -137,34 +138,46 @@ export default async function HistoryPage({ searchParams }: Props) {
 
               <div className="space-y-6">
                 <section>
-                  <h3 className="mb-2 text-lg font-semibold">
+                  <h3 className="mb-2 text-2xl font-semibold text-primary">
                     Job Description
                   </h3>
-                  <div className="p-4 whitespace-pre-line rounded bg-gray-50">
-                    {selectedResume.job_description || 'Not available'}
+                  <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
+                    <ReactMarkdown>
+                      {selectedResume.job_description || 'Not available'}
+                    </ReactMarkdown>
                   </div>
                 </section>
 
                 <section>
-                  <h3 className="mb-2 text-lg font-semibold">Job Evaluation</h3>
-                  <div className="p-4 whitespace-pre-line rounded bg-gray-50">
-                    {selectedResume.job_evaluation || 'Not available'}
+                  <h3 className="mb-2 text-2xl font-semibold text-primary">
+                    Job Evaluation
+                  </h3>
+                  <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
+                    <ReactMarkdown>
+                      {selectedResume.job_evaluation || 'Not available'}
+                    </ReactMarkdown>
                   </div>
                 </section>
 
                 <section>
-                  <h3 className="mb-2 text-lg font-semibold">
+                  <h3 className="mb-2 text-2xl font-semibold text-primary">
                     Customized Resume
                   </h3>
-                  <div className="p-4 whitespace-pre-line rounded bg-gray-50">
-                    {selectedResume.custom_resume || 'Not available'}
+                  <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
+                    <ReactMarkdown>
+                      {selectedResume.custom_resume || 'Not available'}
+                    </ReactMarkdown>
                   </div>
                 </section>
 
                 <section>
-                  <h3 className="mb-2 text-lg font-semibold">Cover Letter</h3>
-                  <div className="p-4 whitespace-pre-line rounded bg-gray-50">
-                    {selectedResume.cover_letter || 'Not available'}
+                  <h3 className="mb-2 text-2xl font-semibold text-primary">
+                    Cover Letter
+                  </h3>
+                  <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
+                    <ReactMarkdown>
+                      {selectedResume.cover_letter || 'Not available'}
+                    </ReactMarkdown>
                   </div>
                 </section>
               </div>
