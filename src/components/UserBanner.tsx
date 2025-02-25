@@ -15,9 +15,9 @@ export async function UserBanner() {
   })
 
   return (
-    <div className="px-4 py-0">
-      <div className="flex items-center justify-between mx-auto">
-        <p className="text-base">
+    <div className="container">
+      <div className="flex items-center justify-between">
+        <p className="text-base mb-[-5px]">
           Hello {session.user?.name || session.user.email}
         </p>
         <UserCredits

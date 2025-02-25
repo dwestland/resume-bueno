@@ -30,10 +30,8 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Header />
-          <main className="container flex-grow">
-            <UserBanner />
-            {children}
-          </main>
+          <UserBanner />
+          <main className="container flex-grow">{children}</main>
           <Footer />
         </SessionProvider>
       </body>

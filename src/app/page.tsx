@@ -15,12 +15,11 @@ export default function ClientHome() {
   const isLoggedIn = session?.user && session.user.email
 
   return (
-    <div className="p-4">
-      {/* Main Container */}
-      <div className="min-h-[calc(100vh-2rem)] flex flex-col">
-        {/* Hero Section - Takes up available space */}
-        <div id="hero-section" className="flex flex-col flex-1 md:flex-row">
-          <div id="hero-text" className="w-full p-4 md:w-1/2">
+    <div className="">
+      <div className="">
+        {/* Hero Section */}
+        <div id="hero-section" className="flex flex-col md:flex-row h-[45vh]">
+          <div id="hero-text" className="w-full pt-4 pb-4 md:w-1/2 md:pb-0">
             <p
               className="text-2xl font-semibold tracking-tight text-violet-800"
               style={{
@@ -36,11 +35,20 @@ export default function ClientHome() {
               Bueno
             </h1>
             <h2 className="mt-2 text-4xl">
-              Resume&nbsp;+&nbsp;Job Description&nbsp;=&nbsp;Resume Bueno
+              Resume&nbsp;+&nbsp;Job Description
+              <br />
+              &nbsp;=&nbsp;Resume Bueno
             </h2>
+            <p className="mt-4 text-left">
+              Upload your resume, add a job description, and let Resume Bueno do
+              the rest. Get a match score, targeted resume improvements, and a
+              polished cover letter, instantly.
+            </p>
           </div>
-
-          <div id="hero-image" className="relative w-full md:w-1/2">
+          <div
+            id="hero-image"
+            className="relative w-full h-72 md:w-1/2 md:h-auto"
+          >
             <Image
               src="/images/at-work.svg"
               alt="Online CV"
@@ -52,24 +60,25 @@ export default function ClientHome() {
         </div>
 
         {/* Button and Text Section - Centered vertically */}
-        <div className="flex flex-col items-center justify-center flex-1">
-          {isLoggedIn ? (
-            <Button size="lg" className="text-xl">
-              <Link href="/custom-resume">Make Custom Resume</Link>
-            </Button>
-          ) : (
-            <Button size="lg" className="text-xl">
-              <Link href="/checkout">Get Started for FREE</Link>
-            </Button>
-          )}
-
-          <div className="max-w-2xl mt-6 text-center">
-            <h2 className="mb-4">Land More Interviews, Effortlessly</h2>
-            <p className="text-left">
-              Upload your resume, add a job description, and let Resume Bueno do
-              the rest. Get a match score, targeted resume improvements, and a
-              polished cover letter, instantly.
-            </p>
+        <div
+          id="call-to-action"
+          className="h-[40vh] flex flex-col justify-center items-center"
+        >
+          <div id="call-to-action-button">
+            {isLoggedIn ? (
+              <Button size="lg" className="text-xl">
+                <Link href="/custom-resume">Make Custom Resume</Link>
+              </Button>
+            ) : (
+              <Button size="lg" className="text-xl">
+                <Link href="/checkout">Get Started for FREE</Link>
+              </Button>
+            )}
+          </div>
+          <div id="call-to-action-text">
+            <div className="">
+              <h2 className="mt-4">Land More Interviews, Effortlessly</h2>
+            </div>
           </div>
         </div>
       </div>
