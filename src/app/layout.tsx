@@ -5,6 +5,7 @@ import { UserBanner } from '@/components/UserBanner'
 import { SessionProvider } from '@/components/SessionProvider'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import EnvironmentIndicator from '@/components/EnvironmentIndicator'
 
 // Import Google Fonts
 const oswald = Oswald({
@@ -31,6 +32,7 @@ export default function RootLayout({
         <SessionProvider>
           <Header />
           <UserBanner />
+          {EnvironmentIndicator && <EnvironmentIndicator />}
           <main className="container flex-grow">{children}</main>
           <Footer />
         </SessionProvider>
