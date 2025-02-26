@@ -19,6 +19,7 @@ export default {
     },
     extend: {
       colors: {
+        crimson: '#DC143C',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

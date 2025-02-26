@@ -130,15 +130,15 @@ export default function AddResumePage() {
   ]
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8">Add Resume Information</h1>
+    <div className="max-w-4xl p-6 mx-auto">
+      <h1 className="mb-8 text-3xl font-bold">Add Resume Information</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {inputFields.map((field) => (
           <div key={field.name} className="space-y-2">
             <label htmlFor={field.name} className="block text-sm font-medium">
               {field.label}
-              {field.required && <span className="text-red-500 ml-1">*</span>}
+              {field.required && <span className="ml-1 text-red-500">*</span>}
             </label>
             <textarea
               id={field.name}
@@ -152,7 +152,7 @@ export default function AddResumePage() {
               }`}
             />
             {errors[field.name] && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="mt-1 text-sm text-red-500">
                 {errors[field.name]?.message}
               </p>
             )}
@@ -163,7 +163,7 @@ export default function AddResumePage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full px-4 py-2 text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? 'Saving...' : 'Save Resume'}
           </button>
