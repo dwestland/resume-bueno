@@ -20,31 +20,35 @@ export default function ClientHome() {
         {/* Hero Section */}
         <div id="hero-section" className="flex flex-col md:flex-row h-[45vh]">
           <div id="hero-text" className="w-full pt-4 pb-4 md:w-1/2 md:pb-0">
-            <p
-              className="text-2xl font-semibold tracking-tight text-violet-800"
-              style={{
-                fontFamily: 'var(--font-oswald)',
-                marginBottom: '-7px',
-              }}
-            >
-              BETA
-            </p>
-            <h1 className="text-8xl leading-[5.5rem]">
-              Resume
-              <br />
-              Bueno
-            </h1>
-            <h2 className="mt-2 text-4xl">
-              Resume&nbsp;+&nbsp;Job Description
-              <br />
-              &nbsp;=&nbsp;Resume Bueno
-            </h2>
+            <div className="mx-auto w-[80%]">
+              <p
+                className="text-2xl font-semibold tracking-tight text-violet-800"
+                style={{
+                  fontFamily: 'var(--font-oswald)',
+                  marginBottom: '-7px',
+                }}
+              >
+                BETA
+              </p>
+              <h1 className="text-8xl leading-[5.5rem]">
+                Resume
+                <br />
+                Bueno
+              </h1>
+              <h2 className="mt-2 text-4xl">
+                Resume&nbsp;+&nbsp;Job Description
+                <br />
+                &nbsp;=&nbsp;Resume Bueno
+              </h2>
+            </div>
+
             <p className="mt-4 text-left">
               Upload your resume, add a job description, and let Resume Bueno do
               the rest. Get a match score, targeted resume improvements, and a
               polished cover letter, instantly.
             </p>
           </div>
+
           <div
             id="hero-image"
             className="relative w-full h-72 md:w-1/2 md:h-auto"
