@@ -328,7 +328,7 @@ export function ResumeFormContainer({
               type="button"
               onClick={handleNext}
               disabled={isSubmitting}
-              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-violet-500 to-violet-400 hover:from-violet-600 hover:to-violet-500 text-white font-medium rounded-md shadow-sm hover:shadow transition-all duration-200"
+              className="flex items-center gap-2 px-6 py-2.5 bg-violet-500 hover:bg-violet-600 text-white font-medium rounded-md shadow-sm hover:shadow transition-all duration-200"
             >
               {isSubmitting ? (
                 <>

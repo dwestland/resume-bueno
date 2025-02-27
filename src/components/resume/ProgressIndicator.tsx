@@ -15,9 +15,9 @@ export function ProgressIndicator({
         {/* Background line */}
         <div className="absolute left-0 right-0 top-5 h-1.5 bg-gray-100 rounded-full shadow-inner" />
 
-        {/* Completed line with gradient */}
+        {/* Completed line with solid color */}
         <div
-          className="absolute left-0 top-5 h-1.5 rounded-full bg-gradient-to-r from-teal-500 to-teal-400 transition-all duration-500 ease-in-out shadow-sm"
+          className="absolute left-0 top-5 h-1.5 rounded-full bg-teal-500 transition-all duration-500 ease-in-out shadow-sm"
           style={{
             width: `${(currentStep / (steps.length - 1)) * 100}%`,
           }}
