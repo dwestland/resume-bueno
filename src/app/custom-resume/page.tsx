@@ -71,7 +71,7 @@ export default function CustomResumePage() {
         setCurrentStep(step)
 
         const formData = new FormData()
-        formData.append('job_description', data.job_description?.trim() || '')
+        formData.append('job_description', data.job_description.trim())
 
         // Add all previous results to FormData
         Object.entries(allResults).forEach(([key, value]) => {
