@@ -80,9 +80,9 @@ export default function ClientHome() {
 
   return (
     <div className="">
-      <div className="">
-        {/* Hero Section */}
-        <div id="hero-section" className="flex flex-col md:flex-row h-[45vh]">
+      <div id="opening-page" className="h-[calc(100vh-4rem)] flex flex-col">
+        {/* Hero Section - Exactly 50% height */}
+        <div id="hero-section" className="flex flex-col md:flex-row h-[50%]">
           <div id="hero-text" className="w-full pt-4 pb-4 md:w-1/2 md:pb-0">
             <div className="mx-auto w-[80%]">
               <p
@@ -127,16 +127,26 @@ export default function ClientHome() {
           </div>
         </div>
 
-        {/* Button and Text Section - Centered vertically */}
+        {/* Button and Text Section - Exactly 50% height */}
         <div
           id="call-to-action"
-          className="flex flex-col justify-center items-center"
+          className="flex flex-col justify-center items-center h-[50%]"
         >
           <div id="call-to-action-button">
             {!isLoggedIn ? (
-              <Button size="lg" className="text-xl">
-                <Link href="/resume/add">Get Started for FREE</Link>
-              </Button>
+              <>
+                <Button size="lg" className="text-xl">
+                  <Link href="/resume/add">Get Started for FREE</Link>
+                </Button>
+
+                <div className="">
+                  <div id="call-to-action-text">
+                    <h2 className="mt-4 mb-8">
+                      Land More Interviews, Effortlessly
+                    </h2>
+                  </div>
+                </div>
+              </>
             ) : hasResume ? (
               <Button size="lg" className="text-xl">
                 <Link href="/custom-resume">Make Resume Package</Link>
@@ -147,25 +157,20 @@ export default function ClientHome() {
               </Button>
             )}
           </div>
-          <div id="call-to-action-text">
-            <div className="">
-              <h2 className="mt-4 mb-8">Land More Interviews, Effortlessly</h2>
-            </div>
-          </div>
         </div>
-
-        {/* Resume Progress Indicator - Only shown when logged in */}
-        {isLoggedIn && resumeProgress && (
-          <div className="w-full my-12 px-4 transition-all">
-            <ResumeProgress
-              completedCount={resumeProgress.completedCount}
-              totalFields={resumeProgress.totalFields}
-              completionPercentage={resumeProgress.completionPercentage}
-              fields={resumeProgress.fields}
-            />
-          </div>
-        )}
       </div>
+
+      {/* Resume Progress Indicator - Only shown when logged in */}
+      {isLoggedIn && resumeProgress && (
+        <div className="w-full my-12 px-4 transition-all">
+          <ResumeProgress
+            completedCount={resumeProgress.completedCount}
+            totalFields={resumeProgress.totalFields}
+            completionPercentage={resumeProgress.completionPercentage}
+            fields={resumeProgress.fields}
+          />
+        </div>
+      )}
 
       {/* Pricing Section */}
       <div id="pricing" className="mt-24 mb-16">
