@@ -4,11 +4,29 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { checkUserResume } from './actions'
 
 export default function ClientHome() {
   const { data: session, status } = useSession()
+  const [hasResume, setHasResume] = useState<boolean | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-  if (status === 'loading') {
+  useEffect(() => {
+    async function fetchResumeStatus() {
+      if (session?.user) {
+        const resumeStatus = await checkUserResume()
+        setHasResume(resumeStatus)
+      }
+      setIsLoading(false)
+    }
+
+    if (status !== 'loading') {
+      fetchResumeStatus()
+    }
+  }, [session, status])
+
+  if (status === 'loading' || isLoading) {
     return <div>Loading...</div>
   }
 
@@ -69,13 +87,17 @@ export default function ClientHome() {
           className="h-[40vh] flex flex-col justify-center items-center"
         >
           <div id="call-to-action-button">
-            {isLoggedIn ? (
+            {!isLoggedIn ? (
               <Button size="lg" className="text-xl">
-                <Link href="/custom-resume">Make Custom Resume</Link>
+                <Link href="/resume/add">Get Started for FREE</Link>
+              </Button>
+            ) : hasResume ? (
+              <Button size="lg" className="text-xl">
+                <Link href="/custom-resume">Make Resume Package</Link>
               </Button>
             ) : (
               <Button size="lg" className="text-xl">
-                <Link href="/checkout">Get Started for FREE</Link>
+                <Link href="/resume/add">Add Your Resume</Link>
               </Button>
             )}
           </div>
