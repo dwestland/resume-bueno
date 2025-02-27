@@ -15,7 +15,7 @@ const customResumeSchema = z.object({
   job_description: z
     .string()
     .min(50, 'Job description must be at least 50 characters')
-    .max(10000, 'Job description must not exceed 10,000 characters'),
+    .max(500, 'Job description must not exceed 5000 characters'),
 })
 
 type CustomResumeFormValues = z.infer<typeof customResumeSchema>
@@ -71,7 +71,7 @@ export default function CustomResumePage() {
         setCurrentStep(step)
 
         const formData = new FormData()
-        formData.append('job_description', data.job_description.trim())
+        formData.append('job_description', data.job_description?.trim() || '')
 
         // Add all previous results to FormData
         Object.entries(allResults).forEach(([key, value]) => {
