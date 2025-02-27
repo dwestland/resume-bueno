@@ -10,14 +10,14 @@ export function ProgressIndicator({
   currentStep,
 }: ProgressIndicatorProps) {
   return (
-    <div className="w-full mb-12">
+    <div className="w-full mb-16">
       <div className="relative flex items-center justify-between">
-        {/* Progress line */}
-        <div className="absolute left-0 right-0 h-0.5 bg-gray-200" />
+        {/* Background line */}
+        <div className="absolute left-0 right-0 top-5 h-1.5 bg-gray-100 rounded-full shadow-inner" />
 
-        {/* Completed line */}
+        {/* Completed line with gradient */}
         <div
-          className="absolute left-0 h-0.5 bg-blue-500 transition-all duration-300"
+          className="absolute left-0 top-5 h-1.5 rounded-full bg-gradient-to-r from-teal-500 to-teal-400 transition-all duration-500 ease-in-out shadow-sm"
           style={{
             width: `${(currentStep / (steps.length - 1)) * 100}%`,
           }}
@@ -27,18 +27,18 @@ export function ProgressIndicator({
         {steps.map((step, index) => (
           <div key={step} className="relative flex flex-col items-center z-10">
             <div
-              className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300 ${
+              className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ease-in-out transform ${
                 index < currentStep
-                  ? 'bg-blue-500 border-blue-500 text-white'
+                  ? 'bg-teal-500 border-teal-500 text-white shadow-md'
                   : index === currentStep
-                  ? 'bg-white border-blue-500 text-blue-500'
-                  : 'bg-white border-gray-300 text-gray-400'
+                  ? 'bg-white border-teal-500 text-teal-500 ring-4 ring-teal-100'
+                  : 'bg-white border-gray-200 text-gray-400'
               }`}
             >
               {index < currentStep ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
+                  className="h-6 w-6"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -49,12 +49,12 @@ export function ProgressIndicator({
                   />
                 </svg>
               ) : (
-                <span className="text-sm">{index + 1}</span>
+                <span className="text-sm font-medium">{index + 1}</span>
               )}
             </div>
             <span
-              className={`mt-2 text-sm font-medium ${
-                index <= currentStep ? 'text-gray-900' : 'text-gray-400'
+              className={`mt-3 text-sm font-semibold transition-colors duration-200 ${
+                index <= currentStep ? 'text-gray-800' : 'text-gray-400'
               }`}
             >
               {step}

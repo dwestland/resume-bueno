@@ -12,6 +12,7 @@ import {
   ResumeFormValues,
 } from './resumeSchema'
 import { updateResume } from '@/app/resume/actions'
+import { Button } from '@/components/ui/button'
 
 // Form sections definition with fields and descriptive text
 const formSections = [
@@ -198,18 +199,24 @@ export function ResumeFormContainer({
       />
 
       {/* Section Title and Description */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-4">
-          Step {activeStep + 1}: {formSections[activeStep].title}
+      <div className="mb-10 bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+        <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold text-violet-700 bg-violet-100 rounded-full">
+          Step {activeStep + 1} of {formSections.length}
+        </div>
+        <h1 className="text-3xl font-bold mb-4 text-gray-800">
+          {formSections[activeStep].title}
         </h1>
-        <div className="prose max-w-none text-gray-700">
+        <div className="prose max-w-none text-gray-600">
           <p className="mb-4">{formSections[activeStep].description}</p>
 
           {formSections[activeStep].bulletPoints && (
-            <ul className="space-y-2 list-disc pl-6">
+            <ul className="space-y-3 list-none pl-0 mt-6">
               {formSections[activeStep].bulletPoints.map((point, index) => (
-                <li key={index} className="text-gray-700">
-                  {point}
+                <li key={index} className="flex items-start">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-teal-100 text-teal-700 mr-3 mt-0.5 flex-shrink-0 text-xs font-bold">
+                    {index + 1}
+                  </span>
+                  <span className="text-gray-700">{point}</span>
                 </li>
               ))}
             </ul>
@@ -217,7 +224,7 @@ export function ResumeFormContainer({
         </div>
       </div>
 
-      <form className="space-y-6">
+      <form className="space-y-6 bg-white rounded-xl shadow-sm p-8 border border-gray-100">
         {/* File upload for resume section */}
         {activeStep === 0 && (
           <div className="mb-6">
@@ -231,30 +238,36 @@ export function ResumeFormContainer({
             <button
               type="button"
               onClick={triggerFileUpload}
-              className="w-full p-8 border-2 border-dashed border-blue-300 rounded-md flex flex-col items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors"
+              className="w-full p-8 border-2 border-dashed border-teal-300 rounded-lg flex flex-col items-center justify-center text-teal-600 hover:bg-teal-50 hover:border-teal-400 transition-all duration-200 group"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-12 w-12 mb-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                />
-              </svg>
-              <p className="font-medium">Click to upload your resume file</p>
+              <div className="p-3 bg-teal-50 rounded-full mb-3 group-hover:bg-teal-100 transition-colors duration-200">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-12 w-12"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                  />
+                </svg>
+              </div>
+              <p className="font-medium text-gray-800 mb-1">
+                Click to upload your resume file
+              </p>
               <p className="text-sm text-gray-500">
                 Supports PDF, DOCX formats
               </p>
             </button>
-            <p className="text-sm text-center text-gray-500 mt-2">
-              or paste your resume text below
-            </p>
+            <div className="flex items-center my-4">
+              <div className="flex-grow h-px bg-gray-200"></div>
+              <p className="mx-4 text-sm font-medium text-gray-500">OR</p>
+              <div className="flex-grow h-px bg-gray-200"></div>
+            </div>
           </div>
         )}
 
@@ -286,40 +299,140 @@ export function ResumeFormContainer({
         {/* Form navigation and submission buttons */}
         <div className="flex justify-between pt-8">
           {activeStep > 0 && (
-            <button
+            <Button
               type="button"
               onClick={() => setActiveStep((prev) => prev - 1)}
-              className="px-6 py-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50"
+              variant="outline"
+              className="flex items-center gap-2 px-5 py-2.5 border-2 border-gray-200 hover:bg-gray-50 transition-colors"
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
               Back
-            </button>
+            </Button>
           )}
 
           <div className={activeStep === 0 ? 'w-full' : 'ml-auto'}>
-            <button
+            <Button
               type="button"
               onClick={handleNext}
               disabled={isSubmitting}
-              className="w-full px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-violet-500 to-violet-400 hover:from-violet-600 hover:to-violet-500 text-white font-medium rounded-md shadow-sm hover:shadow transition-all duration-200"
             >
-              {isSubmitting
-                ? 'Saving...'
-                : isLastStep
-                ? 'Save and Finish'
-                : 'Save and Continue'}
-            </button>
+              {isSubmitting ? (
+                <>
+                  <svg
+                    className="animate-spin h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Saving...
+                </>
+              ) : isLastStep ? (
+                <>
+                  Save and Finish
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </>
+              ) : (
+                <>
+                  Save and Continue
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </>
+              )}
+            </Button>
           </div>
         </div>
 
         {submitStatus && (
           <div
-            className={`mt-4 p-4 rounded-md ${
+            className={`mt-4 p-4 rounded-md shadow-sm ${
               submitStatus.type === 'success'
-                ? 'bg-green-50 text-green-800'
-                : 'bg-red-50 text-red-800'
+                ? 'bg-green-50 text-green-800 border border-green-200'
+                : 'bg-red-50 text-red-800 border border-red-200'
             }`}
           >
-            {submitStatus.message}
+            <div className="flex items-center">
+              {submitStatus.type === 'success' ? (
+                <svg
+                  className="h-5 w-5 text-green-500 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="h-5 w-5 text-red-500 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+              {submitStatus.message}
+            </div>
           </div>
         )}
       </form>
