@@ -15,7 +15,6 @@ const customResumeSchema = z.object({
   job_description: z
     .string()
     .min(200, 'Job description must be at least 200 characters'),
-  // .min(500, 'Job description must not exceed 5000 characters'),
 })
 
 type CustomResumeFormValues = z.infer<typeof customResumeSchema>

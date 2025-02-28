@@ -134,27 +134,28 @@ export default function ClientHome() {
         >
           <div id="call-to-action-button">
             {!isLoggedIn ? (
-              <>
+              <div className="flex flex-col items-center">
                 <Button size="lg" className="text-xl">
                   <Link href="/resume/add">Get Started for FREE</Link>
                 </Button>
 
-                <div className="">
-                  <div id="call-to-action-text">
-                    <h2 className="mt-4 mb-8">
-                      Land More Interviews, Effortlessly
-                    </h2>
-                  </div>
+                <div id="call-to-action-text">
+                  <h2 className="m-auto mt-4 mb-8">
+                    Land More Interviews, Effortlessly
+                  </h2>
                 </div>
-              </>
+              </div>
             ) : hasResume ? (
               <Button size="lg" className="text-xl">
                 <Link href="/custom-resume">Make Resume Package</Link>
               </Button>
             ) : (
-              <Button size="lg" className="text-xl">
-                <Link href="/resume/add">Add Your Resume</Link>
-              </Button>
+              <div className="flex flex-col items-center">
+                <h2 className="mt-4 mb-8">Step 1. Upload Your Resume</h2>
+                <Button size="lg" className="text-xl">
+                  <Link href="/resume/add">Add Your Resume</Link>
+                </Button>
+              </div>
             )}
           </div>
         </div>
