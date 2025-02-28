@@ -7,11 +7,13 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { checkUserResume, getResumeProgress } from './actions'
 import { ResumeProgress } from '@/components/ResumeProgress'
+import { AddResumeDialog } from '@/components/AddResumeDialog'
 
 export default function ClientHome() {
   const { data: session, status } = useSession()
   const [hasResume, setHasResume] = useState<boolean | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [showResumeDialog, setShowResumeDialog] = useState(false)
   const [resumeProgress, setResumeProgress] = useState<{
     completedCount: number
     totalFields: number
@@ -24,6 +26,11 @@ export default function ClientHome() {
       if (session?.user) {
         const resumeStatus = await checkUserResume()
         setHasResume(resumeStatus)
+
+        // Show dialog if user is logged in but doesn't have a resume
+        if (resumeStatus === false) {
+          setShowResumeDialog(true)
+        }
 
         // Fetch resume progress data
         const progress = await getResumeProgress()
@@ -80,6 +87,12 @@ export default function ClientHome() {
 
   return (
     <div className="">
+      {/* Add Resume Dialog */}
+      <AddResumeDialog
+        open={showResumeDialog}
+        onOpenChange={setShowResumeDialog}
+      />
+
       <div id="opening-page" className="h-[calc(100vh-4rem)] flex flex-col">
         {/* Hero Section - Exactly 50% height */}
         <div id="hero-section" className="flex flex-col md:flex-row h-[50%]">
