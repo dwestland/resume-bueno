@@ -11,7 +11,7 @@ import {
   resumeFormFields,
   ResumeFormValues,
 } from './resumeSchema'
-import { updateResume } from '@/app/resume/actions'
+import { updateResume, processResumeFile } from '@/app/resume/actions'
 import { Button } from '@/components/ui/button'
 
 // Form sections definition with fields and descriptive text
@@ -27,9 +27,9 @@ You can either upload a resume file (PDF, DOCX) or copy and paste your resume te
     title: 'Professional Development',
     description: `These elements showcase your formal achievements and qualifications, strengthening your resume's credibility and alignment with job requirements.`,
     bulletPoints: [
-      'Certificates – Add any certifications relevant to your industry or desired role. These prove your expertise in specific skills or fields, such as IT certifications, medical licenses, or project management credentials.',
-      "Training – List specialized training programs or courses you've completed. This highlights your commitment to learning and staying updated in your field.",
-      'Education – Include degrees, diplomas, or other academic achievements. Education helps employers assess your qualifications and foundational knowledge.',
+      'Certificates - Add any certifications relevant to your industry or desired role. These prove your expertise in specific skills or fields, such as IT certifications, medical licenses, or project management credentials.',
+      "Training - List specialized training programs or courses you've completed. This highlights your commitment to learning and staying updated in your field.",
+      'Education - Include degrees, diplomas, or other academic achievements. Education helps employers assess your qualifications and foundational knowledge.',
     ],
     fields: ['certificates', 'training', 'education'],
   },
@@ -37,9 +37,9 @@ You can either upload a resume file (PDF, DOCX) or copy and paste your resume te
     title: 'Experience & Contributions',
     description: `This section highlights real-world applications of your skills, demonstrating how you've contributed value in professional or volunteer settings.`,
     bulletPoints: [
-      'Experience – Detail previous job roles, internships, or freelance work. This helps match your background with job descriptions by emphasizing your hands-on expertise.',
-      "Projects – List personal or professional projects you've worked on. Employers value project-based experience as it showcases problem-solving, innovation, and leadership.",
-      'Volunteering – Include any nonprofit work or community service. Volunteer experience highlights soft skills like teamwork, leadership, and adaptability while showing your commitment to making a difference.',
+      'Experience - Detail previous job roles, internships, or freelance work. This helps match your background with job descriptions by emphasizing your hands-on expertise.',
+      "Projects - List personal or professional projects you've worked on. Employers value project-based experience as it showcases problem-solving, innovation, and leadership.",
+      'Volunteering - Include any nonprofit work or community service. Volunteer experience highlights soft skills like teamwork, leadership, and adaptability while showing your commitment to making a difference.',
     ],
     fields: ['experience', 'projects', 'volunteering'],
   },
@@ -47,9 +47,9 @@ You can either upload a resume file (PDF, DOCX) or copy and paste your resume te
     title: 'Personal Strengths & Interests',
     description: `These details provide depth to your resume, giving hiring managers insights into your personality, soft skills, and broader capabilities.`,
     bulletPoints: [
-      'Skills – List technical and soft skills that make you a strong candidate. These can range from programming languages to leadership and communication skills.',
-      "Awards – Mention any honors or recognitions you've received. These showcase excellence in your field and demonstrate a history of achievement.",
-      'Hobbies & Interests – Add relevant hobbies that showcase unique skills, creativity, or leadership. Certain hobbies, like blogging, coding, or public speaking, can make you stand out.',
+      'Skills - List technical and soft skills that make you a strong candidate. These can range from programming languages to leadership and communication skills.',
+      "Awards - Mention any honors or recognitions you've received. These showcase excellence in your field and demonstrate a history of achievement.",
+      'Hobbies & Interests - Add relevant hobbies that showcase unique skills, creativity, or leadership. Certain hobbies, like blogging, coding, or public speaking, can make you stand out.',
     ],
     fields: ['skills', 'awards', 'hobbies_interests'],
   },
@@ -71,6 +71,7 @@ export function ResumeFormContainer({
     message: string
   } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [isConverting, setIsConverting] = useState(false)
 
   // Step management
   const [activeStep, setActiveStep] = useState(0)
@@ -89,18 +90,51 @@ export function ResumeFormContainer({
     mode: 'onChange',
   })
 
-  // Handle file upload
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle file upload using server action
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0]
     if (!file) return
 
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const content = e.target?.result as string
-      // Set the resume content from the file
-      setValue('resume', content, { shouldValidate: true })
+    setIsConverting(true)
+    setSubmitStatus({ type: 'success', message: 'Processing your resume...' })
+
+    try {
+      // Create a FormData object to send the file to the server
+      const formData = new FormData()
+      formData.append('file', file)
+
+      // Use the server action to process the file
+      const result = await processResumeFile(formData)
+
+      if (result.success && result.content) {
+        // Set the resume content from the processed file
+        setValue('resume', result.content, { shouldValidate: true })
+
+        setSubmitStatus({
+          type: 'success',
+          message:
+            file.type === 'application/pdf'
+              ? 'PDF resume converted to text successfully!'
+              : 'Resume uploaded successfully!',
+        })
+      } else {
+        throw new Error('Failed to process file')
+      }
+    } catch (error) {
+      console.error('Error processing file:', error)
+      setSubmitStatus({
+        type: 'error',
+        message: 'Failed to process your resume. Please try again.',
+      })
+    } finally {
+      setIsConverting(false)
+      // Clear status message after 3 seconds
+      setTimeout(() => {
+        setSubmitStatus(null)
+      }, 3000)
     }
-    reader.readAsText(file)
   }
 
   // Trigger file input click
@@ -239,29 +273,65 @@ export function ResumeFormContainer({
               type="button"
               onClick={triggerFileUpload}
               className="w-full p-8 border-2 border-dashed border-teal-300 rounded-lg flex flex-col items-center justify-center text-teal-600 hover:bg-teal-50 hover:border-teal-400 transition-all duration-200 group"
+              disabled={isConverting}
             >
-              <div className="p-3 bg-teal-50 rounded-full mb-3 group-hover:bg-teal-100 transition-colors duration-200">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-12 w-12"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                  />
-                </svg>
-              </div>
-              <p className="font-medium text-gray-800 mb-1">
-                Click to upload your resume file
-              </p>
-              <p className="text-sm text-gray-500">
-                Supports PDF, DOCX formats
-              </p>
+              {isConverting ? (
+                <div className="flex flex-col items-center">
+                  <div className="p-3 bg-teal-50 rounded-full mb-3 group-hover:bg-teal-100 transition-colors duration-200">
+                    <svg
+                      className="animate-spin h-12 w-12 text-teal-600"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <p className="font-medium text-gray-800 mb-1">
+                    Converting your resume...
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    This may take a few moments
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="p-3 bg-teal-50 rounded-full mb-3 group-hover:bg-teal-100 transition-colors duration-200">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-12 w-12"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      />
+                    </svg>
+                  </div>
+                  <p className="font-medium text-gray-800 mb-1">
+                    Click to upload your resume file
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Supports PDF, DOCX formats
+                  </p>
+                </>
+              )}
             </button>
             <div className="flex items-center my-4">
               <div className="flex-grow h-px bg-gray-200"></div>
