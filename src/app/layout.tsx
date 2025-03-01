@@ -33,7 +33,9 @@ export default function RootLayout({
           <Header />
           <UserBanner />
           {EnvironmentIndicator && <EnvironmentIndicator />}
-          <main className="container flex-grow">{children}</main>
+          <main className="container  max-w-screen-xl flex-grow">
+            {children}
+          </main>
           <Footer />
         </SessionProvider>
       </body>

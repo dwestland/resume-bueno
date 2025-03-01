@@ -14,8 +14,8 @@ export default function Header() {
   }
 
   return (
-    <header className="container px-8 py-4 mx-auto text-gray-100 bg-violet-700">
-      <nav className="flex items-center justify-between">
+    <header className="w-full py-4 text-gray-100 bg-violet-700">
+      <nav className="container max-w-screen-xl flex items-center justify-between">
         <button
           className="md:hidden"
           onClick={toggleMobileMenu}

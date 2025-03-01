@@ -108,12 +108,15 @@ export default function ClientHome() {
               >
                 BETA
               </p>
-              <h1 className="text-8xl leading-[5.5rem]">
+              <h1
+                className="text-8xl mt-0 leading-[5.5rem]"
+                style={{ marginLeft: '-5px' }}
+              >
                 Resume
                 <br />
                 Bueno
               </h1>
-              <h2 className="mt-2 text-4xl">
+              <h2 className="mt-1 text-4xl">
                 Resume&nbsp;+&nbsp;Job Description
                 <br />
                 &nbsp;=&nbsp;Resume Bueno
@@ -129,7 +132,7 @@ export default function ClientHome() {
 
           <div
             id="hero-image"
-            className="relative w-full h-72 md:w-1/2 md:h-auto"
+            className="relative w-full h-72 md:w-1/2 md:h-auto min-h-[20rem]"
           >
             <Image
               src="/images/at-work.svg"
