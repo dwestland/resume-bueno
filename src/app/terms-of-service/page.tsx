@@ -1,0 +1,296 @@
+import React from 'react'
+
+export default function PrivacyPolicy() {
+  return (
+    <div className="mx-auto max-w-4xl mt-10 mb-6">
+      <h1>Terms of Service</h1>
+
+      <h2>Introduction</h2>
+      <p>
+        Welcome to Resume Bueno. These Terms of Service (&quot;Terms&quot;)
+        govern your access to and use of the Resume Bueno website, applications,
+        and services (collectively, the &quot;Service&quot;).
+      </p>
+      <p>
+        By using the Service, you agree to be bound by these Terms. If you do
+        not agree to these Terms, you may not access or use the Service.
+      </p>
+      <p>
+        Resume Bueno (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;)
+        reserves the right to modify these Terms at any time. We will provide
+        notice of any material changes through the Service or by other means.
+        Your continued use of the Service after such modifications will
+        constitute your acknowledgment and agreement to the modified Terms.
+      </p>
+
+      <h2>Privacy Policy</h2>
+      <p>
+        Your privacy is important to us. Our Privacy Policy, available at{' '}
+        <a href="http://www.resumebueno.com/privacy">
+          www.resumebueno.com/privacy
+        </a>
+        , explains how we collect, use, and protect your personal information.
+        By using the Service, you consent to our collection and use of
+        information as described in our Privacy Policy.
+      </p>
+
+      <h2>User Accounts</h2>
+      <h3>Account Creation and Responsibility</h3>
+      <p>
+        To use certain features of the Service, you must create an account. You
+        agree to provide accurate, current, and complete information during the
+        registration process and to update such information to keep it accurate,
+        current, and complete.
+      </p>
+      <p>
+        You are responsible for safeguarding your account credentials and for
+        all activities that occur under your account. You agree to notify us
+        immediately of any unauthorized use of your account or any other breach
+        of security.
+      </p>
+
+      <h3>Acceptable Use Policy</h3>
+      <p>When using the Service, you agree not to:</p>
+      <ul>
+        <li>
+          Use the Service for any illegal purpose or in violation of any
+          applicable laws
+        </li>
+        <li>
+          Attempt to probe, scan, or test the vulnerability of the Service or
+          any related system or network
+        </li>
+        <li>Attempt to interfere with the proper working of the Service</li>
+        <li>
+          Submit false or misleading information in your resumes or other
+          materials
+        </li>
+        <li>Impersonate any person or entity</li>
+        <li>Share your account or login credentials with others</li>
+        <li>Use the Service to infringe upon intellectual property rights</li>
+        <li>
+          Use the Service to distribute unsolicited commercial messages
+          (&quot;spam&quot;)
+        </li>
+        <li>
+          Attempt to access, tamper with, or use non-public areas of the Service
+        </li>
+        <li>
+          Introduce any viruses, trojan horses, worms, or other harmful code
+        </li>
+      </ul>
+      <p>
+        We reserve the right to terminate or suspend your account for violations
+        of these Terms or for any other reason at our discretion.
+      </p>
+
+      <h2>Intellectual Property Rights</h2>
+      <h3>Our Intellectual Property</h3>
+      <p>
+        The Service and its original content, features, and functionality are
+        owned by Resume Bueno and are protected by international copyright,
+        trademark, patent, trade secret, and other intellectual property or
+        proprietary rights laws.
+      </p>
+
+      <h3>Your Content</h3>
+      <p>
+        You retain all rights to the resume information, professional history,
+        and other content that you submit to the Service (&quot;User
+        Content&quot;). By submitting User Content to the Service, you grant us
+        a worldwide, non-exclusive, royalty-free license to use, reproduce,
+        modify, adapt, publish, translate, and distribute such User Content in
+        connection with providing the Service to you.
+      </p>
+      <p>
+        You represent and warrant that you own or have the necessary rights to
+        the User Content you submit, and that such User Content does not violate
+        the rights of any third party.
+      </p>
+
+      <h2>Service Limitations and Modifications</h2>
+      <p>
+        We reserve the right to modify, suspend, or discontinue the Service,
+        temporarily or permanently, with or without notice. We will not be
+        liable to you or any third party for any modification, suspension, or
+        discontinuation of the Service.
+      </p>
+      <p>
+        We do not guarantee that the Service will always be available,
+        uninterrupted, timely, secure, or error-free. Results and resume matches
+        generated by our AI-powered system are provided on an &quot;as is&quot;
+        basis.
+      </p>
+
+      <h2>Disclaimer of Warranties</h2>
+      <p>
+        THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot;
+        WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING,
+        BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+      </p>
+      <p>
+        WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED OR ERROR-FREE,
+        THAT DEFECTS WILL BE CORRECTED, OR THAT THE SERVICE OR THE SERVERS THAT
+        MAKE IT AVAILABLE ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.
+      </p>
+      <p>
+        WE DO NOT GUARANTEE EMPLOYMENT OUTCOMES OR INTERVIEW SUCCESS RATES AS A
+        RESULT OF USING OUR SERVICE.
+      </p>
+
+      <h2>Limitation of Liability</h2>
+      <p>
+        IN NO EVENT SHALL RESUME BUENO, ITS OFFICERS, DIRECTORS, EMPLOYEES, OR
+        AGENTS, BE LIABLE TO YOU FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+        PUNITIVE, OR CONSEQUENTIAL DAMAGES WHATSOEVER RESULTING FROM ANY:
+      </p>
+      <ol>
+        <li>ERRORS, MISTAKES, OR INACCURACIES IN THE SERVICE;</li>
+        <li>
+          PERSONAL INJURY OR PROPERTY DAMAGE RELATED TO YOUR USE OF THE SERVICE;
+        </li>
+        <li>
+          UNAUTHORIZED ACCESS TO OR USE OF OUR SERVERS OR PERSONAL INFORMATION;
+        </li>
+        <li>
+          INTERRUPTION OR CESSATION OF TRANSMISSION TO OR FROM THE SERVICE;
+        </li>
+        <li>
+          BUGS, VIRUSES, OR OTHER HARMFUL CODE THAT MAY BE TRANSMITTED TO OR
+          THROUGH THE SERVICE;
+        </li>
+        <li>
+          ERRORS OR OMISSIONS IN ANY CONTENT OR FOR ANY LOSS OR DAMAGE INCURRED
+          AS A RESULT OF THE USE OF ANY CONTENT POSTED, EMAILED, TRANSMITTED, OR
+          OTHERWISE MADE AVAILABLE VIA THE SERVICE.
+        </li>
+      </ol>
+      <p>
+        IN NO EVENT SHALL OUR TOTAL LIABILITY TO YOU FOR ALL DAMAGES, LOSSES, OR
+        CAUSES OF ACTION EXCEED THE AMOUNT YOU HAVE PAID TO RESUME BUENO IN THE
+        PAST SIX (6) MONTHS, OR, IF GREATER, ONE HUNDRED DOLLARS ($100).
+      </p>
+      <p>
+        THE LIMITATIONS OF LIABILITY SHALL APPLY TO THE MAXIMUM EXTENT PERMITTED
+        BY LAW IN THE APPLICABLE JURISDICTION.
+      </p>
+
+      <h2>Payment Terms and Refunds</h2>
+      <h3>Payment</h3>
+      <p>
+        We offer various subscription plans and credit packages as described on
+        our website. All payments are processed securely through our payment
+        processors.
+      </p>
+      <p>
+        Prices are subject to change, but changes will not affect the current
+        subscription period. We will provide notice of any price changes before
+        they take effect.
+      </p>
+
+      <h3>Subscription Terms</h3>
+      <p>
+        Subscriptions are automatically renewed unless canceled before the
+        renewal date. You can cancel your subscription at any time through your
+        account settings.
+      </p>
+
+      <h3>Refunds</h3>
+      <p>
+        We offer a 7-day refund policy for subscription purchases. If you are
+        not satisfied with the Service, you may request a refund within 7 days
+        of your initial purchase by contacting our support team. Refunds for
+        credit purchases are evaluated on a case-by-case basis.
+      </p>
+      <p>
+        Refunds will be processed to the original method of payment. Processing
+        times may vary depending on your payment provider.
+      </p>
+
+      <h2>Dispute Resolution</h2>
+      <h3>Governing Law</h3>
+      <p>
+        These Terms shall be governed by and construed in accordance with the
+        laws of the State of California, without regard to its conflict of law
+        provisions.
+      </p>
+
+      <h3>Arbitration</h3>
+      <p>
+        Any dispute arising from or relating to these Terms or your use of the
+        Service shall be resolved by binding arbitration, rather than in court,
+        except that you may assert claims in small claims court if your claims
+        qualify.
+      </p>
+      <p>
+        The arbitration will be conducted by the American Arbitration
+        Association (AAA) under its rules. The arbitration will be conducted in
+        Los Angeles, California, unless we both agree to another location. The
+        arbitrator&apos;s award shall be final and binding and may be entered as
+        a judgment in any court of competent jurisdiction.
+      </p>
+
+      <h3>Class Action Waiver</h3>
+      <p>
+        You agree that any proceedings to resolve disputes will be conducted
+        only on an individual basis and not in a class, consolidated, or
+        representative action. If for any reason a claim proceeds in court
+        rather than in arbitration, both you and Resume Bueno waive any right to
+        a jury trial.
+      </p>
+
+      <h2>Termination</h2>
+      <p>
+        We may terminate or suspend your account and access to the Service
+        immediately, without prior notice or liability, for any reason,
+        including if you breach these Terms.
+      </p>
+      <p>
+        Upon termination, your right to use the Service will immediately cease.
+        If you wish to terminate your account, you may simply discontinue using
+        the Service or contact us to request account deletion.
+      </p>
+
+      <h2>General Provisions</h2>
+      <h3>Entire Agreement</h3>
+      <p>
+        These Terms constitute the entire agreement between you and Resume Bueno
+        regarding your use of the Service and supersede any prior agreements.
+      </p>
+
+      <h3>Severability</h3>
+      <p>
+        If any provision of these Terms is held to be invalid or unenforceable,
+        such provision shall be struck and the remaining provisions shall be
+        enforced.
+      </p>
+
+      <h3>No Waiver</h3>
+      <p>
+        Our failure to enforce any right or provision of these Terms will not be
+        considered a waiver of those rights.
+      </p>
+
+      <h3>Assignment</h3>
+      <p>
+        You may not assign or transfer these Terms, by operation of law or
+        otherwise, without our prior written consent. Any attempt to assign or
+        transfer these Terms without such consent will be null and void.
+      </p>
+
+      <h2>Contact Information</h2>
+      <p>If you have any questions about these Terms, please contact us at:</p>
+      <address>
+        Resume Bueno
+        <br />
+        13157 Mindanao Way #141
+        <br />
+        Marina del Rey, CA 90292
+        <br />
+        <br />
+        <a href="mailto:resume-bueno@westland.net">resume-bueno@westland.net</a>
+      </address>
+    </div>
+  )
+}
