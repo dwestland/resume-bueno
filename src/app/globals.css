@@ -68,20 +68,24 @@ body {
 h1 {
   @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
   font-family: var(--font-oswald);
+  margin: 1.5rem 0;
 }
 
 h2 {
   @apply scroll-m-20 text-3xl font-semibold tracking-tight;
   font-family: var(--font-oswald);
+  margin: 1.25rem 0;
 }
 
 h3 {
   @apply scroll-m-20 text-2xl font-semibold tracking-tight;
   font-family: var(--font-oswald);
+  margin: 1rem 0;
 }
 
 p {
   @apply text-xl;
+  margin: 0.75rem 0;
 }
 
 /* ///////////////////////////////////////////////////////////////// */

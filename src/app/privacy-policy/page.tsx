@@ -214,6 +214,84 @@ export default function PrivacyPolicy() {
           may share aggregated, anonymous data that cannot be used to identify
           any individual for analytical and research purposes.
         </p>
+
+        <h2>6a. Use of Artificial Intelligence Services</h2>
+
+        <p>
+          Resume Bueno utilizes large language model APIs provided by US-based
+          companies including OpenAI, Anthropic, Google, and Grok to enhance our
+          resume creation and optimization services. When you use our services:
+        </p>
+
+        <ul>
+          <li>
+            Your resume data and related information may be transmitted to these
+            third-party AI service providers
+          </li>
+          <li>
+            These third-party providers may store and process your data on their
+            servers in accordance with their respective privacy policies
+          </li>
+          <li>
+            This data sharing is necessary to provide our core resume
+            improvement services
+          </li>
+        </ul>
+
+        <p>
+          Each of these service providers maintains their own privacy policies
+          governing how they handle, store, and process user data. You can find
+          more information about their data practices at:
+        </p>
+        <ul>
+          <li>
+            OpenAI:{' '}
+            <a
+              href="https://openai.com/policies/row-privacy-policy/"
+              target="_blank"
+            >
+              https://openai.com/policies/row-privacy-policy/
+            </a>
+          </li>
+          <li>
+            Anthropic:{' '}
+            <a
+              href="https://docs.anthropic.com/en/docs/legal-center/privacy"
+              target="_blank"
+            >
+              https://docs.anthropic.com/en/docs/legal-center/privacy
+            </a>
+          </li>
+          <li>
+            Google:{' '}
+            <a href="https://policies.google.com/privacy" target="_blank">
+              https://policies.google.com/privacy
+            </a>
+          </li>
+          <li>
+            Grok:{' '}
+            <a href="https://x.ai/legal/privacy-policy" target="_blank">
+              https://x.ai/legal/privacy-policy
+            </a>
+          </li>
+        </ul>
+
+        <p>
+          While we carefully select our AI service providers, we cannot
+          guarantee the same level of protection for information shared with
+          these third parties. By using Resume Bueno, you acknowledge and
+          consent to this sharing of your data with these AI service providers.
+        </p>
+      </div>
+      <div>
+        <h3>AI-Powered Services</h3>
+
+        <p>
+          Resume Bueno utilizes artificial intelligence services provided by
+          third-party companies to power certain features of our Service. By
+          using our Service, you consent to the sharing of your data with these
+          AI service providers as described in our Privacy Policy.
+        </p>
       </div>
 
       <div>
