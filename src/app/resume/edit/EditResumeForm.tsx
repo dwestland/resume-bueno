@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { updateResume } from '../actions'
 import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { SaveIcon, AlertCircle, CheckCircle2 } from 'lucide-react'
 
 // TODO: DRY
 const resumeSchema = z.object({
@@ -30,12 +32,22 @@ interface EditResumeFormProps {
   defaultValues: Partial<ResumeFormValues>
 }
 
+// Define field interface to make TypeScript happy
+interface ResumeField {
+  name: keyof ResumeFormValues
+  label: string
+  rows: number
+  placeholder: string
+  required: boolean
+  description: string
+}
+
 export default function EditResumeForm({ defaultValues }: EditResumeFormProps) {
   const router = useRouter()
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ResumeFormValues>({
     resolver: zodResolver(resumeSchema),
     defaultValues,
@@ -69,118 +81,203 @@ export default function EditResumeForm({ defaultValues }: EditResumeFormProps) {
     }
   }
 
-  const inputFields = [
+  const inputSections: { title: string; fields: ResumeField[] }[] = [
     {
-      name: 'resume' as const,
-      label: 'Resume',
-      rows: 10,
-      placeholder: 'Enter your resume (minimum 500 characters)',
-      required: true,
+      title: 'Essential Information',
+      fields: [
+        {
+          name: 'resume',
+          label: 'Resume',
+          rows: 10,
+          placeholder: 'Enter your resume (minimum 500 characters)',
+          required: true,
+          description:
+            'This is the main content of your resume, including your professional summary and key qualifications.',
+        },
+      ],
     },
     {
-      name: 'education' as const,
-      label: 'Education',
-      rows: 4,
-      placeholder: 'Enter your education history',
+      title: 'Background & Experience',
+      fields: [
+        {
+          name: 'education',
+          label: 'Education',
+          rows: 4,
+          placeholder: 'Enter your education history',
+          required: false,
+          description:
+            'List your degrees, majors, institutions, and graduation dates.',
+        },
+        {
+          name: 'certificates',
+          label: 'Certificates',
+          rows: 3,
+          placeholder: 'List your certificates',
+          required: false,
+          description:
+            'Include relevant certifications, their issuers, and dates.',
+        },
+        {
+          name: 'experience',
+          label: 'Experience',
+          rows: 6,
+          placeholder: 'Describe your work experience',
+          required: false,
+          description:
+            'Detail your job history, roles, responsibilities, and accomplishments.',
+        },
+      ],
     },
     {
-      name: 'certificates' as const,
-      label: 'Certificates',
-      rows: 3,
-      placeholder: 'List your certificates',
+      title: 'Skills & Achievements',
+      fields: [
+        {
+          name: 'skills',
+          label: 'Skills',
+          rows: 4,
+          placeholder: 'List your skills',
+          required: false,
+          description: 'Include technical, soft, and industry-specific skills.',
+        },
+        {
+          name: 'projects',
+          label: 'Projects',
+          rows: 4,
+          placeholder: 'Describe your projects',
+          required: false,
+          description:
+            'Detail significant projects, their scope, and your contributions.',
+        },
+        {
+          name: 'awards',
+          label: 'Awards',
+          rows: 3,
+          placeholder: 'List your awards and achievements',
+          required: false,
+          description:
+            'Include recognitions, honors, and achievements with dates.',
+        },
+      ],
     },
     {
-      name: 'experience' as const,
-      label: 'Experience',
-      rows: 6,
-      placeholder: 'Describe your work experience',
-    },
-    {
-      name: 'skills' as const,
-      label: 'Skills',
-      rows: 4,
-      placeholder: 'List your skills',
-    },
-    {
-      name: 'projects' as const,
-      label: 'Projects',
-      rows: 4,
-      placeholder: 'Describe your projects',
-    },
-    {
-      name: 'awards' as const,
-      label: 'Awards',
-      rows: 3,
-      placeholder: 'List your awards and achievements',
-    },
-    {
-      name: 'training' as const,
-      label: 'Training',
-      rows: 3,
-      placeholder: 'List your training and certifications',
-    },
-    {
-      name: 'volunteering' as const,
-      label: 'Volunteering',
-      rows: 3,
-      placeholder: 'Describe your volunteer work',
-    },
-    {
-      name: 'hobbies_interests' as const,
-      label: 'Hobbies & Interests',
-      rows: 3,
-      placeholder: 'Share your hobbies and interests',
+      title: 'Additional Information',
+      fields: [
+        {
+          name: 'training',
+          label: 'Training',
+          rows: 3,
+          placeholder: 'List your training and certifications',
+          required: false,
+          description:
+            'Mention workshops, bootcamps, and additional training programs.',
+        },
+        {
+          name: 'volunteering',
+          label: 'Volunteering',
+          rows: 3,
+          placeholder: 'Describe your volunteer work',
+          required: false,
+          description: 'Share community involvement and volunteer positions.',
+        },
+        {
+          name: 'hobbies_interests',
+          label: 'Hobbies & Interests',
+          rows: 3,
+          placeholder: 'Share your hobbies and interests',
+          required: false,
+          description:
+            'Include relevant hobbies that demonstrate skills or character.',
+        },
+      ],
     },
   ]
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {inputFields.map((field) => (
-        <div key={field.name} className="space-y-2">
-          <label htmlFor={field.name} className="block text-sm font-medium">
-            {field.label}
-            {field.required && <span className="text-red-500 ml-1">*</span>}
-          </label>
-          <textarea
-            id={field.name}
-            {...register(field.name)}
-            rows={field.rows}
-            placeholder={field.placeholder}
-            className={`w-full px-3 py-2 text-[#0a0a0a] border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              errors[field.name]
-                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                : 'border-gray-300'
-            }`}
-          />
-          {errors[field.name] && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors[field.name]?.message}
-            </p>
-          )}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+      {inputSections.map((section, sectionIndex) => (
+        <div key={sectionIndex} className="space-y-6">
+          <div className="border-b border-gray-200 pb-2">
+            <h2 className="text-xl font-semibold text-gray-800">
+              {section.title}
+            </h2>
+          </div>
+
+          {section.fields.map((field) => (
+            <div key={field.name} className="space-y-2">
+              <div className="flex justify-between items-baseline">
+                <label
+                  htmlFor={field.name}
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  {field.label}
+                  {field.required && (
+                    <span className="text-red-500 ml-1">*</span>
+                  )}
+                </label>
+                {errors[field.name] && (
+                  <p className="text-red-500 text-sm">
+                    {errors[field.name]?.message}
+                  </p>
+                )}
+              </div>
+
+              {field.description && (
+                <p className="text-xs text-gray-500 mb-1">
+                  {field.description}
+                </p>
+              )}
+
+              <textarea
+                id={field.name}
+                {...register(field.name)}
+                rows={field.rows}
+                placeholder={field.placeholder}
+                className={`w-full px-4 py-3 text-[#0a0a0a] border rounded-md shadow-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500 ${
+                  errors[field.name]
+                    ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
+                    : 'border-gray-300'
+                }`}
+              />
+            </div>
+          ))}
         </div>
       ))}
 
-      <div className="pt-4">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {isSubmitting ? 'Saving...' : 'Save Changes'}
-        </button>
-      </div>
-
       {submitStatus && (
         <div
-          className={`mt-4 p-4 rounded-md ${
+          className={`flex items-start gap-3 p-4 rounded-md ${
             submitStatus.type === 'success'
-              ? 'bg-green-50 text-green-800'
-              : 'bg-red-50 text-red-800'
+              ? 'bg-green-50 text-green-800 border border-green-200'
+              : 'bg-red-50 text-red-800 border border-red-200'
           }`}
         >
-          {submitStatus.message}
+          {submitStatus.type === 'success' ? (
+            <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+          ) : (
+            <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+          )}
+          <div>{submitStatus.message}</div>
         </div>
       )}
+
+      <div className="pt-4 border-t border-gray-200">
+        <div className="flex flex-col justify-end space-y-2">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex items-center gap-2"
+            size="lg"
+          >
+            <SaveIcon className="h-4 w-4" />
+            {isSubmitting ? 'Saving...' : 'Save Changes'}
+          </Button>
+          {!isDirty && (
+            <p className="text-xs text-gray-500 text-right">
+              Make changes to enable the save button
+            </p>
+          )}
+        </div>
+      </div>
     </form>
   )
 }
