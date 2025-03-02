@@ -32,8 +32,8 @@ export function UserCredits({ initialCredits, userEmail }: Props) {
   }, [userEmail])
 
   return (
-    <p className="text-base">
+    <span>
       Credits: <span className="text-2xl font-semibold">{credits}</span>
-    </p>
+    </span>
   )
 }

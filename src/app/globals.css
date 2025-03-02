@@ -100,6 +100,10 @@ header {
   outline: 1px solid red;
 }
 
+nav {
+  outline: 1px solid black;
+}
+
 main {
   outline: 1px solid blue;
 }

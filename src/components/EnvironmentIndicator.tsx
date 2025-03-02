@@ -21,7 +21,7 @@ const EnvironmentIndicator: React.FC = () => {
   if (!envIndicator) return null
 
   return (
-    <div className="container">
+    <div className="container max-w-screen-xl">
       <p className="text-xl font-bold text-center text-crimson">
         {envIndicator}
       </p>

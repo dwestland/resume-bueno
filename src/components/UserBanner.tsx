@@ -15,11 +15,11 @@ export async function UserBanner() {
   })
 
   return (
-    <div className="container">
+    <div className="container max-w-screen-xl">
       <div className="flex items-center justify-between">
-        <p className="text-base mb-[-5px]">
+        <span className="text-base mb-[-5px]">
           Hello {session.user?.name || session.user.email}
-        </p>
+        </span>
         <UserCredits
           initialCredits={userRecord?.credits ?? 0}
           userEmail={session.user.email}
