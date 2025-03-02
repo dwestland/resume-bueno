@@ -21,8 +21,10 @@ export function AddResumeDialog({ open, onOpenChange }: AddResumeDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Get Started</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-4xl text-center">
+            Get Started
+          </DialogTitle>
+          <DialogDescription className="text-lg text-center">
             To get started, upload your resume
           </DialogDescription>
         </DialogHeader>
