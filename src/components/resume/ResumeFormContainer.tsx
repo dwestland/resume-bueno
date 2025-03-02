@@ -72,6 +72,7 @@ export function ResumeFormContainer({
   } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isConverting, setIsConverting] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
 
   // Step management
   const [activeStep, setActiveStep] = useState(0)
@@ -97,6 +98,11 @@ export function ResumeFormContainer({
     const file = event.target.files?.[0]
     if (!file) return
 
+    await processUploadedFile(file)
+  }
+
+  // New function to process a file (used by both manual upload and drag/drop)
+  const processUploadedFile = async (file: File) => {
     setIsConverting(true)
     setSubmitStatus({ type: 'success', message: 'Processing your resume...' })
 
@@ -144,11 +150,59 @@ export function ResumeFormContainer({
       })
     } finally {
       setIsConverting(false)
+      setIsDragging(false) // Reset drag state
       // Clear status message after 3 seconds
       setTimeout(() => {
         setSubmitStatus(null)
       }, 3000)
     }
+  }
+
+  // Drag event handlers
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const files = e.dataTransfer.files
+    if (files && files.length > 0) {
+      const file = files[0]
+      // Check if file is PDF or DOCX
+      const fileName = file.name.toLowerCase()
+      const isPdf = file.type === 'application/pdf' || fileName.endsWith('.pdf')
+      const isDocx =
+        file.type ===
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+        fileName.endsWith('.docx')
+
+      if (!isPdf && !isDocx) {
+        setSubmitStatus({
+          type: 'error',
+          message: 'Please upload a PDF or DOCX file.',
+        })
+        setIsDragging(false)
+        return
+      }
+
+      await processUploadedFile(file)
+    }
+    setIsDragging(false)
   }
 
   // Trigger file input click
@@ -283,11 +337,19 @@ export function ResumeFormContainer({
               accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               className="hidden"
             />
-            <button
-              type="button"
-              onClick={triggerFileUpload}
-              className="w-full p-8 border-2 border-dashed border-teal-300 rounded-lg flex flex-col items-center justify-center text-teal-600 hover:bg-teal-50 hover:border-teal-400 transition-all duration-200 group"
-              disabled={isConverting}
+            <div
+              onClick={!isConverting ? triggerFileUpload : undefined}
+              onDragOver={!isConverting ? handleDragOver : undefined}
+              onDragEnter={!isConverting ? handleDragEnter : undefined}
+              onDragLeave={!isConverting ? handleDragLeave : undefined}
+              onDrop={!isConverting ? handleDrop : undefined}
+              className={`w-full p-8 border-2 border-dashed rounded-lg flex flex-col items-center justify-center text-teal-600 transition-all duration-200 group cursor-pointer ${
+                isConverting
+                  ? 'border-gray-300 bg-gray-50 cursor-wait'
+                  : isDragging
+                  ? 'border-teal-500 bg-teal-50'
+                  : 'border-teal-300 hover:bg-teal-50 hover:border-teal-400'
+              }`}
             >
               {isConverting ? (
                 <div className="flex flex-col items-center">
@@ -336,18 +398,25 @@ export function ResumeFormContainer({
                       ></path>
                     </svg>
                   </div>
-                  <span className="font-medium mb-1">Upload your resume</span>
+                  <span className="font-medium mb-1">
+                    {isDragging ? 'Drop your file here' : 'Upload your resume'}
+                  </span>
                   <span className="text-sm text-gray-500">
                     PDF or DOCX (max 10MB)
                   </span>
-                  <div className="mt-2 text-xs text-gray-500 max-w-md text-center">
+                  <div className="mt-2 text-xl text-gray-800 max-w-md text-center">
+                    {isDragging
+                      ? 'Release to upload'
+                      : 'Drag and drop a file here or click to browse'}
+                  </div>
+                  <div className="mt-1 text-xs text-gray-500 max-w-md text-center">
                     Your file will be processed automatically to extract
                     relevant information. Formatting will be preserved as much
                     as possible.
                   </div>
                 </>
               )}
-            </button>
+            </div>
             {submitStatus && (
               <div
                 className={`mt-3 p-3 rounded text-sm ${
