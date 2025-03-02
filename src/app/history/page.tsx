@@ -35,6 +35,7 @@ export default async function HistoryPage({ searchParams }: Props) {
     select: {
       id: true,
       title: true,
+      product_type: true,
       createdAt: true,
     },
   })
@@ -56,14 +57,22 @@ export default async function HistoryPage({ searchParams }: Props) {
         select: {
           id: true,
           title: true,
+          product_type: true,
           createdAt: true,
           job_description: true,
           job_evaluation: true,
           custom_resume: true,
           cover_letter: true,
+          matching_resume: true,
         },
       })
     }
+  }
+
+  // Helper function to format product type for display
+  const formatProductType = (type: string | null) => {
+    if (!type) return ''
+    return type === 'RESUME_PACKAGE' ? 'Resume Package' : 'Matching Resume'
   }
 
   return (
@@ -96,10 +105,15 @@ export default async function HistoryPage({ searchParams }: Props) {
                         : 'bg-white text-[#0a0a0a] hover:bg-gray-50'
                     }`}
                   >
-                    <p className="mb-1 font-semibold">
+                    <p className="mb-1 text-base font-semibold">
                       {resume.title || 'Untitled Resume'}
                     </p>
-                    <p className="text-sm text-gray-600">
+                    {resume.product_type && (
+                      <p className="my-1 text-sm font-medium text-teal-600 mb-1">
+                        {formatProductType(resume.product_type)}
+                      </p>
+                    )}
+                    <p className="mt-1 text-sm text-gray-600">
                       {new Date(resume.createdAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
@@ -121,6 +135,11 @@ export default async function HistoryPage({ searchParams }: Props) {
                 <h2 className="text-2xl font-bold">
                   {selectedResume.title || 'Untitled Resume'}
                 </h2>
+                {selectedResume.product_type && (
+                  <p className="text-sm font-medium text-blue-600 mt-1 mb-1">
+                    {formatProductType(selectedResume.product_type)}
+                  </p>
+                )}
                 <p className="text-gray-600">
                   Created on{' '}
                   {new Date(selectedResume.createdAt).toLocaleDateString(
@@ -148,38 +167,56 @@ export default async function HistoryPage({ searchParams }: Props) {
                   </div>
                 </section>
 
-                <section>
-                  <h3 className="mb-2 text-2xl font-semibold text-primary">
-                    Job Evaluation
-                  </h3>
-                  <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                    <ReactMarkdown>
-                      {selectedResume.job_evaluation || 'Not available'}
-                    </ReactMarkdown>
-                  </div>
-                </section>
+                {/* Show appropriate content based on product type */}
+                {selectedResume.product_type === 'RESUME_PACKAGE' ? (
+                  <>
+                    <section>
+                      <h3 className="mb-2 text-2xl font-semibold text-primary">
+                        Job Evaluation
+                      </h3>
+                      <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
+                        <ReactMarkdown>
+                          {selectedResume.job_evaluation || 'Not available'}
+                        </ReactMarkdown>
+                      </div>
+                    </section>
 
-                <section>
-                  <h3 className="mb-2 text-2xl font-semibold text-primary">
-                    Customized Resume
-                  </h3>
-                  <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                    <ReactMarkdown>
-                      {selectedResume.custom_resume || 'Not available'}
-                    </ReactMarkdown>
-                  </div>
-                </section>
+                    <section>
+                      <h3 className="mb-2 text-2xl font-semibold text-primary">
+                        Customized Resume
+                      </h3>
+                      <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
+                        <ReactMarkdown>
+                          {selectedResume.custom_resume || 'Not available'}
+                        </ReactMarkdown>
+                      </div>
+                    </section>
 
-                <section>
-                  <h3 className="mb-2 text-2xl font-semibold text-primary">
-                    Cover Letter
-                  </h3>
-                  <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                    <ReactMarkdown>
-                      {selectedResume.cover_letter || 'Not available'}
-                    </ReactMarkdown>
-                  </div>
-                </section>
+                    <section>
+                      <h3 className="mb-2 text-2xl font-semibold text-primary">
+                        Cover Letter
+                      </h3>
+                      <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
+                        <ReactMarkdown>
+                          {selectedResume.cover_letter || 'Not available'}
+                        </ReactMarkdown>
+                      </div>
+                    </section>
+                  </>
+                ) : (
+                  <section>
+                    <h3 className="mb-2 text-2xl font-semibold text-primary">
+                      Matching Resume
+                    </h3>
+                    <div className="p-4 overflow-y-auto rounded bg-gray-50">
+                      <div className="prose prose-gray prose-headings:text-gray-800 prose-headings:font-bold prose-p:text-gray-700 prose-strong:text-gray-800 prose-ul:text-gray-700 prose-li:my-0 max-w-none overflow-auto">
+                        <ReactMarkdown>
+                          {selectedResume.matching_resume || 'Not available'}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  </section>
+                )}
               </div>
             </div>
           ) : (
