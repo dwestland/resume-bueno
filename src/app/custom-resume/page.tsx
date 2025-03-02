@@ -8,7 +8,7 @@ import { createCustomizedResume } from './actions'
 import { useSession } from 'next-auth/react'
 import { InsufficientCreditsDialog } from '@/components/InsufficientCreditsDialog'
 import { Button } from '@/components/ui/button'
-import CustomResumeResults from '@/components/CustomResumeResults'
+import ResumePackageResults from '@/components/ResumePackageResults'
 
 // Define custom resume schema using Zod
 const customResumeSchema = z.object({
@@ -370,7 +370,10 @@ export default function CustomResumePage() {
         </div>
 
         {/* Submit Button */}
-        <div className="flex flex-col items-center justify-center space-y-4 mb-8">
+        <div
+          id="button-container"
+          className="flex flex-col items-center justify-center space-y-4 mb-8 bg-red-200"
+        >
           <Button
             type="submit"
             className={`w-full md:w-auto px-8 py-6 text-base font-medium rounded-md shadow-sm ${
@@ -420,9 +423,9 @@ export default function CustomResumePage() {
           )}
         </div>
 
-        {/* Results Section - now using the CustomResumeResults component */}
-        {(currentStep || completedSteps.length > 0) && (
-          <CustomResumeResults
+        {/* Results Section */}
+        {(isGenerating || Object.keys(results).length > 0) && (
+          <ResumePackageResults
             results={results}
             currentStep={currentStep}
             completedSteps={completedSteps}
