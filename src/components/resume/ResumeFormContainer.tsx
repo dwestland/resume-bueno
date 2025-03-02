@@ -20,7 +20,7 @@ const formSections = [
     title: 'Upload Your Resume',
     description: `Your resume is the foundation of your job application. Upload it now to get started.
 
-You can either upload a resume file (PDF, DOCX) or copy and paste your resume text below. This allows Resume Bueno to analyze your experience, skills, and qualifications—ensuring we create a tailored resume that perfectly aligns with your target job.`,
+You can upload your resume file in PDF or DOCX format, or simply copy and paste your resume text below. Resume Bueno will analyze your experience, skills, and qualifications—ensuring we create a tailored resume that perfectly aligns with your target job.`,
     fields: ['resume'],
   },
   {
@@ -112,12 +112,25 @@ export function ResumeFormContainer({
         // Set the resume content from the processed file
         setValue('resume', result.content, { shouldValidate: true })
 
+        // Get file type for better messaging
+        const fileName = file.name.toLowerCase()
+        const isPdf =
+          file.type === 'application/pdf' || fileName.endsWith('.pdf')
+        const isDocx =
+          file.type ===
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+          fileName.endsWith('.docx')
+
+        let successMessage = 'Resume uploaded successfully!'
+        if (isPdf) {
+          successMessage = 'PDF resume converted successfully!'
+        } else if (isDocx) {
+          successMessage = 'DOCX resume converted successfully!'
+        }
+
         setSubmitStatus({
           type: 'success',
-          message:
-            file.type === 'application/pdf'
-              ? 'PDF resume converted to text successfully!'
-              : 'Resume uploaded successfully!',
+          message: successMessage,
         })
       } else {
         throw new Error('Failed to process file')
@@ -126,7 +139,8 @@ export function ResumeFormContainer({
       console.error('Error processing file:', error)
       setSubmitStatus({
         type: 'error',
-        message: 'Failed to process your resume. Please try again.',
+        message:
+          'Failed to process your resume. Please try again or copy and paste your resume text directly.',
       })
     } finally {
       setIsConverting(false)
@@ -266,7 +280,7 @@ export function ResumeFormContainer({
               type="file"
               ref={fileInputRef}
               onChange={handleFileUpload}
-              accept=".txt,.doc,.docx,.pdf"
+              accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               className="hidden"
             />
             <button
@@ -279,7 +293,7 @@ export function ResumeFormContainer({
                 <div className="flex flex-col items-center">
                   <div className="p-3 bg-teal-50 rounded-full mb-3 group-hover:bg-teal-100 transition-colors duration-200">
                     <svg
-                      className="animate-spin h-12 w-12 text-teal-600"
+                      className="w-6 h-6 animate-spin"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -299,47 +313,66 @@ export function ResumeFormContainer({
                       ></path>
                     </svg>
                   </div>
-                  <p className="font-medium text-gray-800 mb-1">
-                    Converting your resume...
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    This may take a few moments
-                  </p>
+                  <span className="font-medium">Processing your resume...</span>
+                  <span className="text-xs text-gray-500 mt-1">
+                    This might take a few moments
+                  </span>
                 </div>
               ) : (
                 <>
                   <div className="p-3 bg-teal-50 rounded-full mb-3 group-hover:bg-teal-100 transition-colors duration-200">
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-12 w-12"
+                      className="w-6 h-6"
                       fill="none"
-                      viewBox="0 0 24 24"
                       stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      />
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                      ></path>
                     </svg>
                   </div>
-                  <p className="font-medium text-gray-800 mb-1">
-                    Click to upload your resume file
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Supports PDF, DOCX formats
-                  </p>
+                  <span className="font-medium mb-1">Upload your resume</span>
+                  <span className="text-sm text-gray-500">
+                    PDF or DOCX (max 10MB)
+                  </span>
+                  <div className="mt-2 text-xs text-gray-500 max-w-md text-center">
+                    Your file will be processed automatically to extract
+                    relevant information. Formatting will be preserved as much
+                    as possible.
+                  </div>
                 </>
               )}
             </button>
-            <div className="flex items-center my-4">
-              <div className="flex-grow h-px bg-gray-200"></div>
-              <p className="mx-4 text-sm font-medium text-gray-500">OR</p>
-              <div className="flex-grow h-px bg-gray-200"></div>
-            </div>
+            {submitStatus && (
+              <div
+                className={`mt-3 p-3 rounded text-sm ${
+                  submitStatus.type === 'success'
+                    ? 'bg-green-50 text-green-700'
+                    : 'bg-red-50 text-red-700'
+                }`}
+              >
+                {submitStatus.message}
+                {submitStatus.type === 'error' && (
+                  <div className="mt-1 text-xs">
+                    Tip: If your file format isn&apos;t being recognized, try
+                    copying and pasting the content directly.
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
+
+        <div className="flex items-center my-4">
+          <div className="flex-grow h-px bg-gray-200"></div>
+          <p className="mx-4 text-sm font-medium text-gray-500">OR</p>
+          <div className="flex-grow h-px bg-gray-200"></div>
+        </div>
 
         {displayMode === 'standard' ? (
           // Standard display - show all fields (this mode is no longer the focus)

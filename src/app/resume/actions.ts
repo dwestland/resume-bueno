@@ -4,6 +4,27 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 // Import pdf-parse for PDF parsing (only runs on the server)
 import pdfParse from 'pdf-parse'
+// Import mammoth for DOCX parsing
+import mammoth from 'mammoth'
+
+// Common text cleanup function to use for both PDF and DOCX
+function cleanupResumeText(text: string): string {
+  return (
+    text
+      // Remove leading and trailing whitespace
+      .trim()
+      // Remove multiple consecutive empty lines at the beginning
+      .replace(/^(\s*\n)+/, '')
+      // Convert multiple consecutive empty lines to just double line breaks throughout the document
+      .replace(/\n{3,}/g, '\n\n')
+      // Replace multiple spaces with a single space
+      .replace(/ {2,}/g, ' ')
+      // Remove excessive indentation at the start of lines
+      .replace(/^[ \t]+(.+)/gm, '$1')
+      // Preserve paragraph breaks
+      .replace(/\n\s*\n/g, '\n\n')
+  )
+}
 
 // New server action to process uploaded resume files
 export async function processResumeFile(
@@ -16,13 +37,95 @@ export async function processResumeFile(
       throw new Error('No file uploaded')
     }
 
+    const fileName = file.name.toLowerCase()
     const fileType = file.type
     const buffer = await file.arrayBuffer()
 
+    // Determine file type by both MIME type and extension
+    const isPdf = fileType === 'application/pdf' || fileName.endsWith('.pdf')
+    const isDocx =
+      fileType ===
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+      fileName.endsWith('.docx')
+
     // If it's a PDF, convert it to markdown
-    if (fileType === 'application/pdf') {
+    if (isPdf) {
+      console.log('Processing PDF file')
       const markdown = await convertPdfToMarkdown(Buffer.from(buffer))
       return { content: markdown, success: true }
+    }
+    // If it's a DOCX, use mammoth to extract text
+    else if (isDocx) {
+      console.log('Processing DOCX file')
+      try {
+        // Convert ArrayBuffer to Buffer for mammoth to process correctly
+        const docxBuffer = Buffer.from(buffer)
+
+        // Use mammoth to convert DOCX to text
+        const result = await mammoth.extractRawText({
+          buffer: docxBuffer, // Use 'buffer' option instead of 'arrayBuffer'
+        })
+
+        let text = result.value || ''
+
+        // Apply common text cleanup
+        text = cleanupResumeText(text)
+
+        // Keep the structure but remove Markdown formatting
+        let formattedText = text
+          // Preserve list structure but don't add Markdown syntax
+          .replace(/^(\d+)[\.\)]\s+(.+)/gm, '$1. $2')
+          .replace(/^[•\-\*]\s+(.+)/gm, '• $1')
+          // Preserve job titles and companies without bold markdown
+          // Preserve dates without italic markdown
+          // Format phone numbers and emails for better visibility
+          .replace(
+            /\b(\+?\d{1,3}[-.\s]?\(?\d{1,3}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9})\b/g,
+            'Phone: $1'
+          )
+          .replace(
+            /\b([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\b/g,
+            'Email: $1'
+          )
+
+        // Add proper section headers if they don't exist, but in plain text
+        if (
+          !formattedText.includes('EXPERIENCE') &&
+          !formattedText.match(/WORK\s+EXPERIENCE/i)
+        ) {
+          // Look for patterns that suggest job experience entries
+          const experiencePattern =
+            /\b((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[\s\.\-]+\d{4})\s+(?:to|-)\s+((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[\s\.\-]+\d{4}|Present)/i
+
+          if (experiencePattern.test(formattedText)) {
+            // Insert a header before the first match, as plain text
+            formattedText = formattedText.replace(
+              experiencePattern,
+              'EXPERIENCE\n\n$&'
+            )
+          }
+        }
+
+        // Add a summary section if it doesn't exist, as plain text
+        if (
+          !formattedText.includes('SUMMARY') &&
+          !formattedText.includes('PROFILE')
+        ) {
+          const firstParagraphMatch = formattedText.match(/^(.+\n\n)/)
+          if (firstParagraphMatch && firstParagraphMatch[1].length > 100) {
+            formattedText = formattedText.replace(
+              firstParagraphMatch[0],
+              'SUMMARY\n\n' + firstParagraphMatch[0]
+            )
+          }
+        }
+
+        console.log('DOCX successfully converted to plain text')
+        return { content: formattedText, success: true }
+      } catch (docxError) {
+        console.error('Error processing DOCX with mammoth:', docxError)
+        throw new Error('Failed to process DOCX file')
+      }
     }
 
     // For other file types, convert the ArrayBuffer to text
@@ -30,34 +133,37 @@ export async function processResumeFile(
     return { content, success: true }
   } catch (error) {
     console.error('Error processing resume file:', error)
-    return { content: '', success: false }
+    return {
+      content:
+        'Failed to process file. Please try copying and pasting your resume content instead.',
+      success: false,
+    }
   }
 }
 
-// New server action to convert PDF to markdown
+// New server action to convert PDF to plain text (renamed function)
 export async function convertPdfToMarkdown(pdfBuffer: Buffer): Promise<string> {
   try {
     // Parse the PDF file
     const data = await pdfParse(pdfBuffer)
-    const text = data.text || ''
+    let text = data.text || ''
 
-    // Basic markdown formatting
-    const markdown = text
-      // Preserve paragraph breaks
-      .replace(/\n\s*\n/g, '\n\n')
-      // Convert lines that look like headings
-      .replace(/^(.+)[\r\n]+([=-]{2,})[\r\n]+/gm, (_, p1, p2) =>
-        p2[0] === '=' ? `# ${p1}\n\n` : `## ${p1}\n\n`
-      )
-      // Convert lines that start with numbers to list items
+    // Apply common text cleanup
+    text = cleanupResumeText(text)
+
+    // Basic text formatting without Markdown
+    const formattedText = text
+      // Preserve lines that look like headings but don't add Markdown
+      .replace(/^(.+)[\r\n]+([=-]{2,})[\r\n]+/gm, (_, p1) => `${p1}\n\n`)
+      // Preserve list structure
       .replace(/^(\d+)[\.\)]\s+(.+)/gm, '$1. $2')
-      // Convert lines that start with bullets to list items
-      .replace(/^[•\-\*]\s+(.+)/gm, '- $1')
+      // Convert lines that start with bullets to consistent bullet format
+      .replace(/^[•\-\*]\s+(.+)/gm, '• $1')
 
-    return markdown
+    return formattedText
   } catch (error) {
-    console.error('Error converting PDF to markdown:', error)
-    throw new Error('Failed to convert PDF to markdown')
+    console.error('Error converting PDF to text:', error)
+    throw new Error('Failed to process PDF file')
   }
 }
 
