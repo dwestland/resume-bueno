@@ -474,6 +474,7 @@ export async function createCustomizedResume(
               job_evaluation: evaluation,
               custom_resume: customResume,
               cover_letter: coverLetter,
+              product_type: 'RESUME_PACKAGE',
               users: {
                 create: {
                   user: {
@@ -527,6 +528,209 @@ export async function createCustomizedResume(
         error instanceof Error
           ? error.message
           : 'Failed to create custom resume',
+    }
+  }
+}
+
+// Helper function to generate the matching resume content
+async function generateMatchingResume(
+  jobDescription: string,
+  userData: {
+    resume?: string | null
+    awards?: string | null
+    certificates?: string | null
+    education?: string | null
+    experience?: string | null
+    hobbies_interests?: string | null
+    projects?: string | null
+    skills?: string | null
+    training?: string | null
+    volunteering?: string | null
+  }
+): Promise<string> {
+  if (!jobDescription) {
+    throw new CustomResumeError('Job description is required')
+  }
+
+  if (!userData.resume) {
+    throw new CustomResumeError('User resume data is required')
+  }
+
+  // Create a prompt for the matching resume
+  const prompt = `
+You are a professional resume writer who specializes in creating tailored resumes that match specific job descriptions.
+
+JOB DESCRIPTION:
+${jobDescription}
+
+USER DATA:
+${Object.entries(userData)
+  .filter(([, value]) => value)
+  .map(([key, value]) => `${key.toUpperCase()}: ${value}`)
+  .join('\n\n')}
+
+INSTRUCTIONS:
+1. Create a professionally formatted resume in markdown format tailored specifically for this job description.
+2. Use the user's existing experience, skills, and other data but optimize it for this specific job.
+3. Focus on highlighting the most relevant experiences and skills that match the job requirements.
+4. The resume should be well-structured with clear sections for Summary, Experience, Education, Skills, and other relevant categories.
+5. Use bullet points to highlight achievements and responsibilities.
+6. Include only the most relevant information from the user data.
+7. Format dates, job titles, and company names consistently.
+8. Do not make up any information - only use what is provided.
+9. Do not include any introduction or explanation text in your response, just the resume content in markdown.
+10. The resume should be formatted to print well on a standard page.
+11. Use proper markdown syntax:
+   - Use # for main headings (e.g., # Summary)
+   - Use ## for subheadings
+   - Use **bold** for important text
+   - Use * or - for bullet points
+   - Use proper line breaks and spacing
+
+Please create a tailored resume for this job position using the provided user data:
+`
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: openaiModel,
+      messages: [
+        {
+          role: 'system',
+          content:
+            'You are a professional resume writer who creates tailored resumes. Always use proper markdown formatting with headings (#, ##), bold text (**bold**), and bullet points (- or *). Ensure proper spacing and structure.',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+      temperature: 0.7,
+    })
+
+    // Ensure the response is properly formatted markdown
+    let content =
+      completion.choices[0].message.content ||
+      'Failed to generate matching resume.'
+
+    // Make sure headings, bold text, and lists are properly formatted
+    content = content.replace(/^(#+)\s*(.+)$/gm, '$1 $2') // Ensure space after # symbols
+    content = content.replace(/\*\*(.+?)\*\*/g, '**$1**') // Ensure bold formatting
+
+    return content
+  } catch (error) {
+    console.error('Error generating matching resume:', error)
+    throw new CustomResumeError(
+      'Failed to generate matching resume. Please try again later.'
+    )
+  }
+}
+
+export type ProductType = 'RESUME_PACKAGE' | 'MATCHING_RESUME'
+
+// Server action to create a matching resume
+export async function createMatchingResume(
+  jobDescription: string,
+  userEmail: string
+): Promise<CustomResumeResponse> {
+  try {
+    // Fetch user data from the database
+    const user = await prisma.user.findUnique({
+      where: {
+        email: userEmail,
+      },
+      select: {
+        id: true,
+        credits: true,
+        resume: true,
+        awards: true,
+        certificates: true,
+        education: true,
+        experience: true,
+        hobbies_interests: true,
+        projects: true,
+        skills: true,
+        training: true,
+        volunteering: true,
+      },
+    })
+
+    if (!user) {
+      return {
+        success: false,
+        data: '',
+        error: 'User not found',
+      }
+    }
+
+    // Check if user has enough credits
+    const REQUIRED_CREDITS = 1
+    if (user.credits < REQUIRED_CREDITS) {
+      return {
+        success: false,
+        data: '',
+        error: 'Insufficient credits. Please purchase more credits.',
+        errorType: 'INSUFFICIENT_CREDITS',
+        credits: user.credits,
+      }
+    }
+
+    // Generate the matching resume
+    const matchingResume = await generateMatchingResume(jobDescription, {
+      resume: user.resume,
+      awards: user.awards,
+      certificates: user.certificates,
+      education: user.education,
+      experience: user.experience,
+      hobbies_interests: user.hobbies_interests,
+      projects: user.projects,
+      skills: user.skills,
+      training: user.training,
+      volunteering: user.volunteering,
+    })
+
+    // Generate a title for the matching resume
+    const title = await generateTitle(jobDescription)
+
+    // Update user credits
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        credits: user.credits - REQUIRED_CREDITS,
+      },
+    })
+
+    // Save the custom resume to the database
+    await prisma.customResume.create({
+      data: {
+        job_description: jobDescription,
+        matching_resume: matchingResume,
+        title: title,
+        product_type: 'MATCHING_RESUME',
+        users: {
+          create: [
+            {
+              userId: user.id,
+            },
+          ],
+        },
+      },
+    })
+
+    return {
+      success: true,
+      data: matchingResume,
+      credits: updatedUser.credits,
+    }
+  } catch (error) {
+    console.error('Error creating matching resume:', error)
+    return {
+      success: false,
+      data: '',
+      error:
+        error instanceof Error ? error.message : 'An unknown error occurred',
+      errorType: 'OTHER',
     }
   }
 }

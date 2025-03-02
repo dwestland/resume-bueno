@@ -48,6 +48,7 @@ model User {
   // Business fields
   credits           Int             @default(20)
   customResumes     UserCustomResume[]
+  deleted_at        DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -125,6 +126,13 @@ model Message {
   @@map("message")
 }
 
+enum ProductType {
+  RESUME_PACKAGE
+  MATCHING_RESUME
+
+  @@map("product_type")
+}
+
 model CustomResume {
   id                  Int               @id @default(autoincrement())
   title               String?
@@ -133,6 +141,8 @@ model CustomResume {
   cover_letter        String?
   job_evaluation      String?
   employer_evaluation String?
+  matching_resume     String?
+  product_type        ProductType?
   
   // Relation fields
   users              UserCustomResume[]
