@@ -6,6 +6,9 @@ export default function Footer() {
     <footer className="container p-4 mx-auto">
       <div className="flex flex-col py-6 items-center">
         <div className="flex flex-wrap justify-center space-x-4 mb-4">
+          <Link href="/about-us" className="hover:underline">
+            About Us
+          </Link>
           <Link href="/privacy-policy" className="hover:underline">
             Privacy Policy
           </Link>

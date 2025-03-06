@@ -97,7 +97,7 @@ export default function ClientHome() {
       <div id="opening-page" className="h-[calc(100vh-4rem)] flex flex-col">
         {/* Hero Section - Exactly 50% height */}
         <div id="hero-section" className="flex flex-col md:flex-row h-[50%]">
-          <div id="hero-text" className="w-full pt-4 pb-4 md:w-1/2 md:pb-0">
+          <div id="hero-text" className="w-full md:w-1/2 pt-4 pb-4 md:pb-0">
             <div className="mx-auto w-[80%]">
               <p
                 className="text-2xl font-semibold tracking-tight text-violet-800"
@@ -132,7 +132,7 @@ export default function ClientHome() {
 
           <div
             id="hero-image"
-            className="relative w-full h-72 md:w-1/2 md:h-auto min-h-[20rem]"
+            className="relative w-full h-72 md:w-1/2 md:h-auto min-h-[20rem] hidden md:block"
           >
             <Image
               src="/images/at-work.svg"
