@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -23,11 +17,28 @@ model Todo {
   @@map("todo")
 }
 
+enum SubscriptionPlan {
+  MONTHLY
+  YEARLY
+  NONE
+
+  @@map("subscription_plan")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  CANCELED
+  PAST_DUE
+
+  @@map("subscription_status") 
+}
+
 // NextAuth
 model User {
-  id                String          @id @default(cuid())
+  id                String           @id @default(cuid())
   name              String?
-  email             String          @unique
+  email             String           @unique
   emailVerified     DateTime?
   image             String?
   accounts          Account[]
@@ -46,9 +57,18 @@ model User {
   training          String?
   volunteering      String?
   // Business fields
-  credits           Int             @default(20)
-  customResumes     UserCustomResume[]
-  deleted_at        DateTime?
+  credits             Int               @default(20)
+  stripe_customer_id  String?           @unique
+  // Subscription fields
+  subscription_plan   SubscriptionPlan  @default(NONE)
+  subscription_status SubscriptionStatus @default(INACTIVE)
+  subscription_start  DateTime?
+  subscription_end    DateTime?
+  subscription_id     String?           @unique
+  // Relationships
+  customResumes      UserCustomResume[]
+  purchases          Purchase[]
+  deleted_at         DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -126,6 +146,32 @@ model Message {
   @@map("message")
 }
 
+enum PurchaseType {
+  SUBSCRIPTION_MONTHLY
+  SUBSCRIPTION_YEARLY
+  CREDIT_PURCHASE
+
+  @@map("purchase_type")
+}
+
+model Purchase {
+  id                  String        @id @default(cuid())
+  user_id             String
+  amount              Float
+  currency            String        @default("usd")
+  purchase_type       PurchaseType
+  credits_added       Int           @default(0)
+  stripe_session_id   String?       @unique
+  stripe_invoice_id   String?
+  status              String        @default("pending") // pending, completed, failed
+  user                User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  @@map("purchase")
+}
+
 enum ProductType {
   RESUME_PACKAGE
   MATCHING_RESUME
@@ -140,7 +186,6 @@ model CustomResume {
   custom_resume       String?
   cover_letter        String?
   job_evaluation      String?
-  employer_evaluation String?
   matching_resume     String?
   product_type        ProductType?
   
