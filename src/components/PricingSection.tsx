@@ -37,11 +37,11 @@ export default function PricingSection() {
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>AI-powered resume analysis</span>
+              <span>Match your resume to the job description</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Custom cover letters</span>
+              <span>Job match and employer analysis</span>
             </li>
           </ul>
 
@@ -73,19 +73,19 @@ export default function PricingSection() {
           <ul className="mb-8 space-y-4">
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Get started instantly</span>
+              <span>200 resume matches or job analysis per month</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>20 free credits upon signup</span>
+              <span>200 matches or job analysis per month</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>AI-powered resume analysis</span>
+              <span>Advanced job match scoring</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Custom cover letters</span>
+              <span>Priority support</span>
             </li>
           </ul>
 
@@ -115,19 +115,25 @@ export default function PricingSection() {
           <ul className="mb-8 space-y-4">
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Get started instantly</span>
+              <span>
+                Save <strong>$74.40</strong> for the year
+              </span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>20 free credits upon signup</span>
+              <span>Same feature as monthly plan</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>AI-powered resume analysis</span>
+              <span>200 matches or analysis per month for 12 months</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Custom cover letters</span>
+              <span>Personalized resume feedback</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
+              <span>Priority support</span>
             </li>
           </ul>
 

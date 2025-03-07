@@ -116,7 +116,7 @@ export default function ClientHome() {
                 <br />
                 Bueno
               </h1>
-              <h2 className="mt-1 text-4xl">
+              <h2 className="mt-1 text-4xl text-teal-700">
                 Resume&nbsp;+&nbsp;Job Description
                 <br />
                 &nbsp;=&nbsp;Resume Bueno
