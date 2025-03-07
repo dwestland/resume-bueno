@@ -83,7 +83,8 @@ h3 {
   margin: 1rem 0;
 }
 
-p {
+p,
+li {
   @apply text-xl;
   margin: 0.75rem 0;
 }

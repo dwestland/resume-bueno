@@ -47,7 +47,7 @@ export default function PricingSection() {
 
           <div className="absolute w-full px-8 bottom-8 left-0">
             <Button className="w-full" asChild>
-              <Link href="/checkout">Get Started</Link>
+              <Link href="/auth/signin">Get Started</Link>
             </Button>
           </div>
         </div>
@@ -94,14 +94,14 @@ export default function PricingSection() {
               className="w-full bg-gradient-to-r from-violet-600 to-violet-500 hover:from-violet-700 hover:to-violet-600 shadow-md"
               asChild
             >
-              <Link href="/checkout">Choose Plan</Link>
+              <Link href="/checkout-page?plan=monthly">Choose Plan</Link>
             </Button>
           </div>
         </div>
 
-        {/* Yearly Plan */}
+        {/* Year Plan */}
         <div className="relative p-8 bg-white border border-gray-200 shadow-md h-[580px] rounded-2xl hover:shadow-lg transition-shadow duration-300">
-          <h3 className="text-xl font-bold text-center mb-2">Yearly</h3>
+          <h3 className="text-xl font-bold text-center mb-2">Year</h3>
           <div className="flex items-center justify-center gap-1 mb-1 mt-6">
             <span className="text-4xl font-bold">$45</span>
             <span className="text-gray-600">/year</span>
@@ -133,7 +133,7 @@ export default function PricingSection() {
 
           <div className="absolute w-full px-8 bottom-8 left-0">
             <Button className="w-full" asChild>
-              <Link href="/checkout">Best Value</Link>
+              <Link href="/checkout-page?plan=yearly">Best Value</Link>
             </Button>
           </div>
         </div>
