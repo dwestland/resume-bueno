@@ -1,22 +1,58 @@
 import { auth } from '@/auth'
-import Image from 'next/image'
+import { prisma } from '@/lib/prisma'
+import { SubscriptionManagement } from '@/components/settings/SubscriptionManagement'
+import { UserProfile } from '@/components/settings/UserProfile'
 
-export default async function UserInfo() {
+export default async function SettingsPage() {
   const session = await auth()
+
+  if (!session?.user?.email) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-8">
+          <h1 className="text-3xl font-bold mb-4 text-gray-800">Settings</h1>
+          <div className="p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-md">
+            <p className="text-amber-700">
+              Please sign in to access your settings.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: {
+      name: true,
+      email: true,
+      image: true,
+      credits: true,
+      subscription_plan: true,
+      subscription_status: true,
+      subscription_end: true,
+    },
+  })
+
+  if (!user) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-8">
+          <h1 className="text-3xl font-bold mb-4 text-gray-800">Settings</h1>
+          <div className="p-4 bg-red-50 border-l-4 border-red-400 rounded-r-md">
+            <p className="text-red-700">User not found.</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="p-4">
-      <h1> Test Protected Path - User Info</h1>
-      <p> User signed in with name: {session?.user?.name}</p>
-      <p> User signed in with email: {session?.user?.email}</p>
-      {session?.user?.image && (
-        <Image
-          src={session.user.image}
-          width={48}
-          height={48}
-          alt={session.user.name ?? 'Avatar'}
-          style={{ borderRadius: '50%' }}
-        />
-      )}
+    <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6">
+      <div className="space-y-8">
+        <UserProfile user={user} />
+        <SubscriptionManagement user={user} />
+      </div>
     </div>
   )
 }
