@@ -2,10 +2,6 @@
 
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
-// Import pdf-parse for PDF parsing (only runs on the server)
-import pdfParse from 'pdf-parse'
-// Import mammoth for DOCX parsing
-import mammoth from 'mammoth'
 
 // Common text cleanup function to use for both PDF and DOCX
 function cleanupResumeText(text: string): string {
@@ -17,12 +13,12 @@ function cleanupResumeText(text: string): string {
       .replace(/^(\s*\n)+/, '')
       // Convert multiple consecutive empty lines to just double line breaks throughout the document
       .replace(/\n{3,}/g, '\n\n')
-      // Replace multiple spaces with a single space
-      .replace(/ {2,}/g, ' ')
-      // Remove excessive indentation at the start of lines
-      .replace(/^[ \t]+(.+)/gm, '$1')
-      // Preserve paragraph breaks
-      .replace(/\n\s*\n/g, '\n\n')
+      // Replace multiple spaces with a single space (but preserve line breaks)
+      .replace(/[^\S\n]+/g, ' ')
+      // Remove spaces at the beginning of lines
+      .replace(/^\s+/gm, '')
+      // Remove spaces at the end of lines
+      .replace(/\s+$/gm, '')
   )
 }
 
@@ -32,110 +28,34 @@ export async function processResumeFile(
 ): Promise<{ content: string; success: boolean }> {
   try {
     const file = formData.get('file') as File
-
     if (!file) {
       throw new Error('No file uploaded')
     }
 
+    const buffer = Buffer.from(await file.arrayBuffer())
     const fileName = file.name.toLowerCase()
-    const fileType = file.type
-    const buffer = await file.arrayBuffer()
 
-    // Determine file type by both MIME type and extension
-    const isPdf = fileType === 'application/pdf' || fileName.endsWith('.pdf')
-    const isDocx =
-      fileType ===
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-      fileName.endsWith('.docx')
-
-    // If it's a PDF, convert it to markdown
-    if (isPdf) {
-      console.log('Processing PDF file')
-      const markdown = await convertPdfToMarkdown(Buffer.from(buffer))
-      return { content: markdown, success: true }
-    }
-    // If it's a DOCX, use mammoth to extract text
-    else if (isDocx) {
-      console.log('Processing DOCX file')
-      try {
-        // Convert ArrayBuffer to Buffer for mammoth to process correctly
-        const docxBuffer = Buffer.from(buffer)
-
-        // Use mammoth to convert DOCX to text
-        const result = await mammoth.extractRawText({
-          buffer: docxBuffer, // Use 'buffer' option instead of 'arrayBuffer'
-        })
-
-        let text = result.value || ''
-
-        // Apply common text cleanup
-        text = cleanupResumeText(text)
-
-        // Keep the structure but remove Markdown formatting
-        let formattedText = text
-          // Preserve list structure but don't add Markdown syntax
-          .replace(/^(\d+)[\.\)]\s+(.+)/gm, '$1. $2')
-          .replace(/^[•\-\*]\s+(.+)/gm, '• $1')
-          // Preserve job titles and companies without bold markdown
-          // Preserve dates without italic markdown
-          // Format phone numbers and emails for better visibility
-          .replace(
-            /\b(\+?\d{1,3}[-.\s]?\(?\d{1,3}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9})\b/g,
-            'Phone: $1'
-          )
-          .replace(
-            /\b([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\b/g,
-            'Email: $1'
-          )
-
-        // Add proper section headers if they don't exist, but in plain text
-        if (
-          !formattedText.includes('EXPERIENCE') &&
-          !formattedText.match(/WORK\s+EXPERIENCE/i)
-        ) {
-          // Look for patterns that suggest job experience entries
-          const experiencePattern =
-            /\b((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[\s\.\-]+\d{4})\s+(?:to|-)\s+((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[\s\.\-]+\d{4}|Present)/i
-
-          if (experiencePattern.test(formattedText)) {
-            // Insert a header before the first match, as plain text
-            formattedText = formattedText.replace(
-              experiencePattern,
-              'EXPERIENCE\n\n$&'
-            )
-          }
-        }
-
-        // Add a summary section if it doesn't exist, as plain text
-        if (
-          !formattedText.includes('SUMMARY') &&
-          !formattedText.includes('PROFILE')
-        ) {
-          const firstParagraphMatch = formattedText.match(/^(.+\n\n)/)
-          if (firstParagraphMatch && firstParagraphMatch[1].length > 100) {
-            formattedText = formattedText.replace(
-              firstParagraphMatch[0],
-              'SUMMARY\n\n' + firstParagraphMatch[0]
-            )
-          }
-        }
-
-        console.log('DOCX successfully converted to plain text')
-        return { content: formattedText, success: true }
-      } catch (docxError) {
-        console.error('Error processing DOCX with mammoth:', docxError)
-        throw new Error('Failed to process DOCX file')
-      }
+    let text = ''
+    if (fileName.endsWith('.pdf')) {
+      const pdfParse = (await import('pdf-parse')).default
+      const data = await pdfParse(buffer)
+      text = data.text
+    } else if (fileName.endsWith('.docx')) {
+      const mammoth = (await import('mammoth')).default
+      const result = await mammoth.extractRawText({ buffer })
+      text = result.value
+    } else {
+      throw new Error('Unsupported file type')
     }
 
-    // For other file types, convert the ArrayBuffer to text
-    const content = await new Response(buffer).text()
-    return { content, success: true }
+    return {
+      content: cleanupResumeText(text),
+      success: true,
+    }
   } catch (error) {
     console.error('Error processing resume file:', error)
     return {
-      content:
-        'Failed to process file. Please try copying and pasting your resume content instead.',
+      content: '',
       success: false,
     }
   }
@@ -145,6 +65,7 @@ export async function processResumeFile(
 export async function convertPdfToMarkdown(pdfBuffer: Buffer): Promise<string> {
   try {
     // Parse the PDF file
+    const pdfParse = (await import('pdf-parse')).default
     const data = await pdfParse(pdfBuffer)
     let text = data.text || ''
 
@@ -274,5 +195,46 @@ export async function getResumeProgress() {
   } catch (error) {
     console.error('Error fetching resume progress:', error)
     return null
+  }
+}
+
+export async function updateResumeData(formData: {
+  resume: string
+  education?: string
+  certificates?: string
+  experience?: string
+  skills?: string
+  projects?: string
+  awards?: string
+  training?: string
+  volunteering?: string
+  hobbies_interests?: string
+}) {
+  try {
+    const session = await auth()
+    if (!session?.user?.email) {
+      throw new Error('Not authenticated')
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { email: session.user.email },
+      data: {
+        resume: formData.resume,
+        education: formData.education,
+        certificates: formData.certificates,
+        experience: formData.experience,
+        skills: formData.skills,
+        projects: formData.projects,
+        awards: formData.awards,
+        training: formData.training,
+        volunteering: formData.volunteering,
+        hobbies_interests: formData.hobbies_interests,
+      },
+    })
+
+    return { success: true, data: updatedUser }
+  } catch (error) {
+    console.error('Error updating resume:', error)
+    return { success: false, error: 'Failed to update resume' }
   }
 }

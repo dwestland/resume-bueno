@@ -108,22 +108,22 @@ export default function ClientHome() {
               >
                 BETA
               </p>
-              <h1
+              <h2
                 className="text-8xl mt-0 leading-[5.5rem]"
                 style={{ marginLeft: '-5px' }}
               >
                 Resume
                 <br />
                 Bueno
-              </h1>
-              <h2 className="mt-1 text-4xl text-teal-700">
+              </h2>
+              <h1 className="mt-1 text-4xl text-teal-700">
                 Resume&nbsp;+&nbsp;Job Description
                 <br />
                 &nbsp;=&nbsp;Resume Bueno
-              </h2>
+              </h1>
             </div>
 
-            <p className="mt-4 text-left">
+            <p className="mt-4 text-left text">
               Upload your resume, add a job description, and let Resume Bueno do
               the rest. Get a match score, targeted resume improvements, and a
               polished cover letter, instantly.
