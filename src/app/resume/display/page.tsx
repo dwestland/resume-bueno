@@ -80,7 +80,7 @@ export default async function DisplayResumePage() {
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-8">
         <div className="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
           <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-            <FileText className="h-6 w-6 text-violet-600" />
+            <FileText className="h-6 w-6 text-teal-500" />
             Resume Information
           </h1>
 

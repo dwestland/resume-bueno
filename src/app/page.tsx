@@ -116,7 +116,7 @@ export default function ClientHome() {
                 <br />
                 Bueno
               </h2>
-              <h1 className="mt-1 text-4xl text-teal-700">
+              <h1 className="mt-1 text-4xl text-teal-600">
                 Resume&nbsp;+&nbsp;Job Description
                 <br />
                 &nbsp;=&nbsp;Resume Bueno
@@ -132,7 +132,7 @@ export default function ClientHome() {
 
           <div
             id="hero-image"
-            className="relative w-full h-72 md:w-1/2 md:h-auto min-h-[20rem] hidden md:block"
+            className="relative w-full h-72 md:w-1/2 md:h-auto min-h-[20rem] hidden md:block mt-6"
           >
             <Image
               src="/images/at-work.svg"
@@ -163,9 +163,12 @@ export default function ClientHome() {
                 </div>
               </div>
             ) : hasResume ? (
-              <Button size="lg" className="text-xl">
-                <Link href="/custom-resume">Make Resume Package</Link>
-              </Button>
+              <div className="flex flex-col items-center">
+                <Button size="lg" className="text-xl">
+                  <Link href="/custom-resume">Make Resume Package</Link>
+                </Button>
+                <h2 className="mt-4 mb-8">Let&apos;s go get that job!</h2>
+              </div>
             ) : (
               <div className="flex flex-col items-center">
                 <h2 className="mt-4 mb-8">Step 1. Upload Your Resume</h2>

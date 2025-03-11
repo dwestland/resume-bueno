@@ -132,7 +132,7 @@ export default function CustomResumePage() {
           />
         </svg>
       ),
-      title: 'Professional Title',
+      title: 'Package Title',
       description: 'Optimized title for your application',
     },
   }
