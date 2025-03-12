@@ -16,10 +16,7 @@ export default function ClientHome() {
   const [isLoading, setIsLoading] = useState(true)
   const [showResumeDialog, setShowResumeDialog] = useState(false)
   const [resumeProgress, setResumeProgress] = useState<{
-    completedCount: number
-    totalFields: number
     completionPercentage: number
-    fields?: Record<string, unknown>
   } | null>(null)
 
   useEffect(() => {
@@ -37,10 +34,7 @@ export default function ClientHome() {
         const progress = await getResumeProgress()
         if (progress) {
           setResumeProgress({
-            completedCount: progress.completedCount,
-            totalFields: progress.totalFields,
             completionPercentage: progress.completionPercentage,
-            fields: progress.fields,
           })
         }
       }
@@ -185,10 +179,7 @@ export default function ClientHome() {
       {isLoggedIn && resumeProgress && (
         <div className="w-full my-12 px-4 transition-all">
           <ResumeProgress
-            completedCount={resumeProgress.completedCount}
-            totalFields={resumeProgress.totalFields}
             completionPercentage={resumeProgress.completionPercentage}
-            fields={resumeProgress.fields}
           />
         </div>
       )}
