@@ -62,12 +62,6 @@ export default function Header() {
               >
                 Make Custom Resume
               </Link>
-              <Link
-                href="/samples"
-                className="font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
-              >
-                Samples
-              </Link>
             </>
           )}
         </div>
