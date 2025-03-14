@@ -145,55 +145,6 @@ async function generateCustomizedResume(
     
     Every suggestion must incorporate information from the additional qualifications section that isn't already prominent in the resume.`
 
-    // const prompt = `Analyze this resume against the job description. First, extract and list ALL qualifications, technologies, skills, and keywords mentioned in BOTH documents. Pay close attention to all words in the resume no matter how insignificant before comparing it with the job description.
-
-    // RESUME:
-    // ${resume}
-
-    // JOB DESCRIPTION:
-    // ${jobDescription}
-
-    // ADDITIONAL QUALIFICATIONS:
-
-    // Education:
-    // ${additionalFields.education || 'Not provided'}
-
-    // Experience:
-    // ${additionalFields.experience || 'Not provided'}
-
-    // Skills:
-    // ${additionalFields.skills || 'Not provided'}
-
-    // Certificates:
-    // ${additionalFields.certificates || 'Not provided'}
-
-    // Projects:
-    // ${additionalFields.projects || 'Not provided'}
-
-    // Awards:
-    // ${additionalFields.awards || 'Not provided'}
-
-    // Training:
-    // ${additionalFields.training || 'Not provided'}
-
-    // Volunteering:
-    // ${additionalFields.volunteering || 'Not provided'}
-
-    // Hobbies & Interests:
-    // ${additionalFields.hobbies_interests || 'Not provided'}
-
-    // Take this RESUME and ADDITIONAL QUALIFICATIONS and match it against the JOB DESCRIPTION. Examine the ADDITIONAL QUALIFICATIONS very carefully to see if anything can be added to the resume to improve it.
-
-    // Then your response should ONLY include:
-    // Provide 3-5 high-impact suggestions formatted as:
-    // 1. WHY: [explanation of how this change improves their chances]
-    //    SUGGESTION: [exact text to copy/paste]
-
-    // Focus especially on:
-    // - Skills mentioned in the job description but understated in the resume
-    // - Experience that should be highlighted or rephrased
-    // - Using matching terminology from the job description`
-
     const completion = await openai.chat.completions.create({
       model: openaiModel,
       messages: [
