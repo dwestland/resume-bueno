@@ -2,9 +2,28 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
+import { ComponentPropsWithoutRef } from 'react'
 
 type Props = {
   searchParams: Promise<{ id?: string }>
+}
+
+// Custom components for ReactMarkdown to control spacing
+const components = {
+  p: ({ children, ...props }: ComponentPropsWithoutRef<'p'>) => (
+    <p className="my-2" {...props}>
+      {children}
+    </p>
+  ),
+  // Add other custom components as needed
+}
+
+// Helper function to process markdown content
+const processContent = (content: string | null): string => {
+  if (!content) return 'Not available'
+
+  // Replace multiple line breaks with a single one
+  return content.replace(/\n{2,}/g, '\n').trim()
 }
 
 export default async function HistoryPage({ searchParams }: Props) {
@@ -161,9 +180,9 @@ export default async function HistoryPage({ searchParams }: Props) {
                   <h3 className="mb-2 text-2xl font-semibold text-teal-700">
                     Job Description
                   </h3>
-                  <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                    <ReactMarkdown>
-                      {selectedResume.job_description || 'Not available'}
+                  <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
+                    <ReactMarkdown components={components}>
+                      {processContent(selectedResume.job_description)}
                     </ReactMarkdown>
                   </div>
                 </section>
@@ -175,9 +194,9 @@ export default async function HistoryPage({ searchParams }: Props) {
                       <h3 className="mb-2 text-2xl font-semibold text-teal-700">
                         Job Evaluation
                       </h3>
-                      <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                        <ReactMarkdown>
-                          {selectedResume.job_evaluation || 'Not available'}
+                      <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
+                        <ReactMarkdown components={components}>
+                          {processContent(selectedResume.job_evaluation)}
                         </ReactMarkdown>
                       </div>
                     </section>
@@ -186,9 +205,9 @@ export default async function HistoryPage({ searchParams }: Props) {
                       <h3 className="mb-2 text-2xl font-semibold text-teal-700">
                         Customized Resume
                       </h3>
-                      <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                        <ReactMarkdown>
-                          {selectedResume.custom_resume || 'Not available'}
+                      <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
+                        <ReactMarkdown components={components}>
+                          {processContent(selectedResume.custom_resume)}
                         </ReactMarkdown>
                       </div>
                     </section>
@@ -197,9 +216,9 @@ export default async function HistoryPage({ searchParams }: Props) {
                       <h3 className="mb-2 text-2xl font-semibold text-teal-700">
                         Cover Letter
                       </h3>
-                      <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                        <ReactMarkdown>
-                          {selectedResume.cover_letter || 'Not available'}
+                      <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
+                        <ReactMarkdown components={components}>
+                          {processContent(selectedResume.cover_letter)}
                         </ReactMarkdown>
                       </div>
                     </section>
@@ -211,8 +230,8 @@ export default async function HistoryPage({ searchParams }: Props) {
                     </h3>
                     <div className="p-4 overflow-y-auto rounded bg-gray-50">
                       <div className="prose prose-gray prose-headings:text-gray-800 prose-headings:font-bold prose-p:text-gray-700 prose-strong:text-gray-800 prose-ul:text-gray-700 prose-li:my-0 max-w-none overflow-auto">
-                        <ReactMarkdown>
-                          {selectedResume.matching_resume || 'Not available'}
+                        <ReactMarkdown components={components}>
+                          {processContent(selectedResume.matching_resume)}
                         </ReactMarkdown>
                       </div>
                     </div>
