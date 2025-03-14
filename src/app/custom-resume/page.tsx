@@ -321,7 +321,7 @@ export default function CustomResumePage() {
               </p>
             )}
           </div>
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-base text-gray-500">
             Paste the full job description. The more detailed, the better
             results you&apos;ll get.
           </p>
@@ -333,7 +333,12 @@ export default function CustomResumePage() {
           className="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-6 mb-8"
         >
           {/* Left Column - Resume Package */}
-          <div className="w-full md:w-1/2 flex flex-col items-center text-center space-y-3">
+          <div className="relative w-full md:w-1/2 flex flex-col items-center text-center space-y-3 border rounded-md border-gray-700 p-4">
+            {/* Popular Badge */}
+            <div className="absolute top-0 px-4 py-1/2 text-white -translate-x-1/2 -translate-y-1/2 rounded-full left-1/2 bg-teal-700">
+              Best Results
+            </div>
+
             <Button
               type="submit"
               className={`w-full px-6 py-4 text-base font-medium rounded-md shadow-sm ${
@@ -372,14 +377,15 @@ export default function CustomResumePage() {
                 'Generate Resume Package'
               )}
             </Button>
-            <p className="text-sm text-gray-600">
-              Get a complete package with job evaluation, resume suggestions,
-              cover letter, and optimized title.
+            <p className="text-base text-gray-900 font-semibold">
+              <span className="text-lg">🏆</span>&nbsp;&nbsp;Get a complete
+              package with job evaluation, resume suggestions, cover letter.
             </p>
+            <p className="text-sm text-gray-900">1 credit per Resume Package</p>
           </div>
 
           {/* Right Column - Matching Resume */}
-          <div className="w-full md:w-1/2 flex flex-col items-center text-center space-y-3">
+          <div className="w-full md:w-1/2 flex flex-col items-center text-center space-y-3 border rounded-md border-gray-700 p-4 pt-8">
             <Button
               className={`w-full px-6 py-4 text-base font-medium rounded-md shadow-sm ${
                 isGenerating ? 'opacity-80 cursor-not-allowed' : ''
@@ -417,9 +423,12 @@ export default function CustomResumePage() {
                 'Generate Matching Resume'
               )}
             </Button>
-            <p className="text-sm text-gray-600">
-              Create a complete, tailored resume specifically formatted for this
-              job description.
+            <p className="text-base text-gray-900 font-semibold">
+              <span className="text-lg">🎯</span>&nbsp;&nbsp;Create a complete,
+              tailored resume specifically formatted for this job description.
+            </p>
+            <p className="text-sm text-gray-900">
+              1 credit per Matching Resume
             </p>
           </div>
         </div>
