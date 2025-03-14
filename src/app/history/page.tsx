@@ -77,8 +77,9 @@ export default async function HistoryPage({ searchParams }: Props) {
 
   return (
     <div className="p-6 mx-auto max-w-7xl">
-      <h1 className="mb-6 text-3xl font-bold">Custom Resume History</h1>
-
+      <h1 className="text-3xl font-bold text-center mb-10">
+        Custom Resume History
+      </h1>
       <div className="flex gap-6 h-[calc(100vh-160px)]">
         {/* Left Column - Resume List */}
         <div className="w-1/3 min-w-[300px] overflow-y-auto rounded-lg">
@@ -99,7 +100,7 @@ export default async function HistoryPage({ searchParams }: Props) {
                   <Link
                     key={resume.id}
                     href={`/history?id=${resume.id}`}
-                    className={`block p-4 rounded-lg transition-colors ${
+                    className={`block py-0 px-4 rounded-lg    transition-colors ${
                       params?.id === resume.id.toString()
                         ? 'bg-blue-50 border border-blue-200'
                         : 'bg-white text-[#0a0a0a] hover:bg-gray-50'
@@ -132,15 +133,15 @@ export default async function HistoryPage({ searchParams }: Props) {
           {selectedResume ? (
             <div className="bg-white text-[#0a0a0a] p-6 rounded-lg shadow">
               <div className="sticky top-0 pt-2 pb-4 mb-4 bg-white">
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-2xl font-bold mb-1">
                   {selectedResume.title || 'Untitled Resume'}
                 </h2>
                 {selectedResume.product_type && (
-                  <p className="text-sm font-medium text-blue-600 mt-1 mb-1">
+                  <p className="text-sm font-medium text-primary my-1">
                     {formatProductType(selectedResume.product_type)}
                   </p>
                 )}
-                <p className="text-gray-600">
+                <p className="text-gray-600 mt-1">
                   Created on{' '}
                   {new Date(selectedResume.createdAt).toLocaleDateString(
                     'en-US',
@@ -157,7 +158,7 @@ export default async function HistoryPage({ searchParams }: Props) {
 
               <div className="space-y-6">
                 <section>
-                  <h3 className="mb-2 text-2xl font-semibold text-primary">
+                  <h3 className="mb-2 text-2xl font-semibold text-teal-700">
                     Job Description
                   </h3>
                   <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
@@ -171,7 +172,7 @@ export default async function HistoryPage({ searchParams }: Props) {
                 {selectedResume.product_type === 'RESUME_PACKAGE' ? (
                   <>
                     <section>
-                      <h3 className="mb-2 text-2xl font-semibold text-primary">
+                      <h3 className="mb-2 text-2xl font-semibold text-teal-700">
                         Job Evaluation
                       </h3>
                       <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
@@ -182,7 +183,7 @@ export default async function HistoryPage({ searchParams }: Props) {
                     </section>
 
                     <section>
-                      <h3 className="mb-2 text-2xl font-semibold text-primary">
+                      <h3 className="mb-2 text-2xl font-semibold text-teal-700">
                         Customized Resume
                       </h3>
                       <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
@@ -193,7 +194,7 @@ export default async function HistoryPage({ searchParams }: Props) {
                     </section>
 
                     <section>
-                      <h3 className="mb-2 text-2xl font-semibold text-primary">
+                      <h3 className="mb-2 text-2xl font-semibold text-teal-700">
                         Cover Letter
                       </h3>
                       <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
@@ -205,7 +206,7 @@ export default async function HistoryPage({ searchParams }: Props) {
                   </>
                 ) : (
                   <section>
-                    <h3 className="mb-2 text-2xl font-semibold text-primary">
+                    <h3 className="mb-2 text-2xl font-semibold text-teal-700">
                       Matching Resume
                     </h3>
                     <div className="p-4 overflow-y-auto rounded bg-gray-50">
