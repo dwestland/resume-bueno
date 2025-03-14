@@ -287,13 +287,12 @@ Hobbies & Interests:
 ${additionalFields.hobbies_interests || 'Not provided'}
 
 COVER LETTER INSTRUCTIONS:
-1. Create a professionally formatted cover letter for this position.
+1. Create a compelling, professionally formatted cover letter for this position.
 2. Use the provided DATE in the letter header.
 3. Integrate key strengths from BOTH the resume AND additional qualifications that directly align with the job requirements.
 4. Prioritize mentioning qualifications that appear in the job description but may be understated in the resume.
 5. Reference specific achievements, skills, or experiences from the additional qualifications that strengthen your candidacy.
 6. For any gaps in the resume, leverage relevant information from the additional qualifications section.
-
 
 STYLE REQUIREMENTS:
 - Keep the letter under 220 words total
@@ -306,22 +305,9 @@ STYLE REQUIREMENTS:
 - Make sure to use the DATE in the letter
 - Write in paragraph form
 - Make sure to use the DATE in the letter
-- Write in plain text, no markdown
-`
+- Write in plain text, no markdown`
 
     // const prompt = `Write a compelling cover letter based on this resume and job description.
-
-    // DATE:
-    // ${date}
-
-    // RESUME:
-    // ${resume}
-
-    // JOB DESCRIPTION:
-    // ${jobDescription}
-
-    // Create a cover letter for this position in less than 220 words in a professional and terse style and demonstrates enthusiasm for the role. Use the provided DATE in the letter. Write a clear, concise, straightforward, short sentences of less than 80 characters in length. Avoid adverbs, and adverbial phrases. Write for a PPL of 10 and GLTR of 20. Use the provided DATE in the letter.`
-
     const completion = await openai.chat.completions.create({
       model: openaiModel,
       messages: [
@@ -776,42 +762,7 @@ FORMATTING REQUIREMENTS:
 6. Present only the resume content in proper markdown format
 7. Do not make up any information - only use what is provided in the user data
 
-Create a tailored resume that maximizes the candidate's chances for this specific job position.
-`
-
-  //   const prompt = `
-  // You are a professional resume writer who specializes in creating tailored resumes that match specific job descriptions.
-
-  // JOB DESCRIPTION:
-  // ${jobDescription}
-
-  // USER DATA:
-  // ${Object.entries(userData)
-  //   .filter(([, value]) => value)
-  //   .map(([key, value]) => `${key.toUpperCase()}: ${value}`)
-  //   .join('\n\n')}
-
-  // INSTRUCTIONS:
-  // 1. Create a professionally formatted resume in markdown format tailored specifically for this job description.
-  // 2. Use the user's existing experience, skills, and other data but optimize it for this specific job.
-  // 3. Focus on highlighting the most relevant experiences and skills that match the job requirements.
-  // 4. The resume should be well-structured with clear sections for Summary, Experience, Education, Skills, and other relevant categories.
-  // 5. Use bullet points to highlight achievements and responsibilities.
-  // 6. Include only the most relevant information from the user data.
-  // 7. Format dates, job titles, and company names consistently.
-  // 8. Do not make up any information - only use what is provided.
-  // 9. Do not include any introduction or explanation text in your response, just the resume content in markdown.
-  // 10. The resume should be formatted to print well on a standard page.
-  // 11. Use proper markdown syntax:
-  //    - Use # for main headings (e.g., # Summary)
-  //    - Use ## for subheadings
-  //    - Use **bold** for important text
-  //    - Use * or - for bullet points
-  //    - Use proper line breaks and spacing
-
-  // Please create a tailored resume for this job position using the provided user data:
-  // `
-
+Create a tailored resume that maximizes the candidate's chances for this specific job position.`
   try {
     const completion = await openai.chat.completions.create({
       model: openaiModel,
