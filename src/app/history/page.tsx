@@ -96,7 +96,8 @@ export default async function HistoryPage({ searchParams }: Props) {
   }
 
   return (
-    <div className="p-6 mx-auto max-w-7xl">
+    // TODO: Maximize width of the page
+    <div className="p-6 mx-auto max-w-screen-xl">
       <h1 className="text-3xl font-bold text-center mb-10">
         Custom Resume History
       </h1>
@@ -269,12 +270,10 @@ export default async function HistoryPage({ searchParams }: Props) {
                         />
                       )}
                     </div>
-                    <div className="p-4 overflow-y-auto rounded bg-gray-50">
-                      <div className="prose prose-gray prose-headings:text-gray-800 prose-headings:font-bold prose-p:text-gray-700 prose-strong:text-gray-800 prose-ul:text-gray-700 prose-li:my-0 max-w-none overflow-auto">
-                        <ReactMarkdown components={components}>
-                          {processContent(selectedResume.matching_resume)}
-                        </ReactMarkdown>
-                      </div>
+                    <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
+                      <ReactMarkdown components={components}>
+                        {processContent(selectedResume.matching_resume)}
+                      </ReactMarkdown>
                     </div>
                   </section>
                 )}
