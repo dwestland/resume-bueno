@@ -62,28 +62,30 @@ export default function Header() {
               >
                 Make Custom Resume
               </Link>
-              <Link
-                href="/samples"
-                className="font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
-              >
-                Samples
-              </Link>
             </>
           )}
         </div>
 
         <div className="items-center hidden space-x-4 md:flex">
           {session?.user ? (
-            <button
-              onClick={() => signOut({ callbackUrl: '/' })}
-              className="font-semibold text-gray-100 px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
-            >
-              Sign Out
-            </button>
+            <>
+              <Link
+                href="/settings"
+                className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+              >
+                Settings
+              </Link>
+              <button
+                onClick={() => signOut({ callbackUrl: '/' })}
+                className="font-semibold text-sm text-gray-100 px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+              >
+                Sign Out
+              </button>
+            </>
           ) : (
             <Link
               href="/auth/signin"
-              className="font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+              className="font-semibold text-sm px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
             >
               Sign Up / Sign In
             </Link>
@@ -95,13 +97,13 @@ export default function Header() {
         <div className="mt-4 space-y-2 md:hidden">
           <Link
             href="/"
-            className="block text-xl font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+            className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
           >
             Home
           </Link>
           <Link
             href="/#pricing"
-            className="block text-xl font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+            className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
           >
             Pricing
           </Link>
@@ -110,25 +112,25 @@ export default function Header() {
             <>
               <Link
                 href="/resume/display"
-                className="block text-xl font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+                className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
               >
                 My Resume
               </Link>
               <Link
                 href="/history"
-                className="block text-xl font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+                className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
               >
                 History
               </Link>
               <Link
                 href="/custom-resume"
-                className="block text-xl font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+                className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
               >
                 Make Custom Resume
               </Link>
               <Link
                 href="/samples"
-                className="block text-xl font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+                className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
               >
                 Samples
               </Link>
@@ -136,16 +138,24 @@ export default function Header() {
           )}
 
           {session?.user ? (
-            <button
-              onClick={() => signOut({ callbackUrl: '/' })}
-              className="block text-xl font-semibold leading-loose text-gray-100 px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
-            >
-              Sign Out
-            </button>
+            <>
+              <Link
+                href="/settings"
+                className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+              >
+                settings
+              </Link>
+              <button
+                onClick={() => signOut({ callbackUrl: '/' })}
+                className="block text-sm font-semibold leading-loose text-gray-100 px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+              >
+                Sign Out
+              </button>
+            </>
           ) : (
             <Link
               href="/auth/signin"
-              className="block text-xl font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+              className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
             >
               Sign Up / Sign In
             </Link>

@@ -37,17 +37,17 @@ export default function PricingSection() {
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>AI-powered resume analysis</span>
+              <span>Match your resume to the job description</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Custom cover letters</span>
+              <span>Job match and employer analysis</span>
             </li>
           </ul>
 
           <div className="absolute w-full px-8 bottom-8 left-0">
             <Button className="w-full" asChild>
-              <Link href="/checkout">Get Started</Link>
+              <Link href="/auth/signin">Get Started</Link>
             </Button>
           </div>
         </div>
@@ -55,7 +55,7 @@ export default function PricingSection() {
         {/* Monthly Plan */}
         <div className="relative p-8 bg-white border-2 border-violet-200 shadow-xl h-[580px] rounded-2xl hover:shadow-2xl transition-shadow duration-300 transform scale-105 z-10">
           {/* Popular Badge */}
-          <div className="absolute top-0 px-6 py-1 text-white -translate-x-1/2 -translate-y-1/2 rounded-full left-1/2 bg-teal-500">
+          <div className="absolute top-0 px-6 py-1 text-white -translate-x-1/2 -translate-y-1/2 rounded-full left-1/2 bg-teal-700">
             Most Popular
           </div>
 
@@ -65,7 +65,7 @@ export default function PricingSection() {
             <span className="text-gray-600">/mo</span>
           </div>
           <div className="h-8 mb-6 flex items-center justify-center">
-            <span className="text-sm text-violet-600 font-semibold">
+            <span className="text-sm text-violet-800 font-semibold">
               Billed monthly
             </span>
           </div>
@@ -73,19 +73,19 @@ export default function PricingSection() {
           <ul className="mb-8 space-y-4">
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Get started instantly</span>
+              <span>200 resume matches or job analysis per month</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>20 free credits upon signup</span>
+              <span>Same features as Basic Plan</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>AI-powered resume analysis</span>
+              <span>Advanced job match scoring</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Custom cover letters</span>
+              <span>Priority support</span>
             </li>
           </ul>
 
@@ -94,14 +94,14 @@ export default function PricingSection() {
               className="w-full bg-gradient-to-r from-violet-600 to-violet-500 hover:from-violet-700 hover:to-violet-600 shadow-md"
               asChild
             >
-              <Link href="/checkout">Choose Plan</Link>
+              <Link href="/checkout-page?plan=monthly">Choose Plan</Link>
             </Button>
           </div>
         </div>
 
-        {/* Yearly Plan */}
+        {/* Year Plan */}
         <div className="relative p-8 bg-white border border-gray-200 shadow-md h-[580px] rounded-2xl hover:shadow-lg transition-shadow duration-300">
-          <h3 className="text-xl font-bold text-center mb-2">Yearly</h3>
+          <h3 className="text-xl font-bold text-center mb-2">Year</h3>
           <div className="flex items-center justify-center gap-1 mb-1 mt-6">
             <span className="text-4xl font-bold">$45</span>
             <span className="text-gray-600">/year</span>
@@ -115,25 +115,31 @@ export default function PricingSection() {
           <ul className="mb-8 space-y-4">
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Get started instantly</span>
+              <span>
+                Save <strong>$74.40</strong> for the year
+              </span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>20 free credits upon signup</span>
+              <span>Same feature as monthly plan</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>AI-powered resume analysis</span>
+              <span>200 matches or analysis per month for 12 months</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Custom cover letters</span>
+              <span>Personalized resume feedback</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
+              <span>Priority support</span>
             </li>
           </ul>
 
           <div className="absolute w-full px-8 bottom-8 left-0">
             <Button className="w-full" asChild>
-              <Link href="/checkout">Best Value</Link>
+              <Link href="/checkout-page?plan=yearly">Best Value</Link>
             </Button>
           </div>
         </div>

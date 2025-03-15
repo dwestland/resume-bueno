@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import {
   Dialog,
   DialogContent,
@@ -9,6 +8,8 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { useEffect, useRef } from 'react'
 
 interface InsufficientCreditsDialogProps {
   open: boolean
@@ -19,6 +20,13 @@ export function InsufficientCreditsDialog({
   open,
   onOpenChange,
 }: InsufficientCreditsDialogProps) {
+  const buttonRef = useRef<HTMLButtonElement | null>(null)
+
+  useEffect(() => {
+    if (open && buttonRef.current) {
+      buttonRef.current.focus()
+    }
+  }, [open])
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -30,13 +38,19 @@ export function InsufficientCreditsDialog({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Link
-            href="/"
-            className="inline-block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-            onClick={() => onOpenChange(false)}
-          >
-            Purchase Credits
-          </Link>
+          <Button asChild>
+            <button
+              ref={buttonRef}
+              onClick={() => {
+                onOpenChange(false)
+                // Optionally, navigate to the add resume page here
+                window.location.href = '/'
+              }}
+              autoFocus
+            >
+              Purchase Credits
+            </button>
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

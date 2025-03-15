@@ -6,6 +6,7 @@ import { SessionProvider } from '@/components/SessionProvider'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import EnvironmentIndicator from '@/components/EnvironmentIndicator'
+import AnalyticsWrapper from '@/components/AnalyticsWrapper'
 
 // Import Google Fonts
 const oswald = Oswald({
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${oswald.variable} antialiased flex flex-col min-h-screen`}
       >
         <SessionProvider>
+          <AnalyticsWrapper />
           <Header />
           <UserBanner />
           {EnvironmentIndicator && <EnvironmentIndicator />}

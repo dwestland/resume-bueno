@@ -26,7 +26,7 @@ async function generateJobEvaluation(resume: string, jobDescription: string) {
   console.log('Starting job evaluation generation...')
 
   try {
-    const prompt = `Please evaluate the following resume against the job description and provide two separate ratings:
+    const prompt = `You are an expert job analyzer and your are looking out for my best interest.Please evaluate the following resume against the job description and provide two separate ratings:
 
     RESUME:
     ${resume}
@@ -35,8 +35,8 @@ async function generateJobEvaluation(resume: string, jobDescription: string) {
     ${jobDescription}
 
     Please provide two evaluations:
-    1. Resume Match Score (0-10): Rate how well the resume matches the job requirements with a brief explanation.
-    2. Employer Quality Score (0-10): Evaluate the quality of the employer/position based on the job description with a brief explanation.`
+    1. First analyze my skills and experience compared to the job description. give it a a score of 1 to 10, 10 being great and a summary of why it is a good or bad fit under 200 words.
+    2. Now analyze the quality of the employer and give it a a score of 1 to 10, 10 being great and a summary of why it is a good or bad employer, also pay close attention to the medical benefits, if the job remote, hybrid and or in office, and under 200 words.`
 
     const completion = await openai.chat.completions.create({
       model: openaiModel,
@@ -89,54 +89,61 @@ async function generateCustomizedResume(
   console.log('Starting resume suggestions generation...')
 
   try {
-    const prompt = `Analyze this resume against the job description. First, extract and list ALL qualifications, technologies, skills, and keywords mentioned in BOTH documents. Pay close attention to all words in the resume no matter how insignificant before comparing it with the job description.
+    const prompt = `Analyze this resume against the job description and additional qualifications provided by the user. 
 
     RESUME:
     ${resume}
     
     JOB DESCRIPTION:
     ${jobDescription}
-
+    
     ADDITIONAL QUALIFICATIONS:
-
     Education:
     ${additionalFields.education || 'Not provided'}
-
+    
     Experience:
     ${additionalFields.experience || 'Not provided'}
-
+    
     Skills:
     ${additionalFields.skills || 'Not provided'}
-
+    
     Certificates:
     ${additionalFields.certificates || 'Not provided'}
-
+    
     Projects:
     ${additionalFields.projects || 'Not provided'}
-
+    
     Awards:
     ${additionalFields.awards || 'Not provided'}
-
+    
     Training:
     ${additionalFields.training || 'Not provided'}
-
+    
     Volunteering:
     ${additionalFields.volunteering || 'Not provided'}
-
+    
     Hobbies & Interests:
     ${additionalFields.hobbies_interests || 'Not provided'}
-
-    Take this RESUME and ADDITIONAL QUALIFICATIONS and match it against the JOB DESCRIPTION. Examine the ADDITIONAL QUALIFICATIONS very carefully to see if anything can be added to the resume to improve it.
     
-    Then your response should ONLY include:
+    ANALYSIS INSTRUCTIONS:
+    1. First, identify all requirements and keywords from the job description.
+    2. Compare these requirements to both the resume AND the additional qualifications.
+    3. Identify gaps where information exists in the additional qualifications but is missing or understated in the resume.
+    4. For each identified gap, create a specific suggestion that draws directly from the additional qualifications.
+    
+    RESPONSE INSTRUCTIONS:
     Provide 3-5 high-impact suggestions formatted as:
-    1. WHY: [explanation of how this change improves their chances]
-       SUGGESTION: [exact text to copy/paste]
+    1. (the word "WHY" in bold) WHY: [explanation of how this change improves their chances and explicitly mention which additional qualification you're drawing from]
+    (start on new line)
+       (the word "SUGGESTION" in bold) SUGGESTION:  [exact text to copy/paste that incorporates information from additional qualifications]
     
-    Focus especially on:
-    - Skills mentioned in the job description but understated in the resume
-    - Experience that should be highlighted or rephrased
-    - Using matching terminology from the job description`
+    Prioritize suggestions that:
+    1. Fill obvious gaps between the resume and job requirements using additional qualifications
+    2. Highlight transferable skills from additional qualifications that match the job description
+    3. Incorporate keywords from the job description that appear in additional qualifications but not in the resume
+    4. Strengthen quantifiable achievements by drawing from additional qualifications
+    
+    Every suggestion must incorporate information from the additional qualifications section that isn't already prominent in the resume.`
 
     const completion = await openai.chat.completions.create({
       model: openaiModel,
@@ -174,25 +181,84 @@ async function generateCustomizedResume(
 async function generateCoverLetter(
   resume: string,
   jobDescription: string,
-  date: string
+  date: string,
+  additionalFields: {
+    awards: string | null
+    certificates: string | null
+    education: string | null
+    experience: string | null
+    hobbies_interests: string | null
+    projects: string | null
+    skills: string | null
+    training: string | null
+    volunteering: string | null
+  }
 ) {
   const startTime = Date.now()
   console.log('Starting cover letter generation...')
 
   try {
-    const prompt = `Write a compelling cover letter based on this resume and job description.
+    const prompt = `Write a compelling cover letter based on this resume, job description, and additional qualifications.
 
-    DATE:
-    ${date}
+DATE:
+${date}
 
-    RESUME:
-    ${resume}
+RESUME:
+${resume}
 
-    JOB DESCRIPTION:
-    ${jobDescription}
+JOB DESCRIPTION:
+${jobDescription}
 
-    Create a cover letter for this position in less than 220 words in a professional and terse style and demonstrates enthusiasm for the role. Use the provided DATE in the letter. Write a clear, concise, straightforward, short sentences of less than 80 characters in length. Avoid adverbs, and adverbial phrases. Write for a PPL of 10 and GLTR of 20. Use the provided DATE in the letter.`
+ADDITIONAL QUALIFICATIONS:
+Education:
+${additionalFields.education || 'Not provided'}
 
+Certificates:
+${additionalFields.certificates || 'Not provided'}
+
+Experience:
+${additionalFields.experience || 'Not provided'}
+
+Skills:
+${additionalFields.skills || 'Not provided'}
+
+Projects:
+${additionalFields.projects || 'Not provided'}
+
+Awards:
+${additionalFields.awards || 'Not provided'}
+
+Training:
+${additionalFields.training || 'Not provided'}
+
+Volunteering:
+${additionalFields.volunteering || 'Not provided'}
+
+Hobbies & Interests:
+${additionalFields.hobbies_interests || 'Not provided'}
+
+COVER LETTER INSTRUCTIONS:
+1. Create a compelling, professionally formatted cover letter for this position.
+2. Use the provided DATE in the letter header.
+3. Integrate key strengths from BOTH the resume AND additional qualifications that directly align with the job requirements.
+4. Prioritize mentioning qualifications that appear in the job description but may be understated in the resume.
+5. Reference specific achievements, skills, or experiences from the additional qualifications that strengthen your candidacy.
+6. For any gaps in the resume, leverage relevant information from the additional qualifications section.
+
+STYLE REQUIREMENTS:
+- Keep the letter under 220 words total
+- Use professional and terse style that shows enthusiasm for the role
+- Write clear, concise, straightforward sentences of less than 80 characters in length
+- Avoid adverbs and adverbial phrases
+- Write at a PPL of 10 and GLTR of 20
+- Ensure the letter is well-structured with clear opening, body, and closing
+- Highlight 2-3 most relevant qualifications that match the job requirements, drawing from both resume and additional qualifications
+- Make sure to use the DATE in the letter
+- Write in paragraph form
+- Make sure to use the DATE in the letter
+- Write in plain text, no markdown`
+
+    // const prompt = `Write a compelling cover letter based on this resume and job description.
     const completion = await openai.chat.completions.create({
       model: openaiModel,
       messages: [
@@ -331,7 +397,22 @@ export async function generateStep(
           }
         )
       case 'cover_letter':
-        return await generateCoverLetter(resume, jobDescription, today)
+        return await generateCoverLetter(
+          resume,
+          jobDescription,
+          today,
+          user || {
+            awards: null,
+            certificates: null,
+            education: null,
+            experience: null,
+            hobbies_interests: null,
+            projects: null,
+            skills: null,
+            training: null,
+            volunteering: null,
+          }
+        )
       case 'title':
         return await generateTitle(jobDescription)
       default:
@@ -564,32 +645,81 @@ JOB DESCRIPTION:
 ${jobDescription}
 
 USER DATA:
-${Object.entries(userData)
-  .filter(([, value]) => value)
-  .map(([key, value]) => `${key.toUpperCase()}: ${value}`)
-  .join('\n\n')}
+Resume:
+${userData.resume || 'Not provided'}
 
-INSTRUCTIONS:
+Education:
+${userData.education || 'Not provided'}
+
+Experience:
+${userData.experience || 'Not provided'}
+
+Skills:
+${userData.skills || 'Not provided'}
+
+Projects:
+${userData.projects || 'Not provided'}
+
+Certificates:
+${userData.certificates || 'Not provided'}
+
+Awards:
+${userData.awards || 'Not provided'}
+
+Training:
+${userData.training || 'Not provided'}
+
+Volunteering:
+${userData.volunteering || 'Not provided'}
+
+Hobbies & Interests:
+${userData.hobbies_interests || 'Not provided'}
+
+ANALYSIS INSTRUCTIONS:
+1. Identify the key requirements, skills, and qualifications mentioned in the job description.
+2. Compare these requirements with the user data across ALL categories.
+3. Prioritize information that directly matches job requirements.
+4. Identify transferable skills and experiences from the user data that may not be obvious matches.
+5. Look for keywords and phrases in the job description that should be incorporated.
+
+RESUME CREATION INSTRUCTIONS:
 1. Create a professionally formatted resume in markdown format tailored specifically for this job description.
-2. Use the user's existing experience, skills, and other data but optimize it for this specific job.
-3. Focus on highlighting the most relevant experiences and skills that match the job requirements.
-4. The resume should be well-structured with clear sections for Summary, Experience, Education, Skills, and other relevant categories.
-5. Use bullet points to highlight achievements and responsibilities.
-6. Include only the most relevant information from the user data.
-7. Format dates, job titles, and company names consistently.
-8. Do not make up any information - only use what is provided.
-9. Do not include any introduction or explanation text in your response, just the resume content in markdown.
-10. The resume should be formatted to print well on a standard page.
-11. Use proper markdown syntax:
-   - Use # for main headings (e.g., # Summary)
-   - Use ## for subheadings
-   - Use **bold** for important text
-   - Use * or - for bullet points
-   - Use proper line breaks and spacing
+2. Begin with a focused summary that highlights the most relevant qualifications for this specific job.
+3. Structure the resume with clearly defined sections using proper markdown headings:
+   - # Summary
+   - # Experience
+   - # Education
+   - # Skills
+   - Additional sections as appropriate based on user data (Projects, Certifications, etc.)
+4. For each experience, emphasize achievements and responsibilities that align with the job requirements.
+5. Incorporate relevant keywords from the job description throughout the resume.
+6. Quantify accomplishments whenever possible using numbers from the user data.
+7. Include skills mentioned in the job description that appear in ANY section of the user data.
+8. Highlight relevant projects, certifications, awards, and training that strengthen the application.
+9. Include volunteering experience if it demonstrates relevant skills or shows commitment.
+10. Only include hobbies/interests if they directly relate to the job or demonstrate valuable soft skills.
 
-Please create a tailored resume for this job position using the provided user data:
-`
+FORMATTING REQUIREMENTS:
+1. Use proper markdown syntax:
+   - # for main headings (e.g., # Summary)
+   - ## for subheadings
+   - **bold** for important text like job titles and company names
+   - * or - for bullet points
+   - Proper line breaks and spacing
+   - Do not use hyperlinks in the resume, example: [Company Name](https://www.companyname.com)
+   - After a heading, make sure to add a new line to avoid formatting overflow
+2. Format heading:
+   - # heading for main name at the top
+   - Followed by resume author title in bold (do not use heading) example: Software Engineer
+   - Followed by address (if available) then phone number and email address in normal font (do not use heading)
+3. Format dates, job titles, and company names consistently
+4. The resume should be well-structured for printing on a standard page
+5. Use clean, professional formatting without excessive decoration
+6. Do not include any introduction or explanation text in your response
+7. Present only the resume content in proper markdown format
+8. Do not make up any information - only use what is provided in the user data
 
+Create a tailored resume that maximizes the candidate's chances for this specific job position.`
   try {
     const completion = await openai.chat.completions.create({
       model: openaiModel,

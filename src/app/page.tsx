@@ -16,10 +16,7 @@ export default function ClientHome() {
   const [isLoading, setIsLoading] = useState(true)
   const [showResumeDialog, setShowResumeDialog] = useState(false)
   const [resumeProgress, setResumeProgress] = useState<{
-    completedCount: number
-    totalFields: number
     completionPercentage: number
-    fields?: Record<string, unknown>
   } | null>(null)
 
   useEffect(() => {
@@ -37,10 +34,7 @@ export default function ClientHome() {
         const progress = await getResumeProgress()
         if (progress) {
           setResumeProgress({
-            completedCount: progress.completedCount,
-            totalFields: progress.totalFields,
             completionPercentage: progress.completionPercentage,
-            fields: progress.fields,
           })
         }
       }
@@ -108,22 +102,22 @@ export default function ClientHome() {
               >
                 BETA
               </p>
-              <h1
+              <h2
                 className="text-8xl mt-0 leading-[5.5rem]"
                 style={{ marginLeft: '-5px' }}
               >
                 Resume
                 <br />
                 Bueno
-              </h1>
-              <h2 className="mt-1 text-4xl">
+              </h2>
+              <h1 className="mt-1 text-4xl text-teal-600">
                 Resume&nbsp;+&nbsp;Job Description
                 <br />
                 &nbsp;=&nbsp;Resume Bueno
-              </h2>
+              </h1>
             </div>
 
-            <p className="mt-4 text-left">
+            <p className="mt-4 text-left text">
               Upload your resume, add a job description, and let Resume Bueno do
               the rest. Get a match score, targeted resume improvements, and a
               polished cover letter, instantly.
@@ -132,7 +126,7 @@ export default function ClientHome() {
 
           <div
             id="hero-image"
-            className="relative w-full h-72 md:w-1/2 md:h-auto min-h-[20rem] hidden md:block"
+            className="relative w-full h-72 md:w-1/2 md:h-auto min-h-[20rem] hidden md:block mt-6"
           >
             <Image
               src="/images/at-work.svg"
@@ -163,9 +157,12 @@ export default function ClientHome() {
                 </div>
               </div>
             ) : hasResume ? (
-              <Button size="lg" className="text-xl">
-                <Link href="/custom-resume">Make Resume Package</Link>
-              </Button>
+              <div className="flex flex-col items-center">
+                <Button size="lg" className="text-xl">
+                  <Link href="/custom-resume">Make Resume Package</Link>
+                </Button>
+                <h2 className="mt-4 mb-8">Let&apos;s go get that job!</h2>
+              </div>
             ) : (
               <div className="flex flex-col items-center">
                 <h2 className="mt-4 mb-8">Step 1. Upload Your Resume</h2>
@@ -182,10 +179,7 @@ export default function ClientHome() {
       {isLoggedIn && resumeProgress && (
         <div className="w-full my-12 px-4 transition-all">
           <ResumeProgress
-            completedCount={resumeProgress.completedCount}
-            totalFields={resumeProgress.totalFields}
             completionPercentage={resumeProgress.completionPercentage}
-            fields={resumeProgress.fields}
           />
         </div>
       )}

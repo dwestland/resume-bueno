@@ -2,9 +2,66 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
+import { ComponentPropsWithoutRef } from 'react'
+import { CopyButton } from '@/components/CopyButton'
 
 type Props = {
   searchParams: Promise<{ id?: string }>
+}
+
+// Custom components for ReactMarkdown to control spacing
+const components = {
+  p: ({ children, ...props }: ComponentPropsWithoutRef<'p'>) => (
+    <p className="my-2" {...props}>
+      {children}
+    </p>
+  ),
+  h1: ({ children, ...props }: ComponentPropsWithoutRef<'h1'>) => (
+    <h1 className="text-2xl font-bold mt-4 mb-2" {...props}>
+      {children}
+    </h1>
+  ),
+  h2: ({ children, ...props }: ComponentPropsWithoutRef<'h2'>) => (
+    <h2 className="text-xl font-bold mt-3 mb-2" {...props}>
+      {children}
+    </h2>
+  ),
+  h3: ({ children, ...props }: ComponentPropsWithoutRef<'h3'>) => (
+    <h3 className="text-lg font-semibold mt-3 mb-2" {...props}>
+      {children}
+    </h3>
+  ),
+  strong: ({ children, ...props }: ComponentPropsWithoutRef<'strong'>) => (
+    <strong className="font-bold" {...props}>
+      {children}
+    </strong>
+  ),
+  ul: ({ children, ...props }: ComponentPropsWithoutRef<'ul'>) => (
+    <ul className="list-disc pl-5 my-2" {...props}>
+      {children}
+    </ul>
+  ),
+  ol: ({ children, ...props }: ComponentPropsWithoutRef<'ol'>) => (
+    <ol className="list-decimal pl-5 my-2" {...props}>
+      {children}
+    </ol>
+  ),
+  li: ({ children, ...props }: ComponentPropsWithoutRef<'li'>) => (
+    <li className="my-1" {...props}>
+      {children}
+    </li>
+  ),
+}
+
+// Helper function to process markdown content
+const processContent = (content: string | null): string => {
+  if (!content) return 'Not available'
+
+  // Ensure proper spacing around headings and preserve paragraph breaks
+  return content
+    .replace(/^(#+\s.*?)$/gm, '\n$1\n') // Add line breaks before and after headings
+    .replace(/\n{3,}/g, '\n\n') // Replace excessive line breaks with double line breaks
+    .trim()
 }
 
 export default async function HistoryPage({ searchParams }: Props) {
@@ -76,9 +133,11 @@ export default async function HistoryPage({ searchParams }: Props) {
   }
 
   return (
-    <div className="p-6 mx-auto max-w-7xl">
-      <h1 className="mb-6 text-3xl font-bold">Custom Resume History</h1>
-
+    // TODO: Maximize width of the page
+    <div className="p-6 mx-auto max-w-screen-xl">
+      <h1 className="text-3xl font-bold text-center mb-10">
+        Custom Resume History
+      </h1>
       <div className="flex gap-6 h-[calc(100vh-160px)]">
         {/* Left Column - Resume List */}
         <div className="w-1/3 min-w-[300px] overflow-y-auto rounded-lg">
@@ -99,7 +158,7 @@ export default async function HistoryPage({ searchParams }: Props) {
                   <Link
                     key={resume.id}
                     href={`/history?id=${resume.id}`}
-                    className={`block p-4 rounded-lg transition-colors ${
+                    className={`block py-0 px-4 rounded-lg    transition-colors ${
                       params?.id === resume.id.toString()
                         ? 'bg-blue-50 border border-blue-200'
                         : 'bg-white text-[#0a0a0a] hover:bg-gray-50'
@@ -132,15 +191,15 @@ export default async function HistoryPage({ searchParams }: Props) {
           {selectedResume ? (
             <div className="bg-white text-[#0a0a0a] p-6 rounded-lg shadow">
               <div className="sticky top-0 pt-2 pb-4 mb-4 bg-white">
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-2xl font-bold mb-1">
                   {selectedResume.title || 'Untitled Resume'}
                 </h2>
                 {selectedResume.product_type && (
-                  <p className="text-sm font-medium text-blue-600 mt-1 mb-1">
+                  <p className="text-sm font-medium text-primary my-1">
                     {formatProductType(selectedResume.product_type)}
                   </p>
                 )}
-                <p className="text-gray-600">
+                <p className="text-gray-600 mt-1">
                   Created on{' '}
                   {new Date(selectedResume.createdAt).toLocaleDateString(
                     'en-US',
@@ -157,12 +216,20 @@ export default async function HistoryPage({ searchParams }: Props) {
 
               <div className="space-y-6">
                 <section>
-                  <h3 className="mb-2 text-2xl font-semibold text-primary">
-                    Job Description
-                  </h3>
-                  <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                    <ReactMarkdown>
-                      {selectedResume.job_description || 'Not available'}
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-2xl font-semibold text-teal-700">
+                      Job Description
+                    </h3>
+                    {selectedResume.job_description && (
+                      <CopyButton
+                        content={selectedResume.job_description}
+                        label="Copy Job Description"
+                      />
+                    )}
+                  </div>
+                  <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
+                    <ReactMarkdown components={components}>
+                      {processContent(selectedResume.job_description)}
                     </ReactMarkdown>
                   </div>
                 </section>
@@ -171,49 +238,79 @@ export default async function HistoryPage({ searchParams }: Props) {
                 {selectedResume.product_type === 'RESUME_PACKAGE' ? (
                   <>
                     <section>
-                      <h3 className="mb-2 text-2xl font-semibold text-primary">
-                        Job Evaluation
-                      </h3>
-                      <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                        <ReactMarkdown>
-                          {selectedResume.job_evaluation || 'Not available'}
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-2xl font-semibold text-teal-700">
+                          Job Evaluation
+                        </h3>
+                        {selectedResume.job_evaluation && (
+                          <CopyButton
+                            content={selectedResume.job_evaluation}
+                            label="Copy Evaluation"
+                          />
+                        )}
+                      </div>
+                      <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
+                        <ReactMarkdown components={components}>
+                          {processContent(selectedResume.job_evaluation)}
                         </ReactMarkdown>
                       </div>
                     </section>
 
                     <section>
-                      <h3 className="mb-2 text-2xl font-semibold text-primary">
-                        Customized Resume
-                      </h3>
-                      <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                        <ReactMarkdown>
-                          {selectedResume.custom_resume || 'Not available'}
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-2xl font-semibold text-teal-700">
+                          Resume Improvement Suggestions
+                        </h3>
+                        {selectedResume.custom_resume && (
+                          <CopyButton
+                            content={selectedResume.custom_resume}
+                            label="Copy Suggestions"
+                          />
+                        )}
+                      </div>
+                      <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
+                        <ReactMarkdown components={components}>
+                          {processContent(selectedResume.custom_resume)}
                         </ReactMarkdown>
                       </div>
                     </section>
 
                     <section>
-                      <h3 className="mb-2 text-2xl font-semibold text-primary">
-                        Cover Letter
-                      </h3>
-                      <div className="p-4 overflow-y-auto whitespace-pre-line rounded max-h-60 bg-gray-50">
-                        <ReactMarkdown>
-                          {selectedResume.cover_letter || 'Not available'}
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-2xl font-semibold text-teal-700">
+                          Cover Letter
+                        </h3>
+                        {selectedResume.cover_letter && (
+                          <CopyButton
+                            content={selectedResume.cover_letter}
+                            label="Copy Cover Letter"
+                          />
+                        )}
+                      </div>
+                      <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
+                        <ReactMarkdown components={components}>
+                          {processContent(selectedResume.cover_letter)}
                         </ReactMarkdown>
                       </div>
                     </section>
                   </>
                 ) : (
                   <section>
-                    <h3 className="mb-2 text-2xl font-semibold text-primary">
-                      Matching Resume
-                    </h3>
-                    <div className="p-4 overflow-y-auto rounded bg-gray-50">
-                      <div className="prose prose-gray prose-headings:text-gray-800 prose-headings:font-bold prose-p:text-gray-700 prose-strong:text-gray-800 prose-ul:text-gray-700 prose-li:my-0 max-w-none overflow-auto">
-                        <ReactMarkdown>
-                          {selectedResume.matching_resume || 'Not available'}
-                        </ReactMarkdown>
-                      </div>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-2xl font-semibold text-teal-700">
+                        Matching Resume
+                      </h3>
+                      {selectedResume.matching_resume && (
+                        <CopyButton
+                          content={selectedResume.matching_resume}
+                          label="Copy Resume"
+                        />
+                      )}
+                    </div>
+                    <div className="p-4 overflow-y-auto rounded max-h-96 bg-gray-50">
+                      <ReactMarkdown components={components}>
+                        {processContent(selectedResume.matching_resume)}
+                      </ReactMarkdown>
                     </div>
                   </section>
                 )}

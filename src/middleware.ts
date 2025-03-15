@@ -2,6 +2,21 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+  // Handle CORS preflight OPTIONS requests
+  if (request.method === 'OPTIONS') {
+    return NextResponse.json(
+      {},
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*', // Or specific origins you want to allow
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          'Access-Control-Max-Age': '86400', // 24 hours
+        },
+      }
+    )
+  }
+
   // Check for the session cookie
   const sessionToken =
     request.cookies.get('authjs.session-token')?.value ||
@@ -28,7 +43,19 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(signInUrl)
   }
 
-  return NextResponse.next()
+  // Add CORS headers to all responses (for non-OPTIONS requests)
+  const response = NextResponse.next()
+  response.headers.set('Access-Control-Allow-Origin', '*') // Or specific origins
+  response.headers.set(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE, OPTIONS'
+  )
+  response.headers.set(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization'
+  )
+
+  return response
 }
 
 // Executes middleware on all routes except api and trpc

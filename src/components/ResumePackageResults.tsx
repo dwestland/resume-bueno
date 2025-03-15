@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 
 type GenerationStep = 'evaluation' | 'resume' | 'cover_letter' | 'title'
@@ -31,12 +31,33 @@ export default function ResumePackageResults({
   completedSteps,
   stepDetails,
 }: ResumePackageResultsProps) {
+  const [copiedCoverLetter, setCopiedCoverLetter] = useState(false)
+
   // Helper function to determine if a step should be shown
   const shouldShowStep = (step: GenerationStep) => {
     const stepOrder = ['evaluation', 'resume', 'cover_letter', 'title']
     const currentStepIndex = stepOrder.indexOf(currentStep || '')
     const stepIndex = stepOrder.indexOf(step)
     return stepIndex <= currentStepIndex || completedSteps.includes(step)
+  }
+
+  // Function to copy cover letter to clipboard
+  const copyToClipboard = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    text: string
+  ) => {
+    // Prevent default button behavior and form submission
+    e.preventDefault()
+    e.stopPropagation()
+
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedCoverLetter(true)
+      // Reset the copied state after 2 seconds
+      setTimeout(() => setCopiedCoverLetter(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy text: ', err)
+    }
   }
 
   return (
@@ -252,25 +273,57 @@ export default function ResumePackageResults({
           className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden transition-all hover:shadow-md"
           id="cover-letter-section"
         >
-          <div className="border-b border-gray-100 bg-gray-50 px-6 py-4 flex items-center">
-            <div
-              className={`flex-shrink-0 w-10 h-10 rounded-full mr-4 flex items-center justify-center
-              ${
-                results.cover_letter
-                  ? 'bg-teal-100 text-teal-600'
-                  : 'bg-violet-100 text-violet-500'
-              }`}
-            >
-              {stepDetails.cover_letter.icon}
+          <div className="border-b border-gray-100 bg-gray-50 px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center">
+              <div
+                className={`flex-shrink-0 w-10 h-10 rounded-full mr-4 flex items-center justify-center
+                ${
+                  results.cover_letter
+                    ? 'bg-teal-100 text-teal-600'
+                    : 'bg-violet-100 text-violet-500'
+                }`}
+              >
+                {stepDetails.cover_letter.icon}
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  {stepDetails.cover_letter.title}
+                </h2>
+                <p className="text-sm text-gray-500">
+                  {stepDetails.cover_letter.description}
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800">
-                {stepDetails.cover_letter.title}
-              </h2>
-              <p className="text-sm text-gray-500">
-                {stepDetails.cover_letter.description}
-              </p>
-            </div>
+
+            {/* Copy to Clipboard Button - Only visible when content is available */}
+            {results.cover_letter && (
+              <button
+                onClick={(e) => copyToClipboard(e, results.cover_letter || '')}
+                className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+                title="Copy cover letter to clipboard"
+                type="button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d={
+                      copiedCoverLetter
+                        ? 'M5 13l4 4L19 7' // Checkmark icon when copied
+                        : 'M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002-2h2a2 2 0 002 2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3'
+                    } // Copy icon when not copied
+                  />
+                </svg>
+                {copiedCoverLetter ? 'Copied!' : 'Copy'}
+              </button>
+            )}
           </div>
           <div className="p-6">
             {results.cover_letter ? (
@@ -359,7 +412,7 @@ export default function ResumePackageResults({
                   />
                 </svg>
                 <span className="font-medium text-violet-700">
-                  Optimizing your professional title...
+                  Optimizing your package title...
                 </span>
               </div>
             )}

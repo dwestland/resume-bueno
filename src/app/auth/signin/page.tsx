@@ -125,15 +125,17 @@ export default async function SignInPage() {
         <p className="mt-4 text-center text-sm text-gray-500">
           By signing in, you agree to our{' '}
           <a
-            href="#"
+            href="/terms-of-service"
             className="font-medium text-violet-600 hover:text-violet-500"
+            target="_blank"
           >
             Terms of Service
           </a>{' '}
           and{' '}
           <a
-            href="#"
+            href="/privacy-policy"
             className="font-medium text-violet-600 hover:text-violet-500"
+            target="_blank"
           >
             Privacy Policy
           </a>
