@@ -16,15 +16,52 @@ const components = {
       {children}
     </p>
   ),
-  // Add other custom components as needed
+  h1: ({ children, ...props }: ComponentPropsWithoutRef<'h1'>) => (
+    <h1 className="text-2xl font-bold mt-4 mb-2" {...props}>
+      {children}
+    </h1>
+  ),
+  h2: ({ children, ...props }: ComponentPropsWithoutRef<'h2'>) => (
+    <h2 className="text-xl font-bold mt-3 mb-2" {...props}>
+      {children}
+    </h2>
+  ),
+  h3: ({ children, ...props }: ComponentPropsWithoutRef<'h3'>) => (
+    <h3 className="text-lg font-semibold mt-3 mb-2" {...props}>
+      {children}
+    </h3>
+  ),
+  strong: ({ children, ...props }: ComponentPropsWithoutRef<'strong'>) => (
+    <strong className="font-bold" {...props}>
+      {children}
+    </strong>
+  ),
+  ul: ({ children, ...props }: ComponentPropsWithoutRef<'ul'>) => (
+    <ul className="list-disc pl-5 my-2" {...props}>
+      {children}
+    </ul>
+  ),
+  ol: ({ children, ...props }: ComponentPropsWithoutRef<'ol'>) => (
+    <ol className="list-decimal pl-5 my-2" {...props}>
+      {children}
+    </ol>
+  ),
+  li: ({ children, ...props }: ComponentPropsWithoutRef<'li'>) => (
+    <li className="my-1" {...props}>
+      {children}
+    </li>
+  ),
 }
 
 // Helper function to process markdown content
 const processContent = (content: string | null): string => {
   if (!content) return 'Not available'
 
-  // Replace multiple line breaks with a single one
-  return content.replace(/\n{2,}/g, '\n').trim()
+  // Ensure proper spacing around headings and preserve paragraph breaks
+  return content
+    .replace(/^(#+\s.*?)$/gm, '\n$1\n') // Add line breaks before and after headings
+    .replace(/\n{3,}/g, '\n\n') // Replace excessive line breaks with double line breaks
+    .trim()
 }
 
 export default async function HistoryPage({ searchParams }: Props) {
@@ -270,7 +307,7 @@ export default async function HistoryPage({ searchParams }: Props) {
                         />
                       )}
                     </div>
-                    <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
+                    <div className="p-4 overflow-y-auto rounded max-h-96 bg-gray-50">
                       <ReactMarkdown components={components}>
                         {processContent(selectedResume.matching_resume)}
                       </ReactMarkdown>
