@@ -55,7 +55,7 @@ export default function PricingSection() {
         {/* Monthly Plan */}
         <div className="relative p-8 bg-white border-2 border-violet-200 shadow-xl h-[580px] rounded-2xl hover:shadow-2xl transition-shadow duration-300 transform scale-105 z-10">
           {/* Popular Badge */}
-          <div className="absolute top-0 px-6 py-1 text-white -translate-x-1/2 -translate-y-1/2 rounded-full left-1/2 bg-teal-500">
+          <div className="absolute top-0 px-6 py-1 text-white -translate-x-1/2 -translate-y-1/2 rounded-full left-1/2 bg-teal-700">
             Most Popular
           </div>
 
@@ -65,7 +65,7 @@ export default function PricingSection() {
             <span className="text-gray-600">/mo</span>
           </div>
           <div className="h-8 mb-6 flex items-center justify-center">
-            <span className="text-sm text-violet-600 font-semibold">
+            <span className="text-sm text-violet-800 font-semibold">
               Billed monthly
             </span>
           </div>

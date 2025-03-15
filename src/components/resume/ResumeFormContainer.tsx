@@ -18,9 +18,7 @@ import { Button } from '@/components/ui/button'
 const formSections = [
   {
     title: 'Upload Your Resume',
-    description: `Your resume is the foundation of your job application. Upload it now to get started.
-
-You can upload your resume file in PDF or DOCX format, or simply copy and paste your resume text below. Resume Bueno will analyze your experience, skills, and qualifications—ensuring we create a tailored resume that perfectly aligns with your target job.`,
+    description: `Upload your resume (PDF/DOCX) or paste text below. We'll analyze it to create a tailored resume that matches your target job.`,
     fields: ['resume'],
   },
   {
@@ -398,7 +396,7 @@ export function ResumeFormContainer({
                       ></path>
                     </svg>
                   </div>
-                  <span className="font-medium mb-1">
+                  <span className="font-medium mb-1 text-lg">
                     {isDragging ? 'Drop your file here' : 'Upload your resume'}
                   </span>
                   <span className="text-sm text-gray-500">
@@ -439,7 +437,9 @@ export function ResumeFormContainer({
 
         <div className="flex items-center my-4">
           <div className="flex-grow h-px bg-gray-200"></div>
-          <p className="mx-4 text-sm font-medium text-gray-500">OR</p>
+          <p className="mx-4 text-sm font-medium text-gray-500">
+            or paste text below
+          </p>
           <div className="flex-grow h-px bg-gray-200"></div>
         </div>
 
