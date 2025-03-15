@@ -395,6 +395,111 @@ Please send your resume, portfolio/GitHub profile, and cover letter to careers@d
 
 DataViz Analytics Solutions is proud to be an equal opportunity employer. We believe diverse teams build better products and actively seek to create an inclusive workplace.`}
       </p>
+
+      <h2 className="text-xl font-semibold mt-2 text-blue-300">
+        Job Description 3 - Senior Application Developer
+      </h2>
+      <p className="whitespace-pre-line">
+        {`
+Los Angeles County Department of Human Resources logo
+Los Angeles County Department of Human Resources
+SENIOR APPLICATION DEVELOPER 
+Los Angeles County, CA · 3 hours ago · 5 people clicked apply
+How your profile and resume fit this job
+
+Get AI-powered advice on this job and more exclusive features with Premium. Try Premium for $0
+
+About the job
+
+Position/Program Information
+
+TYPE OF RECRUITMENT: OPEN COMPETITIVE- EMERGENCY
+
+Applications will be accepted from March 17, 2025 at 8:00 a.m. (Pacific Time) with a deadline of March 31,2025 at 5:00 p.m. (Pacific Time).
+
+EXAM NUMBER: YD2525A-EA
+
+The LA County Board of Supervisors recently declared a local state of emergency for homelessness, and the County is working to revise and expand our response to help all who are affected. We are looking for qualified and passionate individuals to help us in the mission of addressing issues like housing, mental health, and substance use. If you are looking for a new career that will directly benefit the population of LA County, this may be the opportunity for you.
+
+Department of Youth Development is seeking qualified candidates to fill an emergency Senior Application Developer vacancy related to the homelessness crisis.
+
+Under the emergency order, applicants who meet the requirements may be hired for an initial period of up to 90 days, with an opportunity for permanent County employment.
+
+Before the end of your initial work period, you will be assessed on your work performance. This assessment will be weighted 100%.
+
+Those who successfully pass the assessment will be considered for permanent appointment to Senior Application Developer.
+
+Definition
+
+Under direction, performs a wide range of application development related duties including analysis, design, evaluation, development, coding, testing and maintenance of complex application systems.
+
+What We Are Looking For
+
+The Department of Youth Development is looking for an experienced C# .net core developer to join our Information Technology division. You will know how to harness the latest technologies by developing low-code platforms and creating user-friendly solutions. We’re looking for an experienced solution engineer like you to support the management of low-code development platforms while translating complex functional and technical requirements into custom design and development of Microsoft-based applications. You'll serve as the project lead in developing plans, estimations, and code and design reviews. You will have experienced using Agile Methodology and be able to lead Scrum to manage project deliverables. You will collaborate with your team and DYD program staff to build automated business processes within .Net Core and apply your expertise to ensure accessibility for all users by developing applications that function across all platforms. You role will also include mentoring of junior developers to help get the team on the same development level.
+
+Essential Job Functions
+
+Key responsibilities may include, but are not limited to: 
+
+    Design and Develop specifications for complex systems in .net core
+    Develop work plans and technical documents covering system architecture, conversion, integration, testing and implementation for a system
+    Code, tests, and debug complex application program to create new business applications and interfaces or maintain/modifies existing business applications 
+    Perform quality assurance functions including User Acceptance Testing and Unit test
+    Prepares, reviews, validates technical documents and user manuals to support complex systems
+    Leads in the identification, analysis, and resolution of complex application problems
+    Writes and executes programs to extract, transform and load data for more complex system conversions
+    Participates in developing application development methodologies and standards such as Agile Methodology
+    May lead an application project Team
+    Reviews and monitors vendor performance to ensure projects are on time, within budget, and according to specifications
+    May oversee installation of application software
+
+Desirable Qualifications
+
+    Experience with development in the Microsoft Stack (.Net Core, C#, SQL)
+    Experience with building/securing APIs.
+    Familiar with Scrum Methodology (Azure DevOps, Jira, etc.)
+    Ability to write SQL queries to generate Ad-hoc reports.
+    Experience with quality assurance testing.
+    Experience with client-side development (Javascript, jQuery, ajax)
+    Preparing and reviewing Technical Documentation (Flow Charts, User Guides, etc.)
+
+Requirements
+
+REQUIREMENTS TO QUALIFY:
+
+Option I: Graduation from an accredited* college or university with a bachelor's degree** in Computer Science, Information Systems, or a closely related field - AND - three (3) years of recent***, full-time, paid experience coding, testing, and debugging applications programs.
+
+Option II: One (1) year of experience at the level of Los Angeles County class of Application Developer II****.
+
+Option III: Four (4) years of recent*****, full-time, paid experience coding, testing and debugging application programs.
+
+You MUST meet the above requirement(s) in order to be appointed to fill any vacancies related to this recruitment
+
+    Accredited institutions are those listed in the publications of regional, national, or international accrediting agencies, which are accepted by the Department of Human Resources (DHR). Publications such as American Universities and Colleges and International Handbook of Universities are acceptable references. Also acceptable, if appropriate, are degrees that have been evaluated and deemed to be equivalent to degrees from United States accredited institutions by an academic credential evaluation agency recognized by The National Association of Credential Evaluation Services or the Association of International Credential Evaluators. Inc.
+    Closely related field would be described as Software Engineering, Computer Engineering, Information Technology (IT)
+     In order to receive credit for a bachelor's degree or higher degree, you MUST attach a legible copy of your "official" diploma, "official" transcripts, or "official" letter from an accredited institution which shows the area of specialization at the time of filing (preferred), or within seven (7) calendar days from application submission. If you are unable to attach the required documents at the time of filing, you must email to hr@dyd.lacounty.gov within seven (7) calendar days from the application submission. Please ensure to indicate the examination title and number on the subject of your email. We do not accept password-protected documents. Ensure documents are unlocked before attaching to your application or sending to the exam analyst.
+    Recent means experience obtained within the last five (5) years from the last day of filing.
+    In the County of Los Angeles, experience at the level of Application Developer II is defined as under general supervision, analyzes, designs, evaluates, develops, codes, tests, and maintains application systems.
+
+License
+
+A valid California Class C Driver License or the ability to utilize an alternative method of transportation when needed to carry out job-related essential functions.
+
+Physical Class
+
+ Physical Class II - Light: This class includes administrative and clerical positions requiring light physical effort that may include occasional light lifting to a 10-pound limit and some bending, stooping, or squatting. Considerable ambulation may be involved. 
+
+Additional Information
+
+EXAM CONTENT: 
+
+Before the end of your initial work assignment, the appointing department will evaluate your performance. Those who achieve a passing score on this evaluation will be considered for permanent appointment.
+
+Background Process
+
+Appointment to this position is contingent upon successful clearance of all pre-employment screening and onboarding requirements. This position requires live scan clearance.
+`}
+      </p>
     </div>
   )
 }

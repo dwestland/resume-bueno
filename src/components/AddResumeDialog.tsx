@@ -43,7 +43,7 @@ export function AddResumeDialog({ open, onOpenChange }: AddResumeDialogProps) {
               onClick={() => {
                 onOpenChange(false)
                 // Optionally, navigate to the add resume page here
-                window.location.href = '/'
+                window.location.href = '/resume/add'
               }}
               autoFocus
             >
