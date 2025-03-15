@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 
 interface MatchingResumeResultsProps {
@@ -8,10 +8,60 @@ interface MatchingResumeResultsProps {
   isGenerating: boolean
 }
 
+// Helper function to convert markdown to plain text
+const markdownToPlainText = (markdown: string): string => {
+  if (!markdown) return ''
+
+  return (
+    markdown
+      // Replace headers
+      .replace(/#{1,6}\s+/g, '')
+      // Replace bold and italic
+      .replace(/[*_]{1,3}(.*?)[*_]{1,3}/g, '$1')
+      // Replace links
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      // Replace code blocks with their content
+      .replace(/```[a-z]*\n([\s\S]*?)```/g, '$1')
+      // Replace inline code
+      .replace(/`([^`]+)`/g, '$1')
+      // Replace block quotes
+      .replace(/^\s*>\s+/gm, '')
+      // Replace ordered and unordered lists but keep the text
+      .replace(/^\s*[-*+]\s+/gm, '')
+      .replace(/^\s*\d+\.\s+/gm, '')
+      // Replace horizontal rules
+      .replace(/^\s*[-*_]{3,}\s*$/gm, '\n')
+      // Remove extra line breaks
+      .replace(/\n{3,}/g, '\n\n')
+      .trim()
+  )
+}
+
 export default function MatchingResumeResults({
   matchingResume,
   isGenerating,
 }: MatchingResumeResultsProps) {
+  const [copied, setCopied] = useState(false)
+
+  // Function to copy matching resume to clipboard
+  const copyToClipboard = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (!matchingResume) return
+
+    try {
+      // Convert markdown to plain text before copying
+      const plainText = markdownToPlainText(matchingResume)
+      await navigator.clipboard.writeText(plainText)
+      setCopied(true)
+      // Reset the copied state after 2 seconds
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy resume to clipboard:', err)
+    }
+  }
+
   return (
     <div className="mt-8 space-y-8">
       <div
@@ -19,24 +69,58 @@ export default function MatchingResumeResults({
           isGenerating ? 'border-blue-300 border-2' : 'border border-gray-200'
         }`}
       >
-        <div className="border-b border-gray-200 bg-gray-50 px-4 py-4 flex items-center">
-          <div className="p-1 rounded-full bg-blue-100 mr-3">
-            <svg
-              className="w-5 h-5 text-blue-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
+        <div className="border-b border-gray-200 bg-gray-50 px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center">
+            <div className="p-1 rounded-full bg-blue-100 mr-3">
+              <svg
+                className="w-5 h-5 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900">
+              Matching Resume
+            </h3>
           </div>
-          <h3 className="text-lg font-medium text-gray-900">Matching Resume</h3>
+
+          {/* Copy to Clipboard Button - Only visible when content is available */}
+          {matchingResume && !isGenerating && (
+            <button
+              onClick={copyToClipboard}
+              className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+              title="Copy resume as plain text"
+              type="button"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d={
+                    copied
+                      ? 'M5 13l4 4L19 7' // Checkmark icon when copied
+                      : 'M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002-2h2a2 2 0 002 2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3'
+                  }
+                />
+              </svg>
+              {copied ? 'Copied!' : 'Copy Plain Text'}
+            </button>
+          )}
         </div>
 
         <div className="p-6">

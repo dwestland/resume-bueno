@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { ComponentPropsWithoutRef } from 'react'
+import { CopyButton } from '@/components/CopyButton'
 
 type Props = {
   searchParams: Promise<{ id?: string }>
@@ -177,9 +178,17 @@ export default async function HistoryPage({ searchParams }: Props) {
 
               <div className="space-y-6">
                 <section>
-                  <h3 className="mb-2 text-2xl font-semibold text-teal-700">
-                    Job Description
-                  </h3>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-2xl font-semibold text-teal-700">
+                      Job Description
+                    </h3>
+                    {selectedResume.job_description && (
+                      <CopyButton
+                        content={selectedResume.job_description}
+                        label="Copy Job Description"
+                      />
+                    )}
+                  </div>
                   <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
                     <ReactMarkdown components={components}>
                       {processContent(selectedResume.job_description)}
@@ -191,9 +200,17 @@ export default async function HistoryPage({ searchParams }: Props) {
                 {selectedResume.product_type === 'RESUME_PACKAGE' ? (
                   <>
                     <section>
-                      <h3 className="mb-2 text-2xl font-semibold text-teal-700">
-                        Job Evaluation
-                      </h3>
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-2xl font-semibold text-teal-700">
+                          Job Evaluation
+                        </h3>
+                        {selectedResume.job_evaluation && (
+                          <CopyButton
+                            content={selectedResume.job_evaluation}
+                            label="Copy Evaluation"
+                          />
+                        )}
+                      </div>
                       <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
                         <ReactMarkdown components={components}>
                           {processContent(selectedResume.job_evaluation)}
@@ -202,9 +219,17 @@ export default async function HistoryPage({ searchParams }: Props) {
                     </section>
 
                     <section>
-                      <h3 className="mb-2 text-2xl font-semibold text-teal-700">
-                        Customized Resume
-                      </h3>
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-2xl font-semibold text-teal-700">
+                          Resume Improvement Suggestions
+                        </h3>
+                        {selectedResume.custom_resume && (
+                          <CopyButton
+                            content={selectedResume.custom_resume}
+                            label="Copy Suggestions"
+                          />
+                        )}
+                      </div>
                       <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
                         <ReactMarkdown components={components}>
                           {processContent(selectedResume.custom_resume)}
@@ -213,9 +238,17 @@ export default async function HistoryPage({ searchParams }: Props) {
                     </section>
 
                     <section>
-                      <h3 className="mb-2 text-2xl font-semibold text-teal-700">
-                        Cover Letter
-                      </h3>
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-2xl font-semibold text-teal-700">
+                          Cover Letter
+                        </h3>
+                        {selectedResume.cover_letter && (
+                          <CopyButton
+                            content={selectedResume.cover_letter}
+                            label="Copy Cover Letter"
+                          />
+                        )}
+                      </div>
                       <div className="p-4 overflow-y-auto rounded max-h-60 bg-gray-50">
                         <ReactMarkdown components={components}>
                           {processContent(selectedResume.cover_letter)}
@@ -225,9 +258,17 @@ export default async function HistoryPage({ searchParams }: Props) {
                   </>
                 ) : (
                   <section>
-                    <h3 className="mb-2 text-2xl font-semibold text-teal-700">
-                      Matching Resume
-                    </h3>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-2xl font-semibold text-teal-700">
+                        Matching Resume
+                      </h3>
+                      {selectedResume.matching_resume && (
+                        <CopyButton
+                          content={selectedResume.matching_resume}
+                          label="Copy Resume"
+                        />
+                      )}
+                    </div>
                     <div className="p-4 overflow-y-auto rounded bg-gray-50">
                       <div className="prose prose-gray prose-headings:text-gray-800 prose-headings:font-bold prose-p:text-gray-700 prose-strong:text-gray-800 prose-ul:text-gray-700 prose-li:my-0 max-w-none overflow-auto">
                         <ReactMarkdown components={components}>
