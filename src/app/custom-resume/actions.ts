@@ -706,12 +706,18 @@ FORMATTING REQUIREMENTS:
    - **bold** for important text like job titles and company names
    - * or - for bullet points
    - Proper line breaks and spacing
-2. Format dates, job titles, and company names consistently
-3. The resume should be well-structured for printing on a standard page
-4. Use clean, professional formatting without excessive decoration
-5. Do not include any introduction or explanation text in your response
-6. Present only the resume content in proper markdown format
-7. Do not make up any information - only use what is provided in the user data
+   - Do not use hyperlinks in the resume, example: [Company Name](https://www.companyname.com)
+   - After a heading, make sure to add a new line to avoid formatting overflow
+2. Format heading:
+   - # heading for main name at the top
+   - Followed by resume author title in bold (do not use heading) example: Software Engineer
+   - Followed by address (if available) then phone number and email address in normal font (do not use heading)
+3. Format dates, job titles, and company names consistently
+4. The resume should be well-structured for printing on a standard page
+5. Use clean, professional formatting without excessive decoration
+6. Do not include any introduction or explanation text in your response
+7. Present only the resume content in proper markdown format
+8. Do not make up any information - only use what is provided in the user data
 
 Create a tailored resume that maximizes the candidate's chances for this specific job position.`
   try {
