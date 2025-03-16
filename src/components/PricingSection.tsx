@@ -148,7 +148,15 @@ export default function PricingSection() {
       <p className="max-w-4xl mx-auto mt-12 text-center text-gray-600 px-4">
         <span className="font-semibold">1 credit = </span>
         Expert job analysis + resume recommendations + cover letter OR a
-        perfectly matched resume
+        perfectly matched resume. Monthly and Year customers can purchase{' '}
+        <Link
+          className="text-blue-600 underline hover:text-blue-800"
+          href="/checkout-page?plan=additional-credits"
+        >
+          Additional Credits
+        </Link>
+        . For $9.95, you get an additional 200 credits towards your monthly
+        quota.
       </p>
     </div>
   )
