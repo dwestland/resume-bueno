@@ -133,6 +133,10 @@ export default function PricingSection() {
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
+              <span>One-time payment, no need to cancel</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>Priority support</span>
             </li>
           </ul>
