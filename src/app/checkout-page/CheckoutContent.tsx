@@ -2,7 +2,10 @@
 
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { createSubscriptionCheckout } from '@/lib/actions/subscription'
+import {
+  createSubscriptionCheckout,
+  createAdditionalCreditsCheckout,
+} from '@/lib/actions/subscription'
 import { SubscriptionType } from '@/lib/types/subscription'
 import { ArrowLeft, CircleCheck, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -15,20 +18,36 @@ export default function CheckoutContent() {
   const [error, setError] = useState<string | null>(null)
 
   // Format the plan for display
-  const formattedPlanType = planType === 'yearly' ? 'Yearly' : 'Monthly'
+  let formattedPlanType = 'Monthly'
+  if (planType === 'yearly') {
+    formattedPlanType = 'Yearly'
+  } else if (planType === 'additional-credits') {
+    formattedPlanType = 'Additional Credits'
+  }
 
   // Calculate the price
-  const price = planType === 'yearly' ? 45 : 9.95
+  let price = 9.95
+  if (planType === 'yearly') {
+    price = 45
+  }
 
   // Features for the plan
-  const features = [
-    '200 credits every month',
-    'AI-powered resume analysis',
-    'Custom cover letters',
-    'Expert job analysis',
-    'Resume recommendations',
-    planType === 'yearly' ? '65% savings' : '',
-  ].filter(Boolean)
+  const features =
+    planType === 'additional-credits'
+      ? [
+          '200 additional credits',
+          'One-time purchase',
+          'Added to your current credit balance',
+          'Use for resumes or job evaluations',
+        ]
+      : [
+          '200 credits every month',
+          'AI-powered resume analysis',
+          'Custom cover letters',
+          'Expert job analysis',
+          'Resume recommendations',
+          planType === 'yearly' ? '65% savings' : '',
+        ].filter(Boolean)
 
   // Handle checkout
   const handleCheckout = async () => {
@@ -36,13 +55,19 @@ export default function CheckoutContent() {
       setIsLoading(true)
       setError(null)
 
-      // Create checkout session
-      const subscriptionType =
-        planType === 'yearly'
-          ? SubscriptionType.YEARLY
-          : SubscriptionType.MONTHLY
+      let result
 
-      const result = await createSubscriptionCheckout(subscriptionType)
+      // Create checkout session based on plan type
+      if (planType === 'additional-credits') {
+        result = await createAdditionalCreditsCheckout()
+      } else {
+        const subscriptionType =
+          planType === 'yearly'
+            ? SubscriptionType.YEARLY
+            : SubscriptionType.MONTHLY
+
+        result = await createSubscriptionCheckout(subscriptionType)
+      }
 
       if (result.error) {
         setError(result.error)
@@ -84,7 +109,11 @@ export default function CheckoutContent() {
           <div className="flex items-baseline mb-6">
             <span className="text-3xl font-bold">${price}</span>
             <span className="text-gray-600 ml-1">
-              {planType === 'yearly' ? '/year' : '/month'}
+              {planType === 'yearly'
+                ? '/year'
+                : planType === 'additional-credits'
+                ? ''
+                : '/month'}
             </span>
           </div>
 
@@ -108,7 +137,13 @@ export default function CheckoutContent() {
             </div>
             <div className="flex justify-between font-medium">
               <span>Billing</span>
-              <span>{planType === 'yearly' ? 'Annually' : 'Monthly'}</span>
+              <span>
+                {planType === 'yearly'
+                  ? 'Annually'
+                  : planType === 'additional-credits'
+                  ? 'One-time'
+                  : 'Monthly'}
+              </span>
             </div>
           </div>
 
@@ -116,7 +151,11 @@ export default function CheckoutContent() {
             <span>Total</span>
             <span>
               ${price}
-              {planType === 'yearly' ? '/year' : '/month'}
+              {planType === 'yearly'
+                ? '/year'
+                : planType === 'additional-credits'
+                ? ''
+                : `/${planType === 'monthly' ? 'month' : 'month'}`}
             </span>
           </div>
 
