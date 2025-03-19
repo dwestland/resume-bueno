@@ -9,6 +9,7 @@ import { checkUserResume, getResumeProgress } from './actions'
 import { ResumeProgress } from '@/components/ResumeProgress'
 import { AddResumeDialog } from '@/components/AddResumeDialog'
 import PricingSection from '@/components/PricingSection'
+import ImageCarousel from '@/components/ImageCarousel'
 
 export default function ClientHome() {
   const { data: session, status } = useSession()
@@ -161,7 +162,7 @@ export default function ClientHome() {
                 <Button size="lg" className="text-xl">
                   <Link href="/custom-resume">Make Resume Package</Link>
                 </Button>
-                <h2 className="mt-4 mb-8">Let&apos;s go get that job!</h2>
+                <h2 className="mt-4 mb-8">Let&apos;s get that job!</h2>
               </div>
             ) : (
               <div className="flex flex-col items-center">
@@ -171,6 +172,7 @@ export default function ClientHome() {
                 </Button>
               </div>
             )}
+            <ImageCarousel />
           </div>
         </div>
       </div>
