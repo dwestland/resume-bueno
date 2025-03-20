@@ -65,7 +65,7 @@ const ImageCarousel: React.FC = () => {
   return (
     <div className="bg-white py-12">
       <div className="max-w-7xl mx-auto px-4">
-        <h3 className="text-3xl text-center mb-8 text-gray-600">
+        <h3 className="text-2xl text-center mb-8">
           Students from Top Universities Trust Resume Bueno
         </h3>
         <div className="carousel-container">
