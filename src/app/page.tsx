@@ -177,7 +177,6 @@ export default function ClientHome() {
         </div>
       </div>
 
-      {/* Resume Progress Indicator - Only shown when logged in */}
       {isLoggedIn && resumeProgress && (
         <div className="w-full my-12 px-4 transition-all">
           <ResumeProgress
