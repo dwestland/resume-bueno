@@ -38,6 +38,18 @@ body {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    /* Teal color variables for easy access */
+    --teal-50: #f0fdfa;
+    --teal-100: #ccfbf1;
+    --teal-200: #99f6e4;
+    --teal-300: #5eead4;
+    --teal-400: #2dd4bf;
+    --teal-500: #14b8a6;
+    --teal-600: #0d9488;
+    --teal-700: #0f766e;
+    --teal-800: #115e59;
+    --teal-900: #134e4a;
   }
 
   .dark {
@@ -68,31 +80,61 @@ body {
   }
 }
 
+/* Typography with improved responsive scaling */
 h1 {
   @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
   font-family: var(--font-oswald);
   margin: 1.5rem 0;
+  line-height: 1.2;
 }
 
 h2 {
   @apply scroll-m-20 text-3xl font-semibold tracking-tight;
   font-family: var(--font-oswald);
   margin: 1.25rem 0;
+  line-height: 1.3;
 }
 
 h3 {
   @apply scroll-m-20 text-2xl font-semibold tracking-tight;
   font-family: var(--font-oswald);
   margin: 1rem 0;
+  line-height: 1.4;
 }
 
 p,
 li {
-  @apply text-xl;
+  @apply text-base sm:text-lg lg:text-xl;
   margin: 0.75rem 0;
+  line-height: 1.6;
 }
 
-/* Carousel for University Logos */
+/* Teal accent elements */
+.teal-accent-line {
+  background-color: var(--teal-500);
+  transition: width 0.3s ease-in-out;
+}
+
+.beta-badge {
+  background-color: var(--teal-100);
+  color: var(--teal-800);
+  border-radius: 0.25rem;
+}
+
+/* Button enhancements */
+.cta-button {
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.cta-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Carousel for University Logos - Enhanced */
 .carousel-container {
   margin: 20px auto;
   max-width: 100%;
@@ -133,7 +175,7 @@ li {
 .carousel-container .slick-prev:before,
 .carousel-container .slick-next:before {
   font-size: 40px;
-  color: #666;
+  color: var(--teal-500);
 }
 
 .carousel-container .slick-dots {
@@ -142,6 +184,56 @@ li {
 
 .carousel-container .slick-dots li button:before {
   font-size: 12px;
+  color: var(--teal-500);
+}
+
+/* Title underlines for sections */
+.title-underline {
+  background-color: var(--teal-500);
+  height: 3px;
+  width: 60px;
+  margin-top: 8px;
+  transition: width 0.3s ease;
+}
+
+/* Decorative elements */
+.decoration-circle {
+  filter: blur(20px);
+  opacity: 0.6;
+  border-radius: 50%;
+  transition: all 0.5s ease;
+}
+
+/* Responsive spacing adjustments */
+@media (max-width: 768px) {
+  .hero-content {
+    text-align: center;
+  }
+
+  .teal-accent-line {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .title-underline {
+    width: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-image-wrapper {
+    height: 200px;
+  }
+}
+
+/* Accessibility focus indicators */
+:focus {
+  outline: 2px solid var(--teal-500);
+  outline-offset: 2px;
+}
+
+button:focus {
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.5);
 }
 
 /* ///////////////////////////////////////////////////////////////// */

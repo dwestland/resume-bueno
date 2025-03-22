@@ -42,6 +42,12 @@ const ImageCarousel: React.FC = () => {
     pauseOnHover: false,
     responsive: [
       {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 5,
+        },
+      },
+      {
         breakpoint: 1024,
         settings: {
           slidesToShow: 4,
@@ -51,34 +57,40 @@ const ImageCarousel: React.FC = () => {
         breakpoint: 768,
         settings: {
           slidesToShow: 3,
+          speed: 4000,
         },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 2,
+          speed: 3000,
         },
       },
     ],
   }
 
   return (
-    <div className="bg-white py-12">
-      <div className="max-w-7xl mx-auto px-4">
-        <h3 className="text-2xl text-center mb-8">
-          Students from Top Universities Trust Resume Bueno
-        </h3>
-        <div className="carousel-container">
+    <div className="logos-carousel-section bg-white py-12 sm:py-16">
+      <div className="logos-carousel-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="section-header text-center mb-10">
+          <h3 className="section-title text-2xl font-semibold text-gray-800 relative inline-block">
+            Students from Top Universities Use and Trust Resume Bueno
+            <span className="title-underline absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-teal-500 rounded-full mt-2"></span>
+          </h3>
+        </div>
+
+        <div className="carousel-container relative px-4">
           <Slider {...settings}>
             {[...universityLogos, ...universityLogos].map((logo, index) => (
-              <div key={index} className="px-4">
-                <div className="flex items-center justify-center h-28">
+              <div key={index} className="carousel-slide px-4">
+                <div className="logo-container flex items-center justify-center h-28">
                   <Image
                     src={logo.src}
                     alt={logo.alt}
                     width={150}
                     height={60}
-                    className="object-contain max-h-24 grayscale hover:grayscale-0 transition-all duration-300"
+                    className="logo-image object-contain max-h-24 grayscale hover:grayscale-0 transition-all duration-300"
                   />
                 </div>
               </div>
