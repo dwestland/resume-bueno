@@ -17,7 +17,7 @@ const oswald = Oswald({
 export const metadata: Metadata = {
   title: 'Resume + Job Description = Resume Bueno',
   description:
-    'The key to getting hired is aligning your resume with the job description. Resume Bueno does it instantly. Try it now for FREE!',
+    'Upload your resume, add a job description and let Resume Bueno do the rest. Get a matching resume, job evaluation and a cover letter. Try it now for FREE!',
 }
 
 export default function RootLayout({

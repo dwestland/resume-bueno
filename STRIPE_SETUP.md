@@ -4,10 +4,11 @@ This document explains the Stripe integration for the Resume Bueno SaaS applicat
 
 ## Overview
 
-Resume Bueno uses Stripe for payment processing with two plans:
+Resume Bueno uses Stripe for payment processing with three product offerings:
 
-1. **Monthly Plan**: $9.95/month recurring subscription for 200 credits topped off monthly
-2. **Yearly Plan**: $45 one-time payment for a year of service with 200 credits topped off monthly (65% savings)
+1. **Monthly Plan**: $19.90/month recurring subscription for 200 credits topped off monthly
+2. **Yearly Plan**: $199.00 one-time payment for a year of service with 200 credits topped off monthly (17% savings)
+3. **Additional Credits**: $9.90 one-time payment for 200 additional credits (available only to active subscribers)
 
 ## Architecture
 
@@ -36,6 +37,7 @@ The following models support the payment functionality:
 - Records all purchase transactions
 - Tracks purchase type, amount, and status
 - Links to the user who made the purchase
+- `credits_added`: Int (tracks how many credits were added for credit purchases)
 
 ## Implementation Components
 
@@ -48,6 +50,7 @@ The following models support the payment functionality:
 ### 2. Server Actions (`src/lib/actions/subscription.ts`)
 
 - `createSubscriptionCheckout`: Creates a checkout session for monthly subscription or yearly one-time payment
+- `createAdditionalCreditsCheckout`: Creates a checkout session for additional credits purchase
 - `recordSubscriptionPurchase`: Records a successful purchase in the database
 - `cancelUserSubscription`: Cancels a user's subscription
 - `checkSubscriptionStatus`: Checks a user's subscription status
@@ -60,7 +63,8 @@ The following models support the payment functionality:
 Handles the following events:
 
 - `checkout.session.completed`: When a checkout is completed
-  - Handles both subscription (monthly) and one-time payment (yearly) modes
+  - Handles subscription (monthly), one-time payment (yearly), and additional credits purchases
+  - Uses `recordSubscriptionPurchase` for both monthly and yearly plans to ensure consistent handling
 - `customer.subscription.updated`: When a subscription is updated (monthly plans only)
 - `customer.subscription.deleted`: When a subscription is canceled (monthly plans only)
 - `invoice.payment_failed`: When payment fails (monthly plans only)
@@ -70,6 +74,7 @@ Handles the following events:
 - `src/app/checkout-page/page.tsx`: Checkout page that redirects to Stripe
 - `src/app/checkout-success/page.tsx`: Success page after successful checkout
 - `src/components/PricingSection.tsx`: Pricing display and plan selection
+- `src/components/SubscriptionManagement.tsx`: Manages subscription status and cancellation
 
 ## Credit Management
 
@@ -79,6 +84,7 @@ Credits are managed as follows:
 - Subscribers receive 200 credits on subscription start
 - Monthly subscribers: Credits are topped up to 200 at the beginning of each billing period
 - Yearly subscribers: Credits are topped up to 200 at the beginning of each month
+- Additional credits purchase: 200 credits added to the current balance
 - Credit usage is tracked in the database
 
 ## Testing
@@ -89,7 +95,23 @@ Testing the Stripe integration:
 2. Test card numbers:
    - Success: `4242 4242 4242 4242`
    - Decline: `4000 0000 0000 0002`
-3. Test webhook events using the Stripe CLI
+3. Test webhook events using the Stripe CLI or the test scripts in the `scripts/` directory
+
+### Test Scripts
+
+The `scripts/` directory contains Node.js scripts to test the webhook handler:
+
+- `test-stripe-webhook-yearly.js`: Tests yearly subscription purchase
+- `test-stripe-webhook-monthly.js`: Tests monthly subscription purchase
+- `test-stripe-webhook-credits.js`: Tests additional credits purchase
+
+To use these scripts:
+
+```
+node scripts/test-stripe-webhook-yearly.js
+```
+
+See the README in the scripts directory for more details.
 
 ## Webhook Setup
 
@@ -113,8 +135,9 @@ STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
 # Stripe prices
-STRIPE_PRICE_ID_MONTHLY=price_... # Monthly subscription price ID
-STRIPE_PRICE_ID_YEAR=price_...    # Yearly one-time payment price ID
+STRIPE_PRICE_ID_MONTHLY=price_...              # Monthly subscription price ID
+STRIPE_PRICE_ID_YEAR=price_...                 # Yearly one-time payment price ID
+STRIPE_PRICE_ID_ADDITIONAL_CREDITS=price_...   # Additional credits price ID
 ```
 
 ## Going to Production

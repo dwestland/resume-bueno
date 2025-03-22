@@ -73,7 +73,7 @@ export default function PricingSection() {
           <ul className="mb-8 space-y-4">
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>200 resume matches or job analysis per month</span>
+              <span>200 credits per month</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
@@ -121,20 +121,25 @@ export default function PricingSection() {
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
+              <span>200 credit per month for 12 months</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>Same feature as monthly plan</span>
             </li>
-            <li className="flex items-center gap-3">
-              <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>200 matches or analysis per month for 12 months</span>
-            </li>
-            <li className="flex items-center gap-3">
+
+            {/* <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>Personalized resume feedback</span>
-            </li>
+            </li> */}
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Priority support</span>
+              <span>One-time payment, no need to cancel</span>
             </li>
+            {/* <li className="flex items-center gap-3">
+              <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
+              <span>Priority support</span>
+            </li> */}
           </ul>
 
           <div className="absolute w-full px-8 bottom-8 left-0">
@@ -146,9 +151,20 @@ export default function PricingSection() {
       </div>
 
       <p className="max-w-4xl mx-auto mt-12 text-center text-gray-600 px-4">
+        Monthly and Year customers can purchase{' '}
+        <Link
+          className="text-blue-600 underline hover:text-blue-800"
+          href="/checkout-page?plan=additional-credits"
+        >
+          Additional Credits
+        </Link>
+        . For $9.95, you get an additional 200 credits towards your monthly
+        quota.
+        <br />
+        <br />
         <span className="font-semibold">1 credit = </span>
         Expert job analysis + resume recommendations + cover letter OR a
-        perfectly matched resume
+        perfectly matched resume.
       </p>
     </div>
   )

@@ -14,6 +14,12 @@ export async function verifyStripeWebhookSignature(
   signature: string
 ) {
   try {
+    console.log('Verifying Stripe webhook signature...')
+    console.log(
+      'Webhook secret: ',
+      process.env.STRIPE_WEBHOOK_SECRET ? 'Set' : 'Not set'
+    )
+
     // Create the event from the raw body and signature using the webhook secret
     return stripe.webhooks.constructEvent(
       body,
@@ -23,6 +29,8 @@ export async function verifyStripeWebhookSignature(
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error)
     console.error('Webhook signature verification failed:', errorMessage)
+    console.error('Signature provided:', signature)
+    console.error('First 100 chars of body:', body.substring(0, 100))
     throw new Error(`Webhook signature verification failed: ${errorMessage}`)
   }
 }
@@ -33,11 +41,13 @@ export async function createCheckoutSession({
   customerId,
   userId,
   mode = 'subscription',
+  productType,
 }: {
   priceId: string
   customerId?: string
   userId: string
   mode?: 'subscription' | 'payment'
+  productType?: 'monthly' | 'yearly' | 'additional_credits'
 }) {
   // Use environment variable for the origin or default to localhost
   const origin = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3200'
@@ -57,6 +67,7 @@ export async function createCheckoutSession({
     cancel_url: `${origin}/`,
     metadata: {
       userId,
+      productType: productType || '',
     },
   })
 }

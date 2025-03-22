@@ -51,12 +51,17 @@ export async function createSubscriptionCheckout(
     const mode =
       planType === SubscriptionType.YEARLY ? 'payment' : 'subscription'
 
+    // Set the product type for metadata
+    const productType =
+      planType === SubscriptionType.MONTHLY ? 'monthly' : 'yearly'
+
     // Create the checkout session
     const checkoutSession = await createCheckoutSession({
       priceId,
       customerId,
       userId,
       mode,
+      productType,
     })
 
     // Record the pending purchase in the database
@@ -102,12 +107,26 @@ export async function recordSubscriptionPurchase({
   endDate: Date
 }) {
   try {
+    console.log(`Recording subscription purchase for user: ${userId}`)
+    console.log(`- Subscription ID: ${subscriptionId}`)
+    console.log(`- Customer ID: ${customerId}`)
+    console.log(`- Price ID: ${priceId}`)
+    console.log(`- Session ID: ${sessionId}`)
+    console.log(`- End Date: ${endDate.toISOString()}`)
+
     // Determine the subscription plan based on price ID
     const isMonthly = priceId === process.env.STRIPE_PRICE_ID_MONTHLY
     const plan = isMonthly ? SubscriptionPlan.MONTHLY : SubscriptionPlan.YEARLY
 
+    console.log(`- Determined plan type: ${plan}`)
+    console.log(`- Plan is monthly: ${isMonthly}`)
+    console.log(`- MONTHLY price ID: ${process.env.STRIPE_PRICE_ID_MONTHLY}`)
+    console.log(`- YEARLY price ID: ${process.env.STRIPE_PRICE_ID_YEAR}`)
+
     // Update the user's subscription information
-    await prisma.user.update({
+    console.log('Updating user subscription information...')
+
+    const updateResult = await prisma.user.update({
       where: { id: userId },
       data: {
         stripe_customer_id: customerId,
@@ -121,13 +140,24 @@ export async function recordSubscriptionPurchase({
       },
     })
 
+    console.log('User update completed:')
+    console.log(`- New subscription plan: ${updateResult.subscription_plan}`)
+    console.log(
+      `- New subscription status: ${updateResult.subscription_status}`
+    )
+    console.log(`- New credits: ${updateResult.credits}`)
+
     // Update the purchase record
+    console.log('Updating purchase record status...')
+
     await prisma.purchase.update({
       where: { stripe_session_id: sessionId },
       data: {
         status: 'completed',
       },
     })
+
+    console.log('Purchase record updated to completed')
 
     revalidatePath('/')
     return { success: true }
@@ -401,6 +431,118 @@ export async function replenishYearlyPlanCredits(): Promise<{
     return {
       success: false,
       error: 'Failed to replenish credits',
+    }
+  }
+}
+
+/**
+ * Function to create a checkout session for additional credits
+ * Only available to users with an active subscription
+ */
+export async function createAdditionalCreditsCheckout(): Promise<{
+  url: string | null
+  error?: string
+}> {
+  try {
+    // Get the current user session
+    const session = await auth()
+    if (!session?.user?.id || !session?.user?.email) {
+      return { url: null, error: 'User not authenticated' }
+    }
+
+    const userId = session.user.id
+    const email = session.user.email
+
+    // Check if the user has an active subscription
+    const { isSubscribed } = await checkSubscriptionStatus()
+    if (!isSubscribed) {
+      return {
+        url: null,
+        error: 'Additional credits are only available to active subscribers',
+      }
+    }
+
+    // Get or create a Stripe customer for the user
+    const customerId = await getOrCreateStripeCustomer(userId, email)
+
+    // Get the price ID for additional credits
+    const priceId = process.env.STRIPE_PRICE_ID_ADDITIONAL_CREDITS
+    if (!priceId) {
+      return {
+        url: null,
+        error: 'Price ID not found for additional credits',
+      }
+    }
+
+    // Create the checkout session (one-time payment)
+    const checkoutSession = await createCheckoutSession({
+      priceId,
+      customerId,
+      userId,
+      mode: 'payment',
+      productType: 'additional_credits',
+    })
+
+    // Record the pending purchase in the database
+    await prisma.purchase.create({
+      data: {
+        user_id: userId,
+        amount: 9.95,
+        purchase_type: PurchaseType.CREDIT_PURCHASE,
+        stripe_session_id: checkoutSession.id,
+        status: 'pending',
+        credits_added: 200, // Track how many credits this purchase adds
+      },
+    })
+
+    return { url: checkoutSession.url }
+  } catch (error) {
+    console.error('Error creating additional credits checkout:', error)
+    return {
+      url: null,
+      error: 'Failed to create checkout session',
+    }
+  }
+}
+
+/**
+ * For testing purposes only - Simulate a subscription purchase without going through Stripe
+ */
+export async function testRecordSubscriptionPurchase(userId: string): Promise<{
+  success: boolean
+  error?: string
+}> {
+  try {
+    console.log('TEST MODE: Recording subscription purchase for user:', userId)
+
+    // Make up some test values
+    const subscriptionId = 'sub_test_' + Date.now()
+    const customerId = 'cus_test_' + Date.now()
+    const priceId = process.env.STRIPE_PRICE_ID_MONTHLY || 'price_test'
+    const sessionId = 'cs_test_' + Date.now()
+
+    // End date is 1 month from now
+    const endDate = new Date()
+    endDate.setMonth(endDate.getMonth() + 1)
+
+    // Record the subscription purchase
+    const result = await recordSubscriptionPurchase({
+      userId,
+      subscriptionId,
+      customerId,
+      priceId,
+      sessionId,
+      endDate,
+    })
+
+    console.log('TEST MODE: Result of subscription purchase:', result)
+
+    return { success: true }
+  } catch (error) {
+    console.error('TEST MODE: Error recording subscription purchase:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
     }
   }
 }

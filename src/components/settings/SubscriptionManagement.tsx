@@ -100,7 +100,7 @@ export function SubscriptionManagement({ user }: SubscriptionManagementProps) {
             </div>
           )}
 
-          {user.subscription_plan ? (
+          {user.subscription_status === 'ACTIVE' ? (
             <Button
               variant="destructive"
               onClick={handleCancelSubscription}
