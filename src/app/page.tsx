@@ -10,6 +10,7 @@ import { ResumeProgress } from '@/components/ResumeProgress'
 import { AddResumeDialog } from '@/components/AddResumeDialog'
 import PricingSection from '@/components/PricingSection'
 import ImageCarousel from '@/components/ImageCarousel'
+import MarketingMessage from '@/components/MarketingMessage'
 
 export default function ClientHome() {
   const { data: session, status } = useSession()
@@ -202,6 +203,9 @@ export default function ClientHome() {
           </div>
         </div>
       </div>
+
+      {/* Marketing Message Section */}
+      <MarketingMessage />
 
       {/* University Logos Section */}
       <section className="logos-section border-t border-gray-100">
