@@ -131,7 +131,7 @@ export default function PricingSection() {
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>200 credit per month for 12 months</span>
+              <span>200 credits per month for 12 months</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
