@@ -6,7 +6,7 @@ Welcome to **Resume Bueno**, the AI-powered resume builder that takes your exist
 
 ---
 
-## 🧐 What is Resume Bueno?
+## 🤔 What is Resume Bueno?
 
 Imagine having a **personal career coach** that analyzes your resume, compares it with job descriptions, and instantly tweaks it for maximum impact. That’s Resume Bueno! With the power of **AI** and a touch of **bueno** (Spanish for "good"), you get:
 
@@ -56,6 +56,6 @@ Resume Bueno is built using modern web technologies:
 
 ## 🌎 Live Demo
 
-🚀 **[Try Resume Bueno Live](https://resume-bueno.com)** (Beta)
+🚀 **[Try Resume Bueno Live](https://www.resumebueno.com)** (Beta)
 
 🚀 Supercharge Your Resume with Resume Bueno – Because Landing Jobs Should Be Bueno! 🎉

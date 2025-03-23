@@ -13,44 +13,32 @@ export default function AboutUsPage() {
           height={300}
           className="mx-auto mb-6"
         />
-        <p>
-          Resume Bueno helps job seekers get hired. We make strong resumes fast.
-        </p>
-
-        <h2>What We Do</h2>
+        <h2>Built for Job Seekers. Powered by Bueno Vibes.</h2>
 
         <p>
-          Our AI crafts resumes that match job descriptions. This improves
-          results.
+          Let’s be real, writing resumes kinda sucks. You stare at a blank page,
+          try to sound impressive, and then wonder if it’ll even get past the
+          robots. That’s where we come in.
         </p>
-
-        <p>We provide:</p>
-        <ul>
-          <li>
-            <strong>Custom Resumes</strong> – Match your skills to any job.
-          </li>
-          <li>
-            <strong>Cover Letters</strong> – Present yourself with confidence.
-          </li>
-          <li>
-            <strong>Job Fit Scores</strong> – See how well your resume aligns.
-          </li>
-          <li>
-            <strong>Employer Insights</strong> – Understand what they seek.
-          </li>
-        </ul>
-
-        <h2>Why It Matters</h2>
 
         <p>
-          Good resumes open doors. Many job seekers miss out due to weak
-          resumes.
+          <strong>Resume Bueno</strong> is your secret weapon for job hunting.
+          We take your existing resume, pair it with the job description you’re
+          chasing, and boom—out comes a custom-crafted resume that speaks the
+          language hiring managers (and applicant tracking systems) love.
         </p>
-        <p>We fix that. Our tool makes every application stronger.</p>
 
-        <h2>Join Us</h2>
+        <p>
+          It’s like having a professional resume writer, a savvy recruiter, and
+          a sprinkle of AI magic working for you. Plus, you get a matching cover
+          letter and a quick-read score showing how well you stack up for the
+          job.
+        </p>
 
-        <p>Get noticed. Get hired. Start with Resume Bueno today.</p>
+        <p>
+          We built Resume Bueno to make life easier for job seekers. Less
+          stress. More interviews. That’s the bueno way.
+        </p>
       </div>
     </div>
   )
