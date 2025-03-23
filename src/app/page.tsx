@@ -10,6 +10,7 @@ import { ResumeProgress } from '@/components/ResumeProgress'
 import { AddResumeDialog } from '@/components/AddResumeDialog'
 import PricingSection from '@/components/PricingSection'
 import ImageCarousel from '@/components/ImageCarousel'
+import MarketingMessage from '@/components/MarketingMessage'
 
 export default function ClientHome() {
   const { data: session, status } = useSession()
@@ -119,7 +120,7 @@ export default function ClientHome() {
                 <br />
                 Bueno
               </h2>
-              <h1 className="site-tagline mt-1 text-2xl sm:text-3xl lg:text-4xl text-teal-600 leading-tight">
+              <h1 className="site-tagline mt-1 text-2xl sm:text-3xl lg:text-4xl text-violet-800 leading-tight">
                 Resume&nbsp;+&nbsp;Job Description
                 <br />
                 &nbsp;=&nbsp;Resume Bueno
@@ -203,8 +204,11 @@ export default function ClientHome() {
         </div>
       </div>
 
+      {/* Marketing Message Section */}
+      <MarketingMessage />
+
       {/* University Logos Section */}
-      <section className="logos-section border-t border-gray-100">
+      <section className="logos-section border-t border-gray-00">
         <ImageCarousel />
       </section>
 
@@ -224,15 +228,7 @@ export default function ClientHome() {
         <PricingSection />
       </section>
 
-      {/* Footer - Simple Footer with Teal Accent */}
-      <footer className="footer py-8 bg-white border-t border-gray-100">
-        <div className="footer-content container mx-auto px-4 text-center">
-          <div className="footer-accent-line w-16 h-1 bg-teal-500 mx-auto rounded mb-4"></div>
-          <p className="footer-copyright text-sm text-gray-500">
-            © {new Date().getFullYear()} Resume Bueno. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <div className="footer-accent-line w-16 h-1 bg-teal-500 mx-auto rounded mb-4"></div>
     </div>
   )
 }
