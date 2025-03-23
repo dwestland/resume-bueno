@@ -74,9 +74,9 @@ const ImageCarousel: React.FC = () => {
     <div className="logos-carousel-section bg-white py-12 sm:py-16">
       <div className="logos-carousel-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="section-header text-center mb-10">
-          <h3 className="section-title text-2xl font-semibold text-gray-800 relative inline-block">
+          <h3 className="section-title text-3xl font-semibold text-violet-800 relative inline-block">
             Students from Top Universities Use and Trust Resume Bueno
-            <span className="title-underline absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-teal-500 rounded-full mt-2"></span>
+            {/* <span className="title-underline absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-teal-500 rounded-full mt-2"></span> */}
           </h3>
         </div>
 

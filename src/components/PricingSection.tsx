@@ -5,7 +5,7 @@ import { Check } from 'lucide-react'
 export default function PricingSection() {
   return (
     <div id="pricing" className="mt-24 mb-16">
-      <div className="text-center max-w-3xl mx-auto px-4">
+      <div className="text-center max-w-3xl mx-auto px-4 py-4">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4 bg-clip-text">
           Choose Your Plan
         </h2>
@@ -17,7 +17,7 @@ export default function PricingSection() {
       {/* Pricing Cards */}
       <div className="grid max-w-6xl grid-cols-1 gap-6 mx-auto md:grid-cols-3 px-4">
         {/* Free Plan */}
-        <div className="relative p-8 bg-white border border-gray-200 shadow-md h-[580px] rounded-2xl hover:shadow-lg transition-shadow duration-300">
+        <div className="relative p-8 bg-white border border-gray-200 shadow-md h-[600px] rounded-2xl hover:shadow-lg transition-shadow duration-300">
           <h3 className="text-xl font-bold text-center mb-2">Basic</h3>
           <div className="flex items-center justify-center gap-1 mb-6 mt-6">
             <span className="text-4xl font-bold">FREE</span>
@@ -53,16 +53,21 @@ export default function PricingSection() {
         </div>
 
         {/* Monthly Plan */}
-        <div className="relative p-8 bg-white border-2 border-violet-200 shadow-xl h-[580px] rounded-2xl hover:shadow-2xl transition-shadow duration-300 transform scale-105 z-10">
+        <div className="relative p-8 bg-white border-2 border-violet-200 shadow-xl h-[600px] rounded-2xl hover:shadow-2xl transition-shadow duration-300 transform scale-105 z-10">
           {/* Popular Badge */}
           <div className="absolute top-0 px-6 py-1 text-white -translate-x-1/2 -translate-y-1/2 rounded-full left-1/2 bg-teal-700">
             Most Popular
           </div>
 
           <h3 className="text-xl font-bold text-center mb-2">Monthly</h3>
-          <div className="flex items-center justify-center gap-1 mb-1 mt-6">
-            <span className="text-4xl font-bold">$9.95</span>
-            <span className="text-gray-600">/mo</span>
+          <div className="flex flex-col items-center justify-center mb-1 mt-4">
+            <span className="text-xl font-semibold  text-gray-600 line-through mb-1">
+              $14.95
+            </span>
+            <div className="flex items-center justify-center gap-1">
+              <span className="text-4xl font-bold">$9.95</span>
+              <span className="text-gray-600">/mo</span>
+            </div>
           </div>
           <div className="h-8 mb-6 flex items-center justify-center">
             <span className="text-sm text-violet-800 font-semibold">
@@ -85,7 +90,7 @@ export default function PricingSection() {
             </li>
             <li className="flex items-center gap-3">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Priority support</span>
+              <span>One-click unsubscribe</span>
             </li>
           </ul>
 
@@ -100,11 +105,16 @@ export default function PricingSection() {
         </div>
 
         {/* Year Plan */}
-        <div className="relative p-8 bg-white border border-gray-200 shadow-md h-[580px] rounded-2xl hover:shadow-lg transition-shadow duration-300">
+        <div className="relative p-8 bg-white border border-gray-200 shadow-md h-[600px] rounded-2xl hover:shadow-lg transition-shadow duration-300">
           <h3 className="text-xl font-bold text-center mb-2">Year</h3>
-          <div className="flex items-center justify-center gap-1 mb-1 mt-6">
-            <span className="text-4xl font-bold">$45</span>
-            <span className="text-gray-600">/year</span>
+          <div className="flex flex-col items-center justify-center mb-1 mt-4">
+            <span className="text-xl font-semibold  text-gray-600 line-through mb-1">
+              $119.40
+            </span>
+            <div className="flex items-center justify-center gap-1">
+              <span className="text-4xl font-bold">$45</span>
+              <span className="text-gray-600">/year</span>
+            </div>
           </div>
           <div className="h-8 mb-6 flex items-center justify-center">
             <span className="text-sm font-semibold bg-green-100 text-green-700 px-3 py-1 rounded-full">
@@ -150,7 +160,7 @@ export default function PricingSection() {
         </div>
       </div>
 
-      <p className="max-w-4xl mx-auto mt-12 text-center text-gray-600 px-4">
+      <p className="max-w-4xl mx-auto mt-12 pb-6 text-center text-gray-600 px-4">
         Monthly and Year customers can purchase{' '}
         <Link
           className="text-blue-600 underline hover:text-blue-800"
