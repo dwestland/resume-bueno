@@ -36,6 +36,12 @@ export default function Header() {
             Home
           </Link>
           <Link
+            href="/about"
+            className="font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+          >
+            About
+          </Link>
+          <Link
             href="/#pricing"
             className="font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
           >

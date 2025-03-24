@@ -162,6 +162,11 @@ export default function ClientHome() {
           <div className="cta-container text-center max-w-3xl mx-auto">
             {!isLoggedIn ? (
               <div className="cta-content flex flex-col items-center">
+                <p className="text-2xl sm:text-2xl font-semibold text-gray-800 my-6">
+                  Get 20 FREE Credits Today & Unlock the &quot;4X Interview Rate
+                  Formula&quot; — Try Resume Bueno&apos;s Complete System
+                  Without Paying a Penny
+                </p>
                 <Button
                   size="lg"
                   className="cta-button text-lg px-8 py-6 bg-violet-600 hover:bg-violet-700 transition-all"
@@ -170,9 +175,13 @@ export default function ClientHome() {
                 </Button>
 
                 <div className="cta-text">
-                  <h2 className="m-auto mt-6 text-2xl sm:text-3xl text-gray-800">
-                    Land More Interviews, Effortlessly
-                  </h2>
+                  <p className="text-left my-6">
+                    Start transforming your job search immediately with enough
+                    credits to land your dream position. Create perfectly
+                    matched resumes, receive qualification scores, and generate
+                    custom cover letters with zero risk. No credit card required
+                    to start using Resume Bueno for free!
+                  </p>
                 </div>
               </div>
             ) : hasResume ? (
