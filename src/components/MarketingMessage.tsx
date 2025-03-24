@@ -13,85 +13,117 @@ const MarketingMessage: React.FC = () => {
           </h2>
           <div className="w-24 h-1.5 bg-teal-500 mx-auto mt-4 rounded-full"></div>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            Get more interviews with tailored resumes that stand out
+            Comprehensive tools to optimize your job application process
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Card 1 */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-            <div className="bg-teal-50 py-1 px-6">
-              <h3 className="text-xl font-bold text-teal-800">ATS-Optimized</h3>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-600 mb-6">
-                Beat automated screening systems with perfectly matched keywords
-              </p>
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">
-                    3.4× higher interview rates
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">
-                    Instantly ATS-friendly
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Card 2 */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-            <div className="bg-teal-50 py-1 px-6">
-              <h3 className="text-xl font-bold text-teal-800">Save Hours</h3>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-600 mb-6">
-                Generate tailored resumes in seconds, not hours
-              </p>
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">
-                    20+ hours saved monthly
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">
-                    Focus on interviews, not edits
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Card 3 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+          {/* Card 1 - Job Evaluation Score */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
             <div className="bg-teal-50 py-1 px-6">
               <h3 className="text-xl font-bold text-teal-800">
-                Professional Edge
+                Job Evaluation Score
               </h3>
             </div>
             <div className="p-6">
               <p className="text-gray-600 mb-6">
-                Compete with candidates using expensive resume services
+                Your personal competitive index for every job application
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
-                    Premium results at a fraction of the cost
+                    Precise 1-10 competitiveness rating
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
-                    Highlight your most relevant skills
+                    AI analysis of experience depth and relevance
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Card 2 - Custom Cover Letter */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+            <div className="bg-teal-50 py-1 px-6">
+              <h3 className="text-xl font-bold text-teal-800">
+                Custom Cover Letter
+              </h3>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-600 mb-6">
+                Your perfect introduction to potential employers
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">
+                    Truly personalized, not generic templates
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">
+                    Addresses specific company needs
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Card 3 - Strategic Resume Insights */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+            <div className="bg-teal-50 py-1 px-6">
+              <h3 className="text-xl font-bold text-teal-800">
+                Strategic Resume Insights
+              </h3>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-600 mb-6">
+                Your personal application consultant
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">
+                    Comprehensive resume analysis
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">
+                    Specific, actionable recommendations
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Card 4 - Job-Matched Resume */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+            <div className="bg-teal-50 py-1 px-6">
+              <h3 className="text-xl font-bold text-teal-800">
+                Job-Matched Resume
+              </h3>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-600 mb-6">
+                Your precision application instrument
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">
+                    Transforms generic resume into targeted document
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">
+                    Emphasizes relevant experience and skills
                   </span>
                 </li>
               </ul>
@@ -103,38 +135,10 @@ const MarketingMessage: React.FC = () => {
             At Resume Bueno, we don&apos;t sell resume services; we sell
             interview opportunities and career advancement. Begin your
             professional transformation today with our complimentary 20-credit
-            trial — because the difference between continued rejection and your
+            trial, because the difference between continued rejection and your
             next career milestone is simply a matter of presentation.
           </p>
         </div>
-
-        {/* <div className="mt-14 text-center">
-          <div className="bg-gradient-to-r from-teal-50 to-violet-50 max-w-3xl mx-auto rounded-lg p-8 border border-teal-200 shadow-sm">
-            <p className="text-gray-700 font-medium mb-6">
-              Every day with a generic resume is a missed opportunity. Start
-              standing out today.
-            </p>
-            <a
-              href="/resume/add"
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-6 py-2 bg-teal-600 text-white hover:bg-teal-700 transition-colors shadow-sm"
-            >
-              Try for Free
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="ml-2 h-4 w-4"
-              >
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
-        </div> */}
       </div>
     </section>
   )
