@@ -2,6 +2,7 @@
 
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
+import { revalidatePath } from 'next/cache'
 
 export async function checkUserResume() {
   const session = await auth()
@@ -79,5 +80,30 @@ export async function getResumeProgress() {
   } catch (error) {
     console.error('Error fetching resume progress:', error)
     return null
+  }
+}
+
+export async function deleteCustomResume(id: number) {
+  try {
+    // Delete the relation in user_custom_resume table
+    await prisma.userCustomResume.deleteMany({
+      where: {
+        customResumeId: id,
+      },
+    })
+
+    // Delete the resume itself
+    await prisma.customResume.delete({
+      where: {
+        id,
+      },
+    })
+
+    // Revalidate the path
+    revalidatePath('/history')
+    return { success: true }
+  } catch (error) {
+    console.error('Error deleting resume:', error)
+    return { success: false, error: String(error) }
   }
 }

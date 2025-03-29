@@ -4,6 +4,7 @@ import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { ComponentPropsWithoutRef } from 'react'
 import { CopyButton } from '@/components/CopyButton'
+import { ResumeListItem } from '@/components/ResumeListItem'
 
 type Props = {
   searchParams: Promise<{ id?: string }>
@@ -155,31 +156,11 @@ export default async function HistoryPage({ searchParams }: Props) {
             ) : (
               <div className="space-y-2">
                 {customResumes.map((resume) => (
-                  <Link
+                  <ResumeListItem
                     key={resume.id}
-                    href={`/history?id=${resume.id}`}
-                    className={`block py-0 px-4 rounded-lg    transition-colors ${
-                      params?.id === resume.id.toString()
-                        ? 'bg-blue-50 border border-blue-200'
-                        : 'bg-white text-[#0a0a0a] hover:bg-gray-50'
-                    }`}
-                  >
-                    <p className="mb-1 text-base font-semibold">
-                      {resume.title || 'Untitled Resume'}
-                    </p>
-                    {resume.product_type && (
-                      <p className="my-1 text-sm font-medium text-teal-600 mb-1">
-                        {formatProductType(resume.product_type)}
-                      </p>
-                    )}
-                    <p className="mt-1 text-sm text-gray-600">
-                      {new Date(resume.createdAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </p>
-                  </Link>
+                    resume={resume}
+                    isSelected={params?.id === resume.id.toString()}
+                  />
                 ))}
               </div>
             )}
