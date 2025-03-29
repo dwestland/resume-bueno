@@ -190,7 +190,7 @@ export default function ClientHome() {
                   size="lg"
                   className="cta-button text-lg px-8 py-6 bg-violet-600 hover:bg-violet-700 transition-all"
                 >
-                  <Link href="/custom-resume">Make Resume Package</Link>
+                  <Link href="/custom-resume">Make CustomResume</Link>
                 </Button>
                 <h2 className="cta-text mt-6 text-2xl sm:text-3xl text-gray-800">
                   Let&apos;s get that job!

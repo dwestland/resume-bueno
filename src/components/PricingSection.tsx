@@ -1,8 +1,24 @@
+'use client'
+
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Check } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 export default function PricingSection() {
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  const handlePlanClick = (planType: string) => {
+    if (!session) {
+      router.push('/auth/signin')
+      return
+    }
+
+    router.push(`/checkout-page?plan=${planType}`)
+  }
+
   return (
     <div id="pricing" className="mt-24 mb-16">
       <div className="text-center max-w-3xl mx-auto px-4 py-4">
@@ -97,9 +113,9 @@ export default function PricingSection() {
           <div className="absolute w-full px-8 bottom-8 left-0">
             <Button
               className="w-full bg-gradient-to-r from-violet-600 to-violet-500 hover:from-violet-700 hover:to-violet-600 shadow-md"
-              asChild
+              onClick={() => handlePlanClick('monthly')}
             >
-              <Link href="/checkout-page?plan=monthly">Choose Plan</Link>
+              Choose Plan
             </Button>
           </div>
         </div>
@@ -153,8 +169,11 @@ export default function PricingSection() {
           </ul>
 
           <div className="absolute w-full px-8 bottom-8 left-0">
-            <Button className="w-full" asChild>
-              <Link href="/checkout-page?plan=yearly">Best Value</Link>
+            <Button
+              className="w-full"
+              onClick={() => handlePlanClick('yearly')}
+            >
+              Best Value
             </Button>
           </div>
         </div>
@@ -162,12 +181,12 @@ export default function PricingSection() {
 
       <p className="max-w-4xl mx-auto mt-12 pb-6 text-center text-gray-600 px-4">
         Monthly and Year customers can purchase{' '}
-        <Link
+        <button
           className="text-blue-600 underline hover:text-blue-800"
-          href="/checkout-page?plan=additional-credits"
+          onClick={() => handlePlanClick('additional-credits')}
         >
           Additional Credits
-        </Link>
+        </button>
         . For $9.95, you get an additional 200 credits towards your monthly
         quota.
         <br />
