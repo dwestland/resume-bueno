@@ -5,7 +5,7 @@ import { CheckCircle } from 'lucide-react'
 
 const MarketingMessage: React.FC = () => {
   return (
-    <section className="marketing-section py-12 bg-gradient-to-b from-white to-teal-50/20">
+    <section className="marketing-section pt-0 pb-6 bg-gradient-to-b from-white to-teal-50/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900">
