@@ -133,7 +133,7 @@ async function generateCustomizedResume(
     
     RESPONSE INSTRUCTIONS:
     Provide 3-5 high-impact suggestions formatted as:
-    1. (the word "WHY" in bold) WHY: [explanation of how this change improves their chances and explicitly mention which additional qualification you're drawing from]
+    1. (the word "NEEDS IMPROVEMENT" in bold) NEEDS IMPROVEMENT: [explanation of how this change improves their chances and explicitly mention which additional qualification you're drawing from]
     (start on new line)
        (the word "SUGGESTION" in bold) SUGGESTION:  [exact text to copy/paste that incorporates information from additional qualifications]
     
