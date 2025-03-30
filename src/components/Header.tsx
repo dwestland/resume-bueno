@@ -36,11 +36,26 @@ export default function Header() {
             Home
           </Link>
           <Link
+            href="/about"
+            className="font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+          >
+            About
+          </Link>
+          <Link
             href="/#pricing"
             className="font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
           >
             Pricing
           </Link>
+
+          {!session?.user && (
+            <Link
+              href="/#pricing"
+              className="text-xl font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+            >
+              Get Started
+            </Link>
+          )}
 
           {session?.user && (
             <>
@@ -108,6 +123,15 @@ export default function Header() {
             Pricing
           </Link>
 
+          {!session?.user && (
+            <Link
+              href="/#pricing"
+              className="block text-xl font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors mt-4"
+            >
+              Get Started
+            </Link>
+          )}
+
           {session?.user && (
             <>
               <Link
@@ -127,12 +151,6 @@ export default function Header() {
                 className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
               >
                 Make Custom Resume
-              </Link>
-              <Link
-                href="/samples"
-                className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
-              >
-                Samples
               </Link>
             </>
           )}
