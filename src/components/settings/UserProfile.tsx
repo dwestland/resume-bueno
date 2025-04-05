@@ -7,6 +7,8 @@ interface UserProfileProps {
     name: string | null
     email: string | null
     image: string | null
+    credit_balance?: number
+    subscription_status?: string
   }
 }
 

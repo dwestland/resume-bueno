@@ -187,10 +187,10 @@ export default function CustomResumePage() {
         }))
         setCompletedSteps((prev) => [...prev, step])
 
-        if (result.credits !== undefined) {
+        if (result.credit_balance !== undefined) {
           window.postMessage({
             type: 'CREDIT_UPDATE',
-            credits: result.credits,
+            credit_balance: result.credit_balance,
             userEmail: session?.user?.email,
           })
         }
@@ -252,10 +252,10 @@ export default function CustomResumePage() {
       const content = result.data || ''
       setMatchingResume(content)
 
-      if (result.credits !== undefined) {
+      if (result.credit_balance !== undefined) {
         window.postMessage({
           type: 'CREDIT_UPDATE',
-          credits: result.credits,
+          credit_balance: result.credit_balance,
           userEmail: session.user.email,
         })
       }

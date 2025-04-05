@@ -26,7 +26,7 @@ export default async function SettingsPage() {
       name: true,
       email: true,
       image: true,
-      credits: true,
+      credit_balance: true,
       subscription_status: true,
     },
   })

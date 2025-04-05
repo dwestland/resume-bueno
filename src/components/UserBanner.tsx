@@ -11,7 +11,7 @@ export async function UserBanner() {
 
   const userRecord = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { credits: true },
+    select: { credit_balance: true },
   })
 
   return (
@@ -21,7 +21,7 @@ export async function UserBanner() {
           Hello {session.user?.name || session.user.email}
         </span>
         <UserCredits
-          initialCredits={userRecord?.credits ?? 0}
+          initialCreditBalance={userRecord?.credit_balance ?? 0}
           userEmail={session.user.email}
         />
       </div>
