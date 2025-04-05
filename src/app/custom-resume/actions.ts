@@ -433,7 +433,7 @@ export async function generateStep(
 export type CustomResumeResponse = {
   success: boolean
   data: string
-  credits?: number
+  credit_balance?: number
   error?: string
   errorType?: 'INSUFFICIENT_CREDITS' | 'OTHER'
 }
@@ -484,10 +484,10 @@ export async function createCustomizedResume(
     if (step === 'evaluation') {
       const user = await prisma.user.findUnique({
         where: { email: session.user.email },
-        select: { credits: true },
+        select: { credit_balance: true },
       })
 
-      if (!user || user.credits < 1) {
+      if (!user || user.credit_balance < 1) {
         return {
           success: false,
           data: '',
@@ -570,12 +570,15 @@ export async function createCustomizedResume(
           prisma.user.update({
             where: { email: session.user.email },
             data: {
-              credits: {
+              credit_balance: {
                 decrement: 1,
+              },
+              credit_consumed: {
+                increment: 1,
               },
             },
             select: {
-              credits: true,
+              credit_balance: true,
             },
           }),
         ])
@@ -583,7 +586,7 @@ export async function createCustomizedResume(
         return {
           success: true,
           data: result,
-          credits: updatedUser.credits,
+          credit_balance: updatedUser.credit_balance,
         }
       } catch (error) {
         return {
@@ -770,7 +773,7 @@ export async function createMatchingResume(
       },
       select: {
         id: true,
-        credits: true,
+        credit_balance: true,
         resume: true,
         awards: true,
         certificates: true,
@@ -794,13 +797,13 @@ export async function createMatchingResume(
 
     // Check if user has enough credits
     const REQUIRED_CREDITS = 1
-    if (user.credits < REQUIRED_CREDITS) {
+    if (user.credit_balance < REQUIRED_CREDITS) {
       return {
         success: false,
         data: '',
         error: 'Insufficient credits. Please purchase more credits.',
         errorType: 'INSUFFICIENT_CREDITS',
-        credits: user.credits,
+        credit_balance: user.credit_balance,
       }
     }
 
@@ -827,7 +830,15 @@ export async function createMatchingResume(
         id: user.id,
       },
       data: {
-        credits: user.credits - REQUIRED_CREDITS,
+        credit_balance: {
+          decrement: REQUIRED_CREDITS,
+        },
+        credit_consumed: {
+          increment: REQUIRED_CREDITS,
+        },
+      },
+      select: {
+        credit_balance: true,
       },
     })
 
@@ -851,7 +862,7 @@ export async function createMatchingResume(
     return {
       success: true,
       data: matchingResume,
-      credits: updatedUser.credits,
+      credit_balance: updatedUser.credit_balance,
     }
   } catch (error) {
     console.error('Error creating matching resume:', error)

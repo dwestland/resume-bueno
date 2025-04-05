@@ -3,17 +3,17 @@
 import { useEffect, useState } from 'react'
 
 type Props = {
-  initialCredits: number
+  initialCreditBalance: number
   userEmail: string
 }
 
-export function UserCredits({ initialCredits, userEmail }: Props) {
-  const [credits, setCredits] = useState(initialCredits)
+export function UserCredits({ initialCreditBalance, userEmail }: Props) {
+  const [creditBalance, setCreditBalance] = useState(initialCreditBalance)
 
-  // Update credits when initialCredits changes
+  // Update credit balance when initialCreditBalance changes
   useEffect(() => {
-    setCredits(initialCredits)
-  }, [initialCredits])
+    setCreditBalance(initialCreditBalance)
+  }, [initialCreditBalance])
 
   // Listen for credit updates from server actions
   useEffect(() => {
@@ -21,9 +21,9 @@ export function UserCredits({ initialCredits, userEmail }: Props) {
       if (
         e.data?.type === 'CREDIT_UPDATE' &&
         e.data?.userEmail === userEmail &&
-        typeof e.data?.credits === 'number'
+        typeof e.data?.credit_balance === 'number'
       ) {
-        setCredits(e.data.credits)
+        setCreditBalance(e.data.credit_balance)
       }
     }
 
@@ -33,7 +33,7 @@ export function UserCredits({ initialCredits, userEmail }: Props) {
 
   return (
     <span>
-      Credits: <span className="text-2xl font-semibold">{credits}</span>
+      Credits: <span className="text-2xl font-semibold">{creditBalance}</span>
     </span>
   )
 }
