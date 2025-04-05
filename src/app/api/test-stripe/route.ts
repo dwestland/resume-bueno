@@ -1,34 +1,50 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { testRecordSubscriptionPurchase } from '@/lib/actions/subscription'
 
-// This is a test endpoint - should be removed in production
-export async function GET(req: NextRequest) {
-  // Only enable this in development
-  if (process.env.NODE_ENV !== 'development') {
-    return NextResponse.json(
-      { error: 'Not available in production' },
-      { status: 404 }
-    )
-  }
+export const runtime = 'nodejs'
 
+/**
+ * Test endpoint for simulating a subscription purchase
+ * This helps with debugging and testing without having to go through Stripe
+ */
+export async function GET(request: Request) {
   try {
-    // Get the user ID from the query string
-    const url = new URL(req.url)
+    // Get query parameters
+    const url = new URL(request.url)
     const userId = url.searchParams.get('userId')
+    const planType =
+      (url.searchParams.get('plan') as
+        | 'monthly'
+        | 'yearly'
+        | 'additional-credits') || 'monthly'
 
     if (!userId) {
-      return NextResponse.json(
-        { error: 'Missing userId parameter' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'userId is required' }, { status: 400 })
     }
 
-    // Record the subscription purchase
-    const result = await testRecordSubscriptionPurchase(userId)
+    // Execute the test purchase
+    const result = await testRecordSubscriptionPurchase({
+      userId,
+      planType: planType || 'monthly',
+    })
 
-    return NextResponse.json(result)
+    if (!result.success) {
+      return NextResponse.json({ error: result.error }, { status: 400 })
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Successfully recorded ${planType} purchase for user ${userId}`,
+      data: result,
+    })
   } catch (error) {
-    console.error('Test endpoint error:', error)
-    return NextResponse.json({ error: 'Test endpoint failed' }, { status: 500 })
+    console.error('Error in test endpoint:', error)
+    return NextResponse.json(
+      {
+        error: 'Error processing test purchase',
+        details: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 }
+    )
   }
 }
