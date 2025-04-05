@@ -60,7 +60,6 @@ model User {
   // Business fields
   stripe_customer_id  String?           @unique
   subscription_status CustomerStatus    @default(INACTIVE) // ACTIVE, CANCELED, EXPIRED, INACTIVE
-  credits             Int               @default(20)
   credit_balance      Int               @default(20)
   credit_consumed     Int               @default(0)
   // Relationships
