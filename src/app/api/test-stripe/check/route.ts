@@ -1,51 +1,56 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-// This is a test endpoint - should be removed in production
-export async function GET(req: NextRequest) {
-  // Only enable this in development
-  if (process.env.NODE_ENV !== 'development') {
-    return NextResponse.json(
-      { error: 'Not available in production' },
-      { status: 404 }
-    )
-  }
+export const runtime = 'nodejs'
 
+export async function GET(request: Request) {
   try {
-    // Get the user ID from the query string
-    const url = new URL(req.url)
+    // Get the query parameters
+    const url = new URL(request.url)
     const userId = url.searchParams.get('userId')
 
     if (!userId) {
-      return NextResponse.json(
-        { error: 'Missing userId parameter' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'userId is required' }, { status: 400 })
     }
 
-    // Get the user's subscription details
-    const user = await prisma.user.findUnique({
+    // Check if user exists
+    const userCount = await prisma.user.count({
       where: { id: userId },
-      select: {
-        subscription_plan: true,
-        subscription_status: true,
-        subscription_start: true,
-        subscription_end: true,
-        subscription_id: true,
-        stripe_customer_id: true,
-        credits: true,
-      },
     })
 
-    if (!user) {
+    if (userCount === 0) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    return NextResponse.json({ user })
+    // Get user subscription data
+    const userData = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        subscription_status: true,
+        credits: true,
+        purchases: {
+          select: {
+            subscription_start: true,
+            subscription_end: true,
+            purchase_type: true,
+            purchase_status: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+          take: 5,
+        },
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      userData,
+    })
   } catch (error) {
-    console.error('Test check endpoint error:', error)
+    console.error('Error checking stripe data:', error)
     return NextResponse.json(
-      { error: 'Test check endpoint failed' },
+      { error: 'Internal server error' },
       { status: 500 }
     )
   }
