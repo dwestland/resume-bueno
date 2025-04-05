@@ -1,6 +1,5 @@
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
-import { SubscriptionManagement } from '@/components/settings/SubscriptionManagement'
 import { UserProfile } from '@/components/settings/UserProfile'
 
 export default async function SettingsPage() {
@@ -28,9 +27,7 @@ export default async function SettingsPage() {
       email: true,
       image: true,
       credits: true,
-      subscription_plan: true,
       subscription_status: true,
-      subscription_end: true,
     },
   })
 
@@ -51,7 +48,6 @@ export default async function SettingsPage() {
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6">
       <div className="space-y-8">
         <UserProfile user={user} />
-        <SubscriptionManagement user={user} />
       </div>
     </div>
   )

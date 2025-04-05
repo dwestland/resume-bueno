@@ -5,7 +5,7 @@ import { CheckCircle } from 'lucide-react'
 
 const MarketingMessage: React.FC = () => {
   return (
-    <section className="marketing-section py-12 bg-gradient-to-b from-white to-teal-50/20">
+    <section className="marketing-section pt-0 pb-6 bg-gradient-to-b from-white to-teal-50/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900">
@@ -20,8 +20,8 @@ const MarketingMessage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {/* Card 1 - Job Evaluation Score */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-            <div className="bg-teal-50 py-1 px-6">
-              <h3 className="text-xl font-bold text-teal-800">
+            <div className="bg-violet-50 py-1 px-6">
+              <h3 className="text-xl font-bold text-violet-800">
                 Job Evaluation Score
               </h3>
             </div>
@@ -31,13 +31,13 @@ const MarketingMessage: React.FC = () => {
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-teal-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
                     Precise 1-10 competitiveness rating
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-teal-500-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
                     AI analysis of experience depth and relevance
                   </span>
@@ -48,8 +48,8 @@ const MarketingMessage: React.FC = () => {
 
           {/* Card 2 - Custom Cover Letter */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-            <div className="bg-teal-50 py-1 px-6">
-              <h3 className="text-xl font-bold text-teal-800">
+            <div className="bg-violet-50 py-1 px-6">
+              <h3 className="text-xl font-bold text-violet-800">
                 Custom Cover Letter
               </h3>
             </div>
@@ -59,13 +59,13 @@ const MarketingMessage: React.FC = () => {
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-teal-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
                     Truly personalized, not generic templates
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-teal-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
                     Addresses specific company needs
                   </span>
@@ -76,8 +76,8 @@ const MarketingMessage: React.FC = () => {
 
           {/* Card 3 - Strategic Resume Insights */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-            <div className="bg-teal-50 py-1 px-6">
-              <h3 className="text-xl font-bold text-teal-800">
+            <div className="bg-violet-50 py-1 px-6">
+              <h3 className="text-xl font-bold text-violet-800">
                 Strategic Resume Insights
               </h3>
             </div>
@@ -87,13 +87,13 @@ const MarketingMessage: React.FC = () => {
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-teal-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
                     Comprehensive resume analysis
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-teal-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
                     Specific, actionable recommendations
                   </span>
@@ -104,8 +104,8 @@ const MarketingMessage: React.FC = () => {
 
           {/* Card 4 - Job-Matched Resume */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-            <div className="bg-teal-50 py-1 px-6">
-              <h3 className="text-xl font-bold text-teal-800">
+            <div className="bg-violet-50 py-1 px-6">
+              <h3 className="text-xl font-bold text-violet-800">
                 Job-Matched Resume
               </h3>
             </div>
@@ -115,13 +115,13 @@ const MarketingMessage: React.FC = () => {
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-teal-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
                     Transforms generic resume into targeted document
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-violet-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-teal-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
                     Emphasizes relevant experience and skills
                   </span>

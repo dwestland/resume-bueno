@@ -9,6 +9,10 @@ export default function Header() {
   const { data: session } = useSession()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+  // Check if user has admin privileges
+  const isAdminOrManager =
+    session?.user?.role === 'ADMIN' || session?.user?.role === 'MANAGER'
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev)
   }
@@ -77,6 +81,15 @@ export default function Header() {
               >
                 Make Custom Resume
               </Link>
+
+              {isAdminOrManager && (
+                <Link
+                  href="/dashboard"
+                  className="font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+                >
+                  Dashboard
+                </Link>
+              )}
             </>
           )}
         </div>
@@ -152,6 +165,15 @@ export default function Header() {
               >
                 Make Custom Resume
               </Link>
+
+              {isAdminOrManager && (
+                <Link
+                  href="/dashboard"
+                  className="block text-sm font-semibold leading-loose px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
+                >
+                  Dashboard
+                </Link>
+              )}
             </>
           )}
 

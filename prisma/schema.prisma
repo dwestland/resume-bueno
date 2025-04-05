@@ -17,21 +17,13 @@ model Todo {
   @@map("todo")
 }
 
-enum SubscriptionPlan {
-  MONTHLY
-  YEARLY
-  NONE
-
-  @@map("subscription_plan")
-}
-
-enum SubscriptionStatus {
+enum CustomerStatus {
   ACTIVE
-  INACTIVE
   CANCELED
-  PAST_DUE
+  EXPIRED
+  INACTIVE
 
-  @@map("subscription_status") 
+  @@map("customer_status") 
 }
 
 enum UserRole {
@@ -66,14 +58,12 @@ model User {
   training          String?
   volunteering      String?
   // Business fields
-  credits             Int               @default(20)
   stripe_customer_id  String?           @unique
-  // Subscription fields
-  subscription_plan   SubscriptionPlan  @default(NONE)
-  subscription_status SubscriptionStatus @default(INACTIVE)
-  subscription_start  DateTime?
-  subscription_end    DateTime?
-  subscription_id     String?           @unique
+  subscription_status CustomerStatus    @default(INACTIVE) // ACTIVE, CANCELED, EXPIRED, INACTIVE
+  credits             Int               @default(20)
+  // TODO: Replace credits with credit_balance
+  // credit_balance      Int               @default(20)
+  credit_consumed     Int               @default(0)
   // Relationships
   customResumes      UserCustomResume[]
   purchases          Purchase[]
@@ -156,29 +146,64 @@ model Message {
 }
 
 enum PurchaseType {
-  SUBSCRIPTION_MONTHLY
-  SUBSCRIPTION_YEARLY
-  CREDIT_PURCHASE
+  MONTHLY_SUBSCRIPTION
+  YEAR_PURCHASE
+  ADDITIONAL_CREDITS
 
   @@map("purchase_type")
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  FAILED
+
+  @@map("purchase_status")
 }
 
 model Purchase {
   id                  String        @id @default(cuid())
   user_id             String
-  amount              Float
-  currency            String        @default("usd")
-  purchase_type       PurchaseType
-  credits_added       Int           @default(0)
-  stripe_session_id   String?       @unique
-  stripe_invoice_id   String?
-  status              String        @default("pending") // pending, completed, failed
   user                User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  
+
+  amount_paid         Float         @default(0)
+  currency            String        @default("usd")
+  purchase_type       PurchaseType // MONTHLY_SUBSCRIPTION, YEAR_PURCHASE, ADDITIONAL_CREDITS 
+
+  // Subscription fields
+  stripe_subscription_id String?
+  stripe_price_id        String?
+  purchase_status        PurchaseStatus @default(PENDING) // PENDING, COMPLETED, FAILED
+  subscription_start     DateTime?
+  subscription_end       DateTime?
+  cancel_at_period_end   Boolean        @default(false)
+  cancel_at              DateTime?
+  stripe_session_id      String?        @unique // Was used in the first setup
+
+  // One-time purchase fields
+  stripe_payment_id   String?       @unique
+  credits_added       Int           @default(0)
+  valid_until         DateTime?
+
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
-
   @@map("purchase")
+}
+
+model WebhookEventLog {
+  id                  String        @id @default(cuid())
+  stripe_event_id     String?
+  event_type          String
+  stripe_object_id    String?
+  user_id             String
+  payload             String?
+  processed           Boolean       @default(false)
+  processed_at        DateTime?
+  error_message       String?
+
+  receivedAt          DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  @@map("webhook_event_log")
 }
 
 enum ProductType {

@@ -43,19 +43,19 @@ export default function PricingSection() {
           </div>
 
           <ul className="mb-8 space-y-4">
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>Get started instantly</span>
             </li>
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>20 free credits upon signup</span>
             </li>
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>Match your resume to the job description</span>
             </li>
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>Job match and employer analysis</span>
             </li>
@@ -92,19 +92,19 @@ export default function PricingSection() {
           </div>
 
           <ul className="mb-8 space-y-4">
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>200 credits per month</span>
             </li>
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>Same features as Basic Plan</span>
             </li>
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>Advanced job match scoring</span>
             </li>
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>One-click unsubscribe</span>
             </li>
@@ -138,34 +138,25 @@ export default function PricingSection() {
             </span>
           </div>
 
-          <ul className="mb-8 space-y-4">
-            <li className="flex items-center gap-3">
+          <ul className="mb-8 space-y-4t">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>
                 Save <strong>$74.40</strong> for the year
               </span>
             </li>
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>200 credits per month for 12 months</span>
             </li>
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>Same feature as monthly plan</span>
             </li>
-
-            {/* <li className="flex items-center gap-3">
-              <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Personalized resume feedback</span>
-            </li> */}
-            <li className="flex items-center gap-3">
+            <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>One-time payment, no need to cancel</span>
             </li>
-            {/* <li className="flex items-center gap-3">
-              <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
-              <span>Priority support</span>
-            </li> */}
           </ul>
 
           <div className="absolute w-full px-8 bottom-8 left-0">
