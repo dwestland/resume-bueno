@@ -37,7 +37,7 @@ const MarketingMessage: React.FC = () => {
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-teal-500-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-teal-600 mr-3 flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700">
                     AI analysis of experience depth and relevance
                   </span>

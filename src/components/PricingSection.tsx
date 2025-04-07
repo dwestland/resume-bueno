@@ -16,7 +16,7 @@ export default function PricingSection() {
       return
     }
 
-    router.push(`/checkout-page?plan=${planType}`)
+    router.push(`/checkout?plan=${planType}`)
   }
 
   return (
@@ -160,10 +160,7 @@ export default function PricingSection() {
           </ul>
 
           <div className="absolute w-full px-8 bottom-8 left-0">
-            <Button
-              className="w-full"
-              onClick={() => handlePlanClick('yearly')}
-            >
+            <Button className="w-full" onClick={() => handlePlanClick('year')}>
               Best Value
             </Button>
           </div>
