@@ -2,7 +2,7 @@
 declare module 'stripe' {
   namespace Stripe {
     interface StripeConstructorOptions {
-      apiVersion?: string
+      apiVersion?: '2023-10-16' | '2025-01-27.acacia' | string
     }
   }
 }

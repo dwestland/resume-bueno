@@ -2,7 +2,7 @@ import Stripe from 'stripe'
 
 // Initialize Stripe with the latest API version
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  // @ts-expect-error - Different Stripe versions between environments
+  // @ts-expect-error Compatible with both environments
   apiVersion: '2023-10-16',
   appInfo: {
     name: 'Resume Bueno',
