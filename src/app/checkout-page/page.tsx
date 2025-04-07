@@ -3,9 +3,9 @@
 import { redirect } from 'next/navigation'
 
 interface CheckoutPageProps {
-  searchParams: {
+  searchParams: Promise<{
     plan?: string
-  }
+  }>
 }
 
 export default async function CheckoutPageRedirect({

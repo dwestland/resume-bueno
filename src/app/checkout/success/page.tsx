@@ -7,9 +7,9 @@ import { Suspense } from 'react'
 import { processCheckoutSession } from './actions'
 
 interface SuccessPageProps {
-  searchParams: {
+  searchParams: Promise<{
     session_id?: string
-  }
+  }>
 }
 
 export default async function SuccessPage({ searchParams }: SuccessPageProps) {

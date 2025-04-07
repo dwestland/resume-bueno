@@ -8,9 +8,9 @@ import CheckoutError from './checkout-content'
 import { Suspense } from 'react'
 
 interface CheckoutPageProps {
-  searchParams: {
+  searchParams: Promise<{
     plan?: string
-  }
+  }>
 }
 
 export default async function CheckoutPage({

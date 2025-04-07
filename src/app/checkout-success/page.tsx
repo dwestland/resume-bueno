@@ -3,9 +3,9 @@
 import { redirect } from 'next/navigation'
 
 interface SuccessPageProps {
-  searchParams: {
+  searchParams: Promise<{
     session_id?: string
-  }
+  }>
 }
 
 export default async function SuccessPageRedirect({
