@@ -8,6 +8,9 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     name: 'Resume Bueno',
     version: '1.0.0',
   },
+  typescript: true,
+  // Handle cookies properly for cross-site contexts
+  stripeAccount: process.env.STRIPE_ACCOUNT,
 })
 
 export type StripeProductType = 'monthly' | 'year' | 'additional-credits'

@@ -19,6 +19,21 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Add security headers for CSP
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value:
+              "default-src 'self'; script-src 'self' https://*.stripe.com 'unsafe-inline'; frame-src https://*.stripe.com; connect-src 'self' https://*.stripe.com;",
+          },
+        ],
+      },
+    ]
+  },
 }
 
 export default nextConfig
