@@ -2,7 +2,8 @@ import Stripe from 'stripe'
 
 // Initialize Stripe with the latest API version
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16' as '2025-01-27.acacia',
+  // @ts-expect-error - Different Stripe versions between environments
+  apiVersion: '2023-10-16',
   appInfo: {
     name: 'Resume Bueno',
     version: '1.0.0',
