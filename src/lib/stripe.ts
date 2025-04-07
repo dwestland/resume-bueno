@@ -2,7 +2,8 @@ import Stripe from 'stripe'
 
 // Initialize Stripe with the latest API version
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-01-27.acacia',
+  // @ts-expect-error - Vercel build environment has a different Stripe version that doesn't support 2025-01-27.acacia
+  apiVersion: '2023-10-16',
   appInfo: {
     name: 'Resume Bueno',
     version: '1.0.0',
