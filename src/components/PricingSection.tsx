@@ -20,7 +20,7 @@ export default function PricingSection() {
   }
 
   return (
-    <div id="pricing" className="mt-24 mb-16">
+    <div id="pricing" className="m-8">
       <div className="text-center max-w-3xl mx-auto px-4 py-4">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4 bg-clip-text">
           Choose Your Plan
@@ -96,6 +96,10 @@ export default function PricingSection() {
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>200 credits per month</span>
             </li>
+            <li className="flex items-center gap-3 leading-tight">
+              <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
+              <span>Less than a Chipotle burrito</span>
+            </li>{' '}
             <li className="flex items-center gap-3 leading-tight">
               <Check className="w-5 h-5 text-teal-500 flex-shrink-0" />
               <span>Same features as Basic Plan</span>
