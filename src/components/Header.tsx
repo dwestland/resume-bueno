@@ -46,7 +46,7 @@ export default function Header() {
             About
           </Link>
           <Link
-            href="/#pricing"
+            href="/pricing"
             className="font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
           >
             Pricing
@@ -54,7 +54,7 @@ export default function Header() {
 
           {!session?.user && (
             <Link
-              href="/#pricing"
+              href="/pricing"
               className="text-xl font-semibold px-3 py-1 rounded-full hover:bg-violet-600 transition-colors"
             >
               Get Started

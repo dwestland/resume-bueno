@@ -8,8 +8,6 @@ import { useEffect, useState } from 'react'
 import { checkUserResume, getResumeProgress } from './actions'
 import { ResumeProgress } from '@/components/ResumeProgress'
 import { AddResumeDialog } from '@/components/AddResumeDialog'
-import PricingSection from '@/components/PricingSection'
-import ImageCarousel from '@/components/ImageCarousel'
 import MarketingMessage from '@/components/MarketingMessage'
 
 export default function ClientHome() {
@@ -132,7 +130,7 @@ export default function ClientHome() {
                 and a polished cover letter, instantly.
               </p>
 
-              <div className="teal-accent-line w-20 h-1 bg-teal-500 rounded mt-6 hidden md:block"></div>
+              <div className="teal-accent-line max-w-44 h-1 bg-teal-600 rounded mt-6 hidden md:block"></div>
             </div>
           </div>
 
@@ -213,14 +211,6 @@ export default function ClientHome() {
         </div>
       </div>
 
-      {/* Marketing Message Section */}
-      <MarketingMessage />
-
-      {/* University Logos Section */}
-      <section className="logos-section border-t border-gray-00">
-        <ImageCarousel />
-      </section>
-
       {/* Resume Progress for Logged-In Users */}
       {isLoggedIn && resumeProgress && (
         <section className="progress-section w-full my-12 px-4 sm:px-6 lg:px-8 transition-all">
@@ -232,12 +222,8 @@ export default function ClientHome() {
         </section>
       )}
 
-      {/* Pricing Section */}
-      <section className="pricing-section bg-gray-50">
-        <PricingSection />
-      </section>
-
-      <div className="footer-accent-line w-16 h-1 bg-teal-500 mx-auto rounded mb-4"></div>
+      {/* Marketing Message Section */}
+      <MarketingMessage />
     </div>
   )
 }
