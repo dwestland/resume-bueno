@@ -24,7 +24,7 @@ export default function AboutUsPage() {
         <p>
           <strong>Resume Bueno</strong> is your secret weapon for job hunting.
           We take your existing resume, pair it with the job description you’re
-          chasing, and boom—out comes a custom-crafted resume that speaks the
+          chasing, and boom, out comes a custom-crafted resume that speaks the
           language hiring managers (and applicant tracking systems) love.
         </p>
 
